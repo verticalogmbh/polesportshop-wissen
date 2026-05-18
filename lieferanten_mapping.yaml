@@ -1,0 +1,318 @@
+# Lieferanten-Mapping — Single Source of Truth
+#
+# Diese Datei ist die einzige Quelle für Lieferanten-Metadaten in der Pipeline.
+# Beide Cowork-Anweisungen (datenimports + bildpipeline) lesen aus dieser Datei,
+# pflegen sie aber nicht selbst — Updates kommen ausschließlich von Tjorben /
+# über den Projekt-Wissens-Update-Prozess.
+#
+# Wenn ein Lieferant noch nicht im Mapping ist und ein Lauf gestartet wird,
+# hält Cowork an und fragt nach den fehlenden Werten.
+#
+# Schema-Dokumentation siehe Abschnitt am Ende dieser Datei.
+#
+# Stand: 2026-05-17 (v1.15 — Onboarding-Erweiterungen nach Live-Trial-Runs Batch 1+2
+# HotCakes: HotCakes-Vorlagen-Slots final gesetzt (E80-Erweiterung), neues optionales
+# Feld `max_groesse` als Default-Größen-Cap pro Lieferant, Schema-Doku
+# um Vorlagen-Slot-Konvention pro Import-Typ klargestellt.
+# Vorheriger Stand: 2026-05-15 (nach Architektur-Pivot beim Bilder-Import auf
+# Stammdaten-Integration, siehe E46: Ameise-Vorlagen pro Lieferant von 5
+# auf 4 reduziert; mit E80 v1.14 wieder auf 5 erweitert um Cross-Selling)
+
+lieferanten:
+
+  POLE_ADDICT_WORKOUT_WEAR:
+    anzeigename: "POLE ADDICT - WORKOUT WEAR"
+    kuerzel: POLE-ADDICT
+    hersteller: POLE ADDICT
+    marke_kurz: "POLE ADDICT"   # NEU mit v1.12 — bei POLE ADDICT identisch zur Hersteller-Spalte, weil keine kürzere Marketing-Form existiert. Feld trotzdem explizit gepflegt für Konsistenz.
+    herkunftsland: PT
+    waehrung: EUR
+    steuerklasse: "OSS2-undefiniert - Standard alle Länder"
+    shop_url: https://poleaddict.com
+    fallback_retailer_url: null
+    drive_ordner_id: 1uNJCmmGHxHqoSeK9iTyCKtUHLusB57js
+    drive_eingang_id: 1SaQsPW6qmEErRL-U_iwhDutLsA3P3QJP
+    r2_prefix: pole-addict
+    lieferantennummer_wawi: 1049
+    groessen_konvention: standard
+    category: fashion           # NEU mit E45 — informativ
+    crop_profile: fashion       # NEU mit E45 — Crop-Parameter aus Bildpipeline-Profil-Tabelle
+    pose_sort: auto_vision      # NEU mit E45 — Vision-basierte Pose-Sortierung
+    crawl_mechanik: null        # NEU mit E48 — beim ersten Migrationsversuch detektieren (poleaddict.com sieht nach Shopify aus, dann shopify_json)
+    ameise_vorlagen:
+      stammdaten:       "POLE ADDICT Stammdaten Import"   # MUSS um Bild-Spalten erweitert werden + Bilder/Plattformen-Häkchen setzen (E46)
+      variationen:      null    # vor HotCakes-Pilot nicht etabliert
+      merkmale:         "POLE ADDICT Merkmale Import"
+      attribute:        "POLE ADDICT Attribute Import"
+      cross_selling:    null    # NEU v1.14 (E80) — Vorlage in WaWi anlegen sobald Cross-Selling-Lauf für POLE ADDICT relevant wird
+    max_groesse: null   # NEU v1.15 — optionales Default-Größen-Cap, null = alle Größen
+    legacy_vorlagen:
+      bilder:           "POLE ADDICT Bilder Import"       # nicht mehr genutzt nach E46 (Bilder über Stammdaten); Vorlage in WaWi belassen
+    bemerkung: "Pilot-Lieferant (2026-05-13). Vorlagen-Naming nach alter Konvention; nicht umbenennen, bestehende Vorlagen funktionieren. Bei Neu-Klon für andere Lieferanten neue Konvention `{Lieferantenname}_{Nr}_{Import-Typ}` verwenden. Mit E46 muss die Stammdaten-Vorlage um Bild-Spalten erweitert und die Bilder/Plattformen-Häkchen für alle 11 Plattformen gesetzt werden — die alte Bilder-Vorlage wird damit Legacy."
+
+  HOTCAKES_POLEWEAR:
+    anzeigename: "HotCakes Polewear"
+    kuerzel: HOTCAKES
+    hersteller: HotCakes Polewear
+    marke_kurz: "HotCakes"      # NEU mit v1.12 — Kurzform für Artikelnamen (Goldstandard-Konvention E59). Hersteller-Spalte trägt die lange Form, Artikelname nutzt die kurze. Ohne dieses Feld muss Cowork raten — heute (2026-05-16) im Self-Check manuell korrigiert.
+    # Brand-Story-Cache (E72 → E79 evergreen-Refactor v1.14) — Cowork nutzt diese Felder als `markentext`-Attribut direkt, ohne Eigenformulierung pro Lauf. Wenn `null`: Cowork generiert wie bisher und markiert als E70.
+    # E79: evergreen Brand-Story mit Gründerinnen-Persönlichkeit. Keine Print-Serien-Erwähnungen, weil die wechseln. Recherche-Quelle: hotcakespolewear.com/pages/about-us (Maro, Plousia, Thomis — Gründerinnen).
+    brand_story_de: |
+      HotCakes Polewear ist die Geschichte von drei Frauen aus Griechenland,
+      die sich beim Schneidern von Bühnen-Outfits kennen gelernt haben. Maro
+      und Plousia tanzen Pole auf Bühnen, Thomis entwirft Mode. Was sie
+      verbindet, ist ein Blick für das, was eine Tänzerin wirklich braucht,
+      und der Mut, nichts dem Zufall zu überlassen. Aus zig Kostüm-Sessions
+      für Performances wurde irgendwann die Idee einer eigenen Marke, die
+      Polewear nicht als Sportartikel denkt, sondern als Stück deiner
+      Persönlichkeit. „From a dancer's mind to a dancer's body" steht über
+      allem, was hier entsteht. Wenn du HotCakes trägst, trägst du das, was
+      drei Frauen für sich selbst entworfen hätten.
+    brand_story_en: |
+      HotCakes Polewear is the story of three women from Greece who met
+      while sewing costumes for stage. Maro and Plousia dance pole on
+      stage, Thomis designs fashion. What they share is an eye for what a
+      dancer actually needs, and the refusal to leave anything to chance.
+      Out of countless costume sessions for shows grew the idea of a brand
+      that treats polewear not as sports gear but as a piece of who you
+      are. „From a dancer's mind to a dancer's body" runs through
+      everything made here. When you wear HotCakes, you wear what three
+      women would have designed for themselves.
+    brand_story_fr: |
+      HotCakes Polewear, c'est l'histoire de trois femmes en Grèce qui se
+      sont rencontrées en cousant des costumes de scène. Maro et Plousia
+      dansent la pole sur scène, Thomis conçoit la mode. Ce qui les
+      rassemble, c'est un œil pour ce dont une danseuse a vraiment besoin
+      et le refus de laisser quoi que ce soit au hasard. De séances et de
+      séances de costumes pour des spectacles est née l'idée d'une marque
+      qui pense la polewear non comme équipement sportif mais comme un
+      morceau de qui tu es. „From a dancer's mind to a dancer's body"
+      traverse tout ce qui sort d'ici. Quand tu portes HotCakes, tu portes
+      ce que trois femmes auraient dessiné pour elles-mêmes.
+    brand_story_it: |
+      HotCakes Polewear è la storia di tre donne in Grecia che si sono
+      incontrate cucendo costumi per il palcoscenico. Maro e Plousia
+      ballano pole sul palco, Thomis disegna moda. Quello che le unisce è
+      un occhio per ciò di cui una ballerina ha davvero bisogno e il
+      rifiuto di lasciare qualcosa al caso. Da innumerevoli sessioni di
+      costumi per spettacoli è nata l'idea di un brand che pensa la
+      polewear non come attrezzatura sportiva ma come un pezzo di chi sei.
+      „From a dancer's mind to a dancer's body" attraversa tutto ciò che
+      esce da qui. Quando indossi HotCakes, indossi ciò che tre donne
+      avrebbero disegnato per se stesse.
+    brand_story_es: |
+      HotCakes Polewear es la historia de tres mujeres en Grecia que se
+      conocieron cosiendo trajes para el escenario. Maro y Plousia bailan
+      pole en el escenario, Thomis diseña moda. Lo que las une es un ojo
+      para lo que una bailarina realmente necesita, y la negativa a dejar
+      algo al azar. De incontables sesiones de costura de trajes para
+      espectáculos surgió la idea de una marca que entiende la polewear no
+      como equipamiento deportivo sino como una parte de quién eres.
+      „From a dancer's mind to a dancer's body" atraviesa todo lo que sale
+      de aquí. Cuando llevas HotCakes, llevas lo que tres mujeres habrían
+      diseñado para sí mismas.
+    herkunftsland: GR
+    waehrung: EUR
+    steuerklasse: "OSS2-undefiniert - Standard alle Länder"
+    shop_url: https://hotcakespolewear.com
+    fallback_retailer_url: https://eu.polejunkie.com/collections/hotcakes
+    drive_ordner_id: null      # noch nicht angelegt
+    drive_eingang_id: null     # noch nicht angelegt
+    r2_prefix: hotcakes
+    lieferantennummer_wawi: 1113
+    groessen_konvention: kombi_reduziert_auf_kleinste   # HotCakes liefert "XS/S" → wird "XS" (siehe E27)
+    category: fashion           # NEU mit E45
+    crop_profile: fashion       # NEU mit E45
+    pose_sort: auto_vision      # NEU mit E45 — erster Praxis-Datenpunkt 2026-05-15 Arachne Top Black: Confidence 0.80-0.95, keine unknowns. B28-Validierung läuft weiter. Bei Konsistenz-Bestätigung nach 3-5 Modellen ggf. Umstellung auf manufacturer_order
+    crawl_mechanik: shopify_json   # NEU mit E48 (2026-05-15) — validiert mit Arachne Top Black: HTTP 200, /products.json gibt 124 Produkte zurück
+    ameise_vorlagen:
+      stammdaten:       "HotCakes Polewear_1_Stammdaten"   # v3.1 mit 48 Spalten inkl. Bild-Spalten (E46/E54)
+      variationen:      "HotCakes Polewear_2_Variationen"
+      merkmale:         "HotCakes Polewear_3_Merkmale"     # KORRIGIERT v1.15: war fälschlich _4_Merkmale gemappt — die echte Vorlage in WaWi heißt _3_Merkmale. Slot-Nummern sind pro Import-Typ eindeutig (siehe Schema-Doku), `_3_Merkmale` (Merkmale-Import) kollidiert NICHT mit `_3_Lieferantendaten` (Stammdaten-Import-Legacy)
+      attribute:        "HotCakes Polewear_4_Attribute"    # GESETZT v1.15: von Tjorben 2026-05-16 angelegt, Live-Import 2026-05-17 erfolgreich. Achtung: Standardlieferant in der Vorlage muss explizit auf "HotCakes Polewear" gesetzt sein — sonst Import-Fail "Lieferant HOTCAKES existiert nicht" (Bug-Fix 2026-05-17)
+      cross_selling:    "HotCakes Polewear_5_CrossSelling" # GESETZT v1.15: von Tjorben 2026-05-17 angelegt, Live-Import von Batch 2 erfolgreich. 3 Spalten (Artikelnummer + Artikelnummer Cross-Seller + Cross-Selling-Gruppe). Slot 5 ist sauber belegt, weil `_5_Bilder` ein anderer Import-Typ ist (Stammdaten-Import-Legacy) — Slot-Konvention pro Import-Typ siehe Schema-Doku
+    max_groesse: null   # NEU v1.15 — optionales Default-Größen-Cap pro Lieferant. null = alle Größen aus Quell-Crawl übernehmen. Bei Wert "L" oder "XL" werden im Trigger-Default nur Größen bis inklusive dieser Obergrenze angelegt; einzelne Trigger können das override-en
+    legacy_vorlagen:
+      lieferantendaten: "HotCakes Polewear_3_Lieferantendaten"   # nicht mehr genutzt, durch Lieferantenblock in Stammdaten ersetzt (E35). Slot-Konflikt nur scheinbar: `_3_Lieferantendaten` ist im Stammdaten-Import-Typ, `_3_Merkmale` im Merkmale-Import-Typ
+      bilder:           "HotCakes Polewear_5_Bilder"             # nicht mehr genutzt nach E46 (Bilder über Stammdaten); Vorlage in WaWi belassen. Slot-Konflikt nur scheinbar: `_5_Bilder` ist im Stammdaten-Import-Typ (Legacy), `_5_CrossSelling` im Cross-Selling-Import-Typ
+    bemerkung: "Stammdaten + Variationen + Merkmale + Attribute Import 2026-05-14 erfolgreich (3 Väter + 13 Kinder). R2-Migration für Arachne Bottom Black 2026-05-15 erfolgreich. v1.13-Generalprobe 2026-05-16. **Live-Trial-Runs Batch 1+2 abgeschlossen 2026-05-17:** 21 Modelle (10 Väter Batch 1 + 11 Väter Batch 2 + 84 Kinder), alle 5 CSVs importiert, 16/16 Self-Check grün in beiden Batches. Cross-Selling-CSV unified mit 36 Beziehungen (vor Kinder-Erweiterung; mit E80-Erweiterung v1.15 jetzt 180 Zeilen für Vater UND alle Kinder). Bekannte Schwester-Artikel im HotCakes-Sortiment, die NICHT in der Lieferung waren und später nachgezogen werden können: Arachne Tan/Cherry T+B, Savanna Black/Skin/Emerald/Lime/Heat T+B, Peonies Bodysuit-skin-tones. Bei Nachzug: Cross-Selling-Family-Refresh-Modus (E80-Erweiterung 3, siehe cowork_anweisung_datenimports.md)."
+
+  LUNALAE:
+    anzeigename: "Lunalae"
+    kuerzel: LUNALAE
+    hersteller: Lunalae
+    herkunftsland: null
+    waehrung: null
+    steuerklasse: "OSS2-undefiniert - Standard alle Länder"
+    shop_url: null
+    fallback_retailer_url: null
+    drive_ordner_id: null
+    drive_eingang_id: null
+    r2_prefix: lunalae
+    lieferantennummer_wawi: null
+    groessen_konvention: null
+    category: fashion           # NEU mit E45 — Default-Annahme, Lunalae ist Polewear-Lieferant
+    crop_profile: fashion       # NEU mit E45
+    pose_sort: auto_vision      # NEU mit E45
+    crawl_mechanik: null        # NEU mit E48 — beim Onboarding detektieren
+    ameise_vorlagen:
+      stammdaten:       null
+      variationen:      null
+      merkmale:         null
+      attribute:        null
+      cross_selling:    null    # NEU v1.14 (E80)
+    max_groesse: null   # NEU v1.15
+    bemerkung: "Onboarding ausstehend. Bei Anlage gemäß E29-Naming-Konvention `Lunalae_1_Stammdaten` etc. (5 Vorlagen pro Lieferant ab v1.14, E80). Stammdaten-Vorlage muss Bild-Spalten 1-10 mappen und im Reiter Bilder/Plattformen alle 11 Häkchen setzen. Standardlieferant in jeder Vorlage explizit setzen (Bug-Lehre 2026-05-17)."
+
+  POLE_JUNKIE:
+    anzeigename: "Pole Junkie"
+    kuerzel: POLE-JUNKIE
+    hersteller: null            # Pole Junkie ist Retailer, nicht Hersteller — Hersteller pro Artikel zu pflegen
+    herkunftsland: null
+    waehrung: null
+    steuerklasse: "OSS2-undefiniert - Standard alle Länder"
+    shop_url: https://eu.polejunkie.com
+    fallback_retailer_url: null
+    drive_ordner_id: null
+    drive_eingang_id: null
+    r2_prefix: pole-junkie
+    lieferantennummer_wawi: null
+    groessen_konvention: standard
+    category: fashion           # Default-Annahme
+    crop_profile: fashion
+    pose_sort: auto_vision
+    crawl_mechanik: shopify_json   # E48 + E49 (Owner-Direktive 2026-05-15) — Pole Junkie ist Shopify (validiert in der Auto-Detektion), Crawl explizit freigegeben durch Tjorben mit voller Verantwortungs-Übernahme. Bei Cease-and-Desist sofort eskalieren.
+    stil_inspiration: true         # E49 + E53 (2026-05-15) — Pole Junkie dient zusätzlich als REDUKTIONS-VORBILD für Artikeldetails-Texte. Bei Crawl-Modus B kann Cowork die Pole-Junkie-Produktseite für denselben Artikel oder ein Schwester-Modell aufrufen und die Reduktions-Struktur ableiten (welche Features, wie kurz, welche Reihenfolge). NIE Copy-Paste — eigene Formulierung in polesportshop-DNA (siehe cowork_anweisung_datenimports.md Sektion 5.5).
+    ameise_vorlagen:
+      stammdaten:       null
+      variationen:      null
+      merkmale:         null
+      attribute:        null
+      cross_selling:    null    # NEU v1.14 (E80)
+    max_groesse: null   # NEU v1.15
+    bemerkung: "Onboarding ausstehend. **WICHTIG (E49):** Pole-Junkie-Crawl ohne Halt-und-Nachfrage — Owner-Direktive Tjorben Becker 2026-05-15, volle rechtliche und operative Verantwortung wird übernommen. Im Lauf-Bericht jedes Pole-Junkie-Laufs den E49-Verweis dokumentieren (Audit-Spur). Bei expliziter Cease-and-Desist-Forderung sofort eskalieren und pausieren. Pole Junkie ist Retailer (multi-brand), pro Artikel den Hersteller aus den Produktdaten ableiten. **Plus (E53):** Pole Junkie ist Stil-Inspirations-Quelle für Artikeldetails-Reduktion — siehe `stil_inspiration: true`."
+
+# ============================================================================
+# Schema-Dokumentation
+# ============================================================================
+#
+# Jeder Lieferant ist ein Mapping unter `lieferanten:` mit eindeutigem Key
+# (Konvention: NAME_OHNE_LEERZEICHEN_UND_BINDESTRICHE in Großbuchstaben).
+#
+# Pflichtfelder (Cowork bricht ab, wenn null):
+#   anzeigename             — Voller Name wie im Trigger gesprochen
+#   kuerzel                 — Für Dateinamen (z.B. POLE-ADDICT)
+#   hersteller              — Marken-/Herstellername für Stammdaten (lange Form, z.B. „HotCakes Polewear")
+#   marke_kurz              — NEU v1.12 (E70-Lehrpunkt). Kurzform für Artikelnamen (Goldstandard-Konvention),
+#                              z.B. „HotCakes". Wenn keine kürzere Form existiert: identisch zu `hersteller`.
+#                              Pflichtfeld ab v1.12; Cowork bricht ab und fragt nach wenn null.
+#   brand_story_de/en/fr/it/es  — NEU v1.13 (E72). Brand-Story pro Lieferant in allen 5 Sprachen,
+#                              ~80-150 Wörter, in polesportshop-DNA-Ton (E74-aspirational).
+#                              Wenn gepflegt: Cowork verwendet sie 1:1 als `markentext`-Attribut.
+#                              Wenn null: Cowork generiert pro Lauf, markiert als E70.
+#                              Pflege beim Onboarding eines neuen Lieferanten durch Tjorben.
+#   herkunftsland           — ISO-2-Code für WaWi (PT, GR, DE, US, ...)
+#   waehrung                — ISO-3-Code (EUR, USD, GBP)
+#   steuerklasse            — JTL-Steuerklassen-Anzeigename. Default für
+#                              Kleidung-Pilot: "OSS2-undefiniert - Standard
+#                              alle Länder". Bei Technik später anpassen.
+#   shop_url                — Primäre Crawl-Quelle (Hersteller bevorzugt, siehe E20)
+#   r2_prefix               — Bucket-Pfad-Prefix in Cloudflare R2
+#                              (verarbeitete Bilder unter `<r2_prefix>/...`,
+#                              Originale unter `originals/<r2_prefix>/...`, E44)
+#   ameise_vorlagen.stammdaten — Vorlagenname für Stammdaten-Import inkl. Bildern
+#
+# Crop-Profile und Pose-Sortierung (NEU mit E45, Defaults bei null):
+#   category                — Informativ. Werte: "fashion" | "tech"
+#                              Default: "fashion" (häufigster Fall im Pilot)
+#   crop_profile            — Auswahl der Bildverarbeitungsparameter
+#                              Werte: "fashion" (2:3, 1000×1500, top_bias 0.3)
+#                                     "tech"    (1:1, 1200×1200, top_bias 0.0)
+#                              Default: "fashion"
+#   pose_sort               — Strategie für Bild-Reihenfolge
+#                              Werte: "auto_vision"        (Cowork-Vision klassifiziert,
+#                                                            sortiert Hero/Back/Side/...)
+#                                     "manufacturer_order" (Hersteller-Reihenfolge ist
+#                                                            verlässlich, z.B. semantische
+#                                                            URL-Namen wie _1_front.jpg)
+#                                     "none"               (zufällig, OK für tech)
+#                              Default: "auto_vision" für fashion, "none" für tech
+#
+# Optional (Cowork läuft auch ohne):
+#   fallback_retailer_url   — Wenn Hersteller-Site unvollständig
+#   drive_ordner_id         — Lieferanten-Hauptordner (für Drive-Quellen)
+#   drive_eingang_id        — _Eingang-Unterordner für manuelle Bild-Uploads
+#   lieferantennummer_wawi  — WaWi-interne Lieferantennummer
+#   groessen_konvention     — Lieferanten-spezifische Größen-Logik
+#                              Werte: "standard" (jede Größe einzeln),
+#                                     "kombi_reduziert_auf_kleinste" (XS/S→XS,
+#                                       gemäß E27 für HotCakes etabliert)
+#   max_groesse             — NEU v1.15. Optionales Default-Größen-Cap pro Lieferant.
+#                              null = alle Größen aus Quell-Crawl übernehmen.
+#                              Werte: "S" | "M" | "L" | "XL" | "XXL" | null
+#                              Bei gesetztem Wert wird im Standard-Trigger nur bis
+#                              inklusive dieser Obergrenze angelegt. Einzelne
+#                              Trigger können den Wert override-en. Hintergrund:
+#                              manche Lieferanten produzieren über L hinaus mit
+#                              wechselnder Verfügbarkeit, Tjorben will pro
+#                              Lieferant ein Default-Limit setzen können.
+#
+# Ameise-Vorlagen pro Lieferant (5 Vorlagen ab v1.14 nach E80):
+#   ameise_vorlagen.stammdaten    — Stammdaten-Import inkl. Lieferantenblock (E36)
+#                                    UND inkl. Bild-Spalten Bild 1 bis Bild 10 (E46);
+#                                    Reiter "Bilder/Plattformen" mit allen 11
+#                                    Plattform-Häkchen setzen (löst B5)
+#   ameise_vorlagen.variationen   — Sprach-Varianten Größe
+#   ameise_vorlagen.merkmale      — Filter-Merkmale
+#   ameise_vorlagen.attribute     — Reichtext-Attribute (Standard ab E39)
+#   ameise_vorlagen.cross_selling — NEU v1.14 (E80). Cross-Selling-Artikel-Import (eigener Ameise-Import-Typ),
+#                                    3 Spalten: Artikelnummer + Artikelnummer Cross-Seller + Cross-Selling-Gruppe.
+#                                    Pflichtfeld ab v1.14 — Cowork bricht ab und fragt nach, wenn null.
+#
+# Naming-Konvention (ab 2026-05-14, E29; ab v1.14 E80 5 statt 4 Felder):
+#   `{Lieferantenname}_{Reihenfolge}_{Import-Typ}`,
+#   z.B. `HotCakes Polewear_1_Stammdaten`.
+#   Underscores als Element-Trenner, Leerzeichen nur innerhalb des
+#   Lieferantennamens. POLE ADDICT folgt noch alter Konvention — nicht
+#   umbenennen, alte Vorlagen funktionieren.
+#
+# Slot-Konvention pro Import-Typ (klargestellt v1.15):
+#   Slot-Nummern im Vorlagennamen sind **pro Import-Typ eindeutig**, nicht
+#   lieferanten-weit. Konsequenz:
+#     - `HotCakes Polewear_3_Merkmale`        (Merkmale-Import-Typ)
+#     - `HotCakes Polewear_3_Lieferantendaten` (Stammdaten-Import-Typ, Legacy)
+#     - `HotCakes Polewear_5_Bilder`          (Stammdaten-Import-Typ, Legacy)
+#     - `HotCakes Polewear_5_CrossSelling`    (Cross-Selling-Import-Typ)
+#   Die `_3_` und `_5_` kollidieren NICHT, weil WaWi Vorlagen pro Import-Typ
+#   trennt. Daher kann der jeweilige Slot in beiden Import-Typen unabhängig
+#   belegt sein. Empfohlene Slot-Reihenfolge pro Lieferant (alle Vorlagen
+#   neu angelegt): `_1_Stammdaten`, `_2_Variationen`, `_3_Merkmale`,
+#   `_4_Attribute`, `_5_CrossSelling`. Bei Legacy-Vorlagen (POLE ADDICT,
+#   HotCakes Bilder/Lieferantendaten) bleibt die alte Slot-Belegung
+#   bestehen, neue Vorlagen folgen der Konvention.
+#
+# Standardlieferant in jeder Vorlage (Pflicht, klargestellt v1.15 nach Bug):
+#   In jeder der 5 Ameise-Vorlagen pro Lieferant MUSS im Standardwerte-
+#   Bereich der Wert "Lieferant" explizit auf den Lieferanten gesetzt sein
+#   (z.B. "HotCakes Polewear"). Ohne Standardlieferanten scheitert der
+#   Import wenn die CSV-Lieferanten-Spalte aus irgendeinem Grund nicht
+#   greift. Bug-Beleg: HotCakes-Attribute-Import 2026-05-17 schlug initial
+#   mit 220 Warnungen "Lieferant HOTCAKES existiert nicht" fehl, weil die
+#   neu angelegte `_4_Attribute`-Vorlage den Standardlieferanten auf
+#   "nicht gewählt" hatte.
+#
+# Legacy-Vorlagen (pro Lieferant optional unter `legacy_vorlagen.{name}`):
+#   Vorlagen, die in WaWi existieren aber in der aktuellen Pipeline nicht
+#   mehr genutzt werden. Dokumentation, nicht Anweisung. Beispiele:
+#     lieferantendaten  — durch Lieferantenblock in Stammdaten ersetzt (E35)
+#     bilder            — durch Bild-Spalten in Stammdaten ersetzt (E46)
+#
+# Sonstige optionale Felder:
+#   bemerkung            — Freitext-Hinweise (Stand, Besonderheiten)
+#
+# Wert null bedeutet: noch nicht gepflegt. Cowork hält an und fragt nach,
+# bevor der Lauf scheitert. Werte "TBD" oder "<später>" bitte vermeiden —
+# null ist eindeutiger.
+#
+# Bei Schema-Änderung (neue Pflichtfelder o.ä.): Cowork-Anweisungen
+# datenimports + bildpipeline mit anpassen, beide referenzieren dieses File.
