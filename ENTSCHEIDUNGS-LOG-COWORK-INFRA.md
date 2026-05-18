@@ -2,7 +2,7 @@
 
 **Cluster:** Cowork-Architektur, R2-Mechanik, Wissens-Architektur, Resilience
 
-**Stand:** v1.19, 2026-05-18 (neuer Eintrag E87: Migration Drive → Git als Wissens-Backbone)
+**Stand:** v1.20, 2026-05-18 (neuer Eintrag E91: Skalierungs-Refactor v1.20 mit Cowork-Resolver-Migration zu GitHub-Raw, Spec-Verschlankung, neue Skalierungs-Anker CLAUDE.md + LIEFERANTEN-ONBOARDING.md). · **Vorheriger Stand:** v1.19, 2026-05-18 (E87 Migration Drive → Git als Wissens-Backbone)
 
 **Bezug:** Dieser Cluster ist Teil des Splits der ursprünglichen `ENTSCHEIDUNGS-LOG.md` (v1.16, 165 KB → 6 Themen-Cluster ≤ 40 KB). Historische / abgelöste Einträge liegen weiterhin in `ENTSCHEIDUNGS-LOG-ARCHIV.md`. Cross-Cluster-Referenzen über E-Nummer; der Master-Index mit allen E-Nummern → Cluster-File-Zuordnung liegt in `SPEC_KONSTANTEN.md` unter `ENTSCHEIDUNGSLOG_E_NUMMER_INDEX`.
 
@@ -32,6 +32,7 @@
 - **E85** — Wissens-Update-Build-Pattern als Standard-Playbook (Cowork-Spec für Wissens-Builds)
 - **E86** — File-Header-Versionierungs-Konvention (SemVer für Snapshot-Disziplin)
 - **E87** — Migration Drive → Git als Wissens-Backbone (NEU v1.19, Pattern-Pivot)
+- **E91** — Skalierungs-Refactor v1.20 (Cowork-Resolver-Migration zu GitHub-Raw, Spec-Verschlankung, neue Skalierungs-Anker)
 
 ---
 
@@ -430,3 +431,55 @@ Tjorben hat parallel auf Claude Code als lokale CLI umgestellt. Damit ist ein lo
 *Stolperfallen:*
 - **Cowork läuft bis v1.20 noch mit Drive-Snapshot.** Falls Tjorben in v1.19 einen Cowork-Pipeline-Lauf startet, zieht Cowork den letzten gültigen Drive-Snapshot (`Version_2026-05-18_141930` = v1.18-Stand). Die v1.19-Änderungen (E89, E90, F2-F6-Fixes) wirken sich erst aus, wenn (a) Cowork explizit auf Git umstellt (B63) oder (b) Tjorben die v1.19-Files manuell in einen neuen Drive-Sub-Folder kopiert. Übergangs-Workaround dokumentiert in Lauf-Brief-Trigger.
 - **Tag-Disziplin:** `git tag` muss nach `commit`, vor `push --tags`. Bei vergessenem `--tags` ist der Tag lokal nur, GitHub-Release-Page fehlt. WSC-16 prüft Remote-Tag-Existenz.
+
+---
+
+**E91 — Skalierungs-Refactor v1.20.**
+*Stand:* 2026-05-18 (v1.20). *Bezug:* E87 (Drive → Git, Voraussetzung), B63 (Cowork-Resolver-Migration, erledigt), B61/B62 (Spec-Verschlankung, durch E91 erledigt bzw. deferred-Begründung verfeinert), Tjorben-Trigger 2026-05-18 („richtig gute Base für 20 Lieferanten").
+
+*Warum:* Nach E87 (Pattern-Pivot Drive → Git) lag der nächste logische Schritt: die Skalierungs-Vorbereitung für 20+ Lieferanten. Im aktuellen Stand 1 aktiver Lieferant (HotCakes), Lieferanten 2-21 noch nicht onboardet. Vor dem zweiten Lieferanten musste das Wissensmanagement so aufgestellt sein, dass es nicht bei jedem neuen Lieferanten ad-hoc verbiegt. Sechs konkrete Schmerzpunkte aus der Bestandsaufnahme (Explore-Agent-Befunde 2026-05-18):
+
+1. **Cowork sah v1.19 nicht** — Drive-Snapshot war Read-Only-Archiv, GitHub-Tag aber nicht in Cowork-Resolver verankert (B63 offen).
+2. **`cowork_anweisung_datenimports.md` war 73 KB groß** — viel davon redundant zu SPEC_KONSTANTEN + run_brief. Drift-Risiko bei Spec-Updates.
+3. **`cowork_anweisung_bildpipeline.md` war 43 KB Voll-Spec für eine archivierte Pipeline (E63)** — totes Gewicht, das bei jedem Snapshot mitgeschleppt wurde.
+4. **Lieferanten-Onboarding-Prozess war über 4 Files verstreut** (WAWI Sektion 9 + datenimports Sektion 3+6 + Mapping-Schema-Doku + Projekt-Anweisungen-Operator-Erinnerung) — keine Single Source für „onboarde Lieferant X".
+5. **Daily-Workflow für Tjorben in Claude Code war nicht dokumentiert** — Trigger-Phrasen, Git-Workflow, häufige Sessions fehlten als Cheatsheet.
+6. **BACKLOG.md hatte 63 Einträge mit Mix aus erledigt/offen/deferred** — Übersicht über das wirklich Aktive war mühsam.
+
+*Entscheidung:* v1.20 als „Skalierungs-Base"-Refactor mit 11 konkreten Maßnahmen:
+
+1. **Cowork-Resolver auf GitHub-Raw umgestellt (B63 erledigt):** `cowork_custom_instructions.md` v1.16 → v2.0 (Major-Pivot), `Projekt-Anweisungen.md` v1.16 → v2.0, `cowork_anweisung_datenimports.md` Stage 0 + `run_brief_daten.md` „DARF"-Sektion entsprechend angepasst. URL-Pattern: `https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/<tag>/<file>`. Drive bleibt Read-Only-Archiv.
+2. **`cowork_anweisung_datenimports.md` verschlankt (v1.15.1 → v2.0):** von 73 KB auf ~25 KB. Konstanten-Sektionen 5.1, 5.1.1, 5.1.2 + Self-Check-Detail + AP1-AP12-Vollliste raus, alle Verweise auf SPEC_KONSTANTEN. UNIQUE-Inhalt (Stages, Crawl-Mechanik, Fehler-Handling, Konventionen, Credentials) bleibt.
+3. **`cowork_anweisung_bildpipeline.md` auf Stub (v1.6 → v2.0):** von 43 KB auf ~2 KB. Voll-Spec liegt im `v1.19`-Git-Tag (rekonstruierbar via `git show v1.19:cowork_anweisung_bildpipeline.md`). Stub verweist auf E63 + BACKLOG B36-B40 für Reaktivierungs-Pfad.
+4. **`WAWI-IMPORT-WISSEN.md` leicht straffen (v1.10 → v1.16, Minor):** Sektion 9 Onboarding-Hinweis auf `LIEFERANTEN-ONBOARDING.md` verweisen; keine Pilot-Wissens-Substanz angetastet.
+5. **`CLAUDE.md` neu (1.0):** Daily-Workflow-Cheatsheet im Repo-Root. Trigger-Registry, File-Map, Daily-Ops, Naming-Konventionen, Charter-Kurz, häufige Sessions, Memory-Hinweis. Wird von Claude Code beim Session-Start automatisch geladen.
+6. **`LIEFERANTEN-ONBOARDING.md` neu (1.0):** Konsolidierter Standard-Prozess für Lieferant 2-21 in 5 Schritten (Mapping-Eintrag, Ameise-Vorlagen, Brand-Story, Probe-Lauf, Import+Review). Skalierungs-Anker.
+7. **`BACKLOG-ARCHIV.md` neu (1.0):** Kompakter Index der erledigten/deferred B-Einträge. BACKLOG.md behält alle Details, ARCHIV gibt schnelle Übersicht „was ist nicht mehr aktiv".
+8. **`SPEC_KONSTANTEN.md` Sektion 13 + 14 aktualisiert (v1.17 → v1.18):** Sektion 13 auf Git-Tag-Pattern + 3 neue Files im File-Index. Sektion 14 um E87, E89, E90, E91 nachgezogen.
+9. **B64 neu (Brand-Story-Skalierungs-Pfad):** linearer Lieferanten-Mapping-Wachstum bei 20 Lieferanten ~250 KB, primär Brand-Stories. Deferred bis N=5 aktive Lieferanten.
+10. **B65 neu (Probe-Test Cowork-`web_fetch` gegen GitHub-Raw):** beim ersten v1.20-Cowork-Lauf validieren.
+11. **Memory-System initialisiert** in `/Users/tjorbenbecker/.claude/projects/.../memory/` — Tjorbens Rolle, Build-Style, Engine-Trennung, Project-Status persistent.
+
+*Konsequenzen:*
+- Snapshot wächst von 19 auf 22 Files (3 neue: CLAUDE.md, LIEFERANTEN-ONBOARDING.md, BACKLOG-ARCHIV.md). SPEC_KONSTANTEN Sektion 13 entsprechend aktualisiert.
+- Stage-0-Load für Cowork unverändert (3 Files), aber Lade-Mechanik ist jetzt GitHub-Raw via `web_fetch`.
+- Cowork sieht ab v1.20 den aktuellen Stand sofort, kein Drive-Drift mehr möglich.
+- Onboarding eines neuen Lieferanten ist jetzt ein klar dokumentierter 5-Schritte-Prozess statt ad-hoc.
+- File-Header-Bumps: cowork_custom_instructions.md + Projekt-Anweisungen.md + cowork_anweisung_datenimports.md + cowork_anweisung_bildpipeline.md alle Major (v2.0 wegen Pattern-Pivot). SPEC_KONSTANTEN + WAWI + BACKLOG + run_brief_daten + ENTSCHEIDUNGS-LOG-COWORK-INFRA Minor.
+
+*Verworfen:*
+- **`lieferanten_mapping.yaml` in v1.20 schon splitten** (Brand-Stories raus): nicht zwingend bei 1 aktivem Lieferanten. B64 als deferred dokumentiert für N≥5.
+- **BACKLOG.md hart splitten** (erledigte Einträge wirklich aus dem File entfernen): zu invasiv, Verlust-Risiko bei Übertragung. Pragmatischer: BACKLOG.md behält Details, BACKLOG-ARCHIV.md ist kompakter Index.
+- **WISSENS-UPDATE-PLAYBOOK.md auf 7 Stages reduzieren wegen v2.0-Erfahrung:** schon in v1.19 passiert. v1.20 fügt nichts hinzu außer Routine-Bestätigung.
+- **Trigger-Registry als eigenes File `TRIGGER-REGISTRY.md`:** zu kleinteilig (1 KB). In CLAUDE.md als Sektion integriert.
+- **Cowork-Resolver mit Fallback auf Drive bauen:** Hybrid-Pattern hatte E87 schon verworfen — eine Truth-Quelle, kein Notfall-Pfad in Spec.
+
+*Folgeaufgaben:*
+- B64 (Brand-Story-Skalierung) — deferred bis N=5 aktive Lieferanten.
+- B65 (Probe-Test Cowork-`web_fetch` gegen GitHub-Raw) — beim ersten v1.20-Cowork-Lauf validieren.
+- Verdachtsfälle B4, B12, B21 — bei v1.21 entscheiden ob streichen oder aktivieren.
+
+*Stolperfallen:*
+- **Cowork-Sessions, die vor v1.20-Push gestartet wurden, halten den alten Resolver-Stand.** Bei neuem Push: Cowork-Session neu starten.
+- **GitHub-Raw-CDN-Cache:** GitHub-Raw-URLs werden ~5 Min gecacht. Bei sehr schnellem Tag-Push gefolgt von Cowork-Lauf können bis zu 5 Min vergehen, bis Cowork den neuen Stand sieht. In der Praxis irrelevant.
+- **B64-Trigger nicht vergessen:** wenn der 5. aktive Lieferant onboardet wird, ist Mapping-YAML potenziell >100 KB groß. Im Lauf-Bericht des 5. Lieferanten-Onboardings die Größen-Schwelle erwähnen.

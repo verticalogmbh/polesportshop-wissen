@@ -1,6 +1,6 @@
 # Projekt-Charter: Artikel-Pipeline polesports
 
-**Stand:** 2026-05-18 (v1.18-Snapshot: Wissens-Update-Build-Pattern verankert als WISSENS-UPDATE-PLAYBOOK.md; neues Charter-Prinzip 12 File-Header-Versionierungs-Disziplin; F1-F7 aus HotCakes-Run-Report als BACKLOG-Punkte priorisiert.) · **Vorheriger Stand:** 2026-05-17 (v1.15-Snapshot: nach erfolgreichen Live-Trial-Runs Batch 1+2 für HotCakes — 21 Modelle in WaWi angelegt, 16/16 Self-Check grün in beiden Batches. Neue Architektur-Entscheidungen E81 Autonomie-Hoheit für Workflow-Entscheidungen, E82 Satzzeichen-Sparsamkeit als Stilprinzip, E83 Pre-Run Scope-Analyse als Stage 0.5, E84 Familien-erhaltende Split-Regel; E80 erweitert auf Cross-Selling auch für Kinder-IDs; vier neue Anti-Patterns AP9-AP12.) · **Owner:** Tjorben Becker (Einkäufer, Verticalo GmbH)
+**Stand:** 2026-05-18 (v1.20-Snapshot: Skalierungs-Refactor E91 — Cowork-Resolver auf GitHub-Raw migriert, Specs verschlankt, neue Skalierungs-Anker `CLAUDE.md` + `LIEFERANTEN-ONBOARDING.md` + `BACKLOG-ARCHIV.md`. Vorgänger v1.19: Pattern-Pivot Drive → Git E87. Vorgänger v1.18: Wissens-Update-Build-Pattern verankert + Charter-Prinzip 12.) · **Vorheriger Stand:** 2026-05-17 (v1.15-Snapshot: nach erfolgreichen Live-Trial-Runs Batch 1+2 für HotCakes — 21 Modelle in WaWi angelegt, 16/16 Self-Check grün in beiden Batches. Neue Architektur-Entscheidungen E81 Autonomie-Hoheit für Workflow-Entscheidungen, E82 Satzzeichen-Sparsamkeit als Stilprinzip, E83 Pre-Run Scope-Analyse als Stage 0.5, E84 Familien-erhaltende Split-Regel; E80 erweitert auf Cross-Selling auch für Kinder-IDs; vier neue Anti-Patterns AP9-AP12.) · **Owner:** Tjorben Becker (Einkäufer, Verticalo GmbH)
 
 ## Wer wir sind, was wir lösen
 
@@ -12,11 +12,11 @@ Verticalo GmbH betreibt polesportshop.de — Wiederverkäufer für Pole-Wear mit
 
 ## Architektur-Rollen
 
-**Claude.ai-Projekt** (hier) = Planungs- und Wissens-Engine. Anweisungen werden hier entworfen, versioniert und gepflegt. Memory + Past-Chats halten Tagesstand.
+**Claude Code lokal** (Engine `claude-opus-4-7` / Sonnet, Repo `~/Documents/polesportshop-wissen/`) = Planungs- und Wissens-Engine **ab v1.19** (E87, Migration von Drive auf Git; vorher Claude.ai-Projekt mit Drive-Backup). Anweisungen werden hier entworfen, im lokalen Git-Repo versioniert via Tags `vMAJOR.MINOR`, gepushed auf GitHub. Memory-System unter `/Users/tjorbenbecker/.claude/projects/.../memory/`. Daily-Cheatsheet in `CLAUDE.md` im Repo-Root.
 
 **Cowork** = autonome Ausführungs-Engine. Cowork hat keine projekt-spezifischen Custom Instructions (anders als ursprünglich in E32 angenommen) — stattdessen liegen Global Instructions in Settings → Cowork und gelten session-übergreifend. Sichtbare MCP-Tools: Cloud-Connectors aus der Anthropic-Registry (Google Drive, Cloudflare Developer Platform) plus Cowork-eigene System-Tools (Bash-Sandbox, Code-Execution mit Network-Egress). Interne Vision-Capability für Bildklassifikation existiert, ist aber mit E63 (2026-05-16, Bildpipeline archiviert) im Pilot **nicht aktiv** — Bilder pflegt Tjorben manuell in WaWi, bis der Bilder-Architektur-Refactor abgeschlossen ist (siehe BACKLOG.md). Sitzungs-Persistenz läuft über Drive.
 
-**Drive `Wichtig: Claude Backup/`** = gemeinsame Wissens-Basis und einzige Brücke zwischen Planungs-Engine und Cowork-Ausführung. Beide Seiten lesen daraus. Die Trennung ist technisch — die zwei Engines haben keine direkte Verbindung untereinander. Seit E47 (2026-05-15) als Immutable-Snapshot-Architektur organisiert: jeder Wissens-Update legt einen neuen `Version_YYYY-MM-DD_HHMMSS/`-Sub-Ordner an, der jüngste vollständige Sub-Ordner ist per Definition der aktuelle Stand. Vollständige Versions-Historie als Audit-Trail.
+**GitHub-Repo `verticalogmbh/polesportshop-wissen`** (Branch `main`, Tags `vMAJOR.MINOR`) = gemeinsame Wissens-Basis und Brücke zwischen Wissens-Engine (Claude Code lokal) und Cowork-Ausführung **ab v1.20** (E91, Cowork-Resolver-Migration zu GitHub-Raw — vorher Drive-Snapshot). Cowork liest via `https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/<tag>/<file>`; Claude Code schreibt direkt im lokalen Repo, atomar pro Tag versioniert. Drive-Folder `Wichtig: Claude Backup/` bleibt Read-Only-Archiv für Pre-v1.19-Snapshots (Versions-Historie 2026-05-13 bis 2026-05-18).
 
 ## Architektur-Prinzipien (nicht verhandelbar)
 

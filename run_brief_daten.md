@@ -1,4 +1,4 @@
-# RUN-BRIEF: Daten-Pipeline (E68, offiziell in v1.12 verankert, Stand 2026-05-18, v1.16)
+# RUN-BRIEF: Daten-Pipeline (E68, offiziell in v1.12 verankert, Stand 2026-05-18, v1.17)
 
 Dieser Brief ist die kompakte operative Spec für einen reinen Daten-Lauf. Er
 ersetzt das Laden von `WAWI-IMPORT-WISSEN.md` und
@@ -12,7 +12,11 @@ Bei Konflikten zwischen diesem Brief und SPEC_KONSTANTEN.md gewinnt
 SPEC_KONSTANTEN.md (kanonisch nach Charter-Prinzip 11). Bei Unsicherheit:
 STOPP + User-Frage, niemals raten (Charter-Prinzip 10, E59).
 
-**Was v1.16 ändert (NEU 2026-05-18, F2-F6-Fixes aus HotCakes-Run-Report 2026-05-18):**
+**Was v1.17 ändert (NEU 2026-05-18, im Rahmen v1.20-Skalierungs-Refactor E91):**
+- Wissens-Resolution: GitHub-Raw-URL statt Drive-Folder-Path (E87/E91/B63 erledigt v1.20). Tag-Pattern `vX.Y` auf `main`. Beispiel: `https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/v1.20/run_brief_daten.md`.
+- Stage-0-File-Count unverändert (3 Files: dieser Brief, SPEC_KONSTANTEN, lieferanten_mapping). Lade-Mechanik via `web_fetch` oder `curl/requests` auf Raw-URL.
+
+**Was v1.16 änderte (2026-05-18, F2-F6-Fixes aus HotCakes-Run-Report 2026-05-18):**
 - F2 (E89): Kategorie-Pattern korrigiert — pro CSV-Zeile nur die spezifischste Subkategorie (WaWi resolved den Pfad über die Hierarchie). Plus: jeder neue Artikel bekommt zusätzlich `Intern > Neue Artikel für Sara` (WaWi-Key 546) für den Sara-Review-Workflow. Self-Check Punkt 4 entsprechend umformuliert.
 - F3: Artikelgewicht-Default 0.05 kg + Versandgewicht-Default 0.05 kg pro Kleidungsstück in der Stammdaten-CSV (Sektion 10 unten).
 - F4 (B57): HTML-Entity-Regression behoben — Latin-1-Umlaute (ß, ä, ö, ü, é, à etc.) bleiben Unicode. HTML-Entities NUR für Zeichen außerhalb Latin-1 (z.B. ✓ = `&#10004;`, ➔ = `&#10148;`). Korrigiert die v1.15-Regression `gro&szlig;e` statt `große`.
@@ -378,11 +382,11 @@ Pro Lieferant einmal mappen + Vorlage speichern, dann klonen.
 
 ### DARF
 - Files anlegen/lesen/kopieren im Workspace
-- Drive-Connector für Wissens-Files + Lieferanten-Drive-Ordner nutzen
+- Wissens-Files via GitHub-Raw lesen (`https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/<tag>/<file>`, E87/E91 v1.20). Drive-Connector nur noch für Lieferanten-Drive-Ordner (Drive-Upload-Input-Modus).
 - Übersetzungen erstellen (außer Eigennamen und SEO-Templates, siehe NICHT DARF)
 - HTML-Snippets nach Sektion 9 generieren
 - CSVs validieren und schreiben
-- Mid-Run-Drive-Read für Charter/LOG/Backlog bei echter Architektur-Klärung (legitime Klärung, kein E62-Verstoß)
+- Mid-Run-GitHub-Raw-Read für Charter/LOG/Backlog bei echter Architektur-Klärung (legitime Klärung, kein E62-Verstoß)
 - **Workflow-Entscheidungen autonom treffen (NEU v1.15, E81):** Batch-Splitting, Batch-Größen, Token-Budget-Management, Stage-Reihenfolge bei Tool-Limits. STOPP + User-Frage bleibt strikt für: fehlende Daten, unbekannte Sprach-Begriffe, Goldstandard-Abweichungen, Mapping-`null`-Pflichtfelder.
 
 ### NICHT DARF

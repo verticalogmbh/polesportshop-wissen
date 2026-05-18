@@ -1,9 +1,9 @@
 # Snapshot-Manifest
 
-**Snapshot-Tag:** `v1.19` (Git-Tag, erster Snapshot per Git-Pattern E87)
+**Snapshot-Tag:** `v1.20` (Git-Tag, Skalierungs-Refactor)
 **Stand:** 2026-05-18 (Berlin)
 **Build-Engine:** Claude Code (lokal, Opus 4.7 1M context)
-**Vorgänger-Tag:** `v1.18` (entstanden per Drive-Pattern, baseline-Commit im Git)
+**Vorgänger-Tag:** `v1.19` (Pattern-Pivot Drive → Git E87)
 **Repo:** `https://github.com/verticalogmbh/polesportshop-wissen`
 **Branch:** `main`
 
@@ -11,61 +11,63 @@
 
 ## 1. Build-Trail
 
-**Auftrag (vom Tjorben-Trigger 2026-05-18):** v1.19-Build mit 2 Stoßrichtungen:
-- **Strang A — Pattern-Pivot:** Playbook v1.0 → v2.0 (Git-Workflow als Default, Drive als Legacy-Anhang). Migration Drive → Git als Wissens-Backbone (E87).
-- **Strang B — F-Fixes umsetzen:** F2–F6 aus HotCakes-Run-Report 2026-05-18 (B55–B59) implementieren, soweit Code-relevant. F1 + Cluster-Splits in Git-Welt deferred. F7 (Drive-Karteileichen) als manuelle Aktion gelistet.
+**Auftrag (Tjorben-Trigger 2026-05-18):** Skalierungs-Refactor — „richtig gute Base für 20 Lieferanten". Wenn etwas fehlt: hinzufügen. Redundanzen schlanker machen. Umschichten erlaubt. Robust für massives Wachstum aufstellen.
 
-**Build-Modus:** Claude-Code-Bootstrap — dieser Build ist auch der erste, der nach dem in Stage 1 geschriebenen Playbook v2.0 läuft.
+**Resultat:** 11 Files modifiziert, 3 neu, 0 entfernt. Gesamt-Repo geschrumpft um ~65 KB trotz 3 neuer Files (große Verschlankung von datenimports.md und bildpipeline.md). Cowork-Resolver auf GitHub-Raw migriert (B63 erledigt → E91). Neue Skalierungs-Anker: `CLAUDE.md` (Daily-Workflow), `LIEFERANTEN-ONBOARDING.md` (Standard-Prozess für Lieferant 2-21), `BACKLOG-ARCHIV.md` (kompakter Index).
 
-**Autonomie-Hoheit (analog E81 für Cowork):** Bei strategischen Wahlpunkten autonom entschieden, in Sektion 12 gelistet.
+**Build-Engine:** Claude Code lokal, Opus 4.7 1M context. Build-Pattern: `WISSENS-UPDATE-PLAYBOOK.md` v2.0.1 (Git-basiert), erweitert auf 12 Stages (8 + Pre-Flight + 3 Neue-Files-Stages). Autonom durchgezogen ohne Zwischen-OK-Frage gemäß Tjorbens Build-Style.
 
-**Resultat:** 7 Files modifiziert, 0 neu, 0 entfernt. v1.18-Baseline-Commit + Tag im main-Repo waren als Stage-0-Pre-Flight nötig, da der Repo bisher nur `README.md` committet hatte und die 19 v1.18-Files untracked lagen — Commit-Hash `56a65f2` für v1.18-Baseline, danach v1.19-Arbeitscommit.
+**Autonome Entscheidungen** (siehe Sektion 12).
 
 ---
 
-## 2. Was neu generiert wurde (0 Files)
+## 2. Was neu generiert wurde (3 Files)
 
-Keine neuen Files in v1.19.
+| Datei | Size (B) | Zweck |
+|---|---|---|
+| `CLAUDE.md` | 8617 | Daily-Workflow-Cheatsheet für Claude Code im Repo-Root. Trigger-Registry, File-Map, Daily-Ops, Naming-Konventionen, Charter-Kurz, häufige Sessions. Wird von Claude Code beim Session-Start automatisch geladen. |
+| `LIEFERANTEN-ONBOARDING.md` | 10937 | Konsolidierter Standard-Prozess für Lieferant 2-21 in 5 Pflicht-Schritten (Mapping, Vorlagen, Brand-Story, Probe-Lauf, Import+Review). Skalierungs-Anker. |
+| `BACKLOG-ARCHIV.md` | 4800 | Kompakter Index der erledigten/deferred B-Einträge. BACKLOG.md behält alle Details, ARCHIV gibt schnelle Übersicht. |
 
 ---
 
-## 3. Was modifiziert wurde (7 Files mit Header-Bump)
+## 3. Was modifiziert wurde (11 Files mit Header-Bump)
 
 | Datei | Bump-Typ | Begründung |
 |---|---|---|
-| `WISSENS-UPDATE-PLAYBOOK.md` | **Major (v1.0 → v2.0)** | Pattern-Pivot Drive → Git. Komplettes Rewrite mit 7-Stage-Pattern (vormals 12), Git-adaptierten WSC-1–17, Drive-Pattern als Legacy-Anhang Sektion 11. |
-| `ENTSCHEIDUNGS-LOG-COWORK-INFRA.md` | Minor (v1.18 → v1.19) | Neuer E-Eintrag E87 (Migration Drive → Git als Wissens-Backbone), Index erweitert. |
-| `ENTSCHEIDUNGS-LOG-CRAWLING-DATEN.md` | Minor (v1.17 → v1.18) | Zwei neue E-Einträge E89 (Category-Pattern + Sara-Workflow) und E90 (F2-F6 Sammeleintrag), Index erweitert. |
-| `SPEC_KONSTANTEN.md` | Minor (v1.16 → v1.17) | Self-Check Punkt 4 umformuliert für Multi-Kategorie-Pattern E89 + Sara-546-Pflicht-Zuweisung; Sektion 11 `size_and_fit` um Modelname-Konvention F5/B58; Spec-Bezug auf v1.19-Snapshot aktualisiert. |
-| `BACKLOG.md` | Minor (v1.18 → v1.19) | B54-B60 Status-Updates (B55-B60 erledigt v1.19, B54 deferred). Drei neue Einträge B61 (WAWI-IMPORT-WISSEN Split deferred), B62 (datenimports.md Split deferred), B63 (Cowork-Resolver-Migration zu GitHub-Raw, v1.20-Scope). |
-| `lieferanten_mapping.yaml` | Minor (v1.15 → v1.16) | Zwei neue Felder pro Lieferant: `article_weight_kg: 0.05` (F3/B56) und `taric_code: '62114390'` (F6/B59). Schema-Doku am Ende der YAML erweitert. |
-| `run_brief_daten.md` | Minor (v1.15 → v1.16) | F2/F3/F4/F5/F6 implementiert: Multi-Kategorie-Pattern E89 (spezifische Subkategorie + Sara-546), Artikelgewicht-Default 0,05 in Stammdaten-CSV, HTML-Entity-Regression behoben (Sektion 9.3 Latin-1 bleibt Unicode), Modelname aus Crawl-Body (Sektion 7 + 9), TARIC-Default aus YAML (Sektion 10). |
+| `cowork_custom_instructions.md` | **Major (v1.16 → v2.0)** | Pattern-Pivot: Wissens-Quelle von Drive-Snapshot auf GitHub-Raw migriert (B63 erledigt, E91). Kompletter Rewrite, schlanker (15 KB → 11 KB). |
+| `Projekt-Anweisungen.md` | **Major (v1.16 → v2.0)** | Wissens-Backbone-Pivot: Drive → Git. Daily-Workflow läuft via Claude Code lokal. Kompletter Rewrite, schlanker (18 KB → 8 KB) durch Verweis auf CLAUDE.md für Operational Details. |
+| `cowork_anweisung_datenimports.md` | **Major (v1.15.1 → v2.0)** | Verschlankung 73 KB → 23 KB. Konstanten-Sektionen 5.1/5.1.1/5.1.2 + Self-Check-Detail + AP1-AP12 ausgelagert nach SPEC_KONSTANTEN. UNIQUE-Inhalt bleibt (Stages, Crawl, Fehler-Handling, Konventionen). Stage 0 + Konventions-Sektion auf GitHub-Raw + Git-Pattern. |
+| `cowork_anweisung_bildpipeline.md` | **Major (v1.6 → v2.0)** | Stub-Reduktion 43 KB → 3 KB. Voll-Spec im `v1.19`-Git-Tag erhalten (per `git show v1.19:cowork_anweisung_bildpipeline.md` rekonstruierbar). Stub verweist auf E63 + BACKLOG B36-B40 für Reaktivierungs-Pfad. |
+| `WISSENS-UPDATE-PLAYBOOK.md` | Patch (v2.0 → v2.0.1) | Referenz auf E91 + Erfahrungs-Note aus v1.20-Build ergänzt (Pattern hat sich für 12-Stage-Refactor bewährt). |
+| `SPEC_KONSTANTEN.md` | Minor (v1.17 → v1.18) | Sektion 13 auf Git-Tag-Pattern + 3 neue Files im File-Index (CLAUDE.md, LIEFERANTEN-ONBOARDING.md, BACKLOG-ARCHIV.md). Sektion 14 um E87, E89, E90, E91 nachgezogen. Trigger-Sektionen pro Trigger-Typ ergänzt. |
+| `run_brief_daten.md` | Minor (v1.16 → v1.17) | DARF-Sektion auf GitHub-Raw umgestellt (B63), neuer „Was v1.17 ändert"-Block am Anfang. |
+| `WAWI-IMPORT-WISSEN.md` | Minor (2026-05-17 → 2026-05-18 v1.16) | Sektion 9 Onboarding-Hinweis auf `LIEFERANTEN-ONBOARDING.md` verweisen. Stand-Header aktualisiert. Pilot-Wissens-Substanz unangetastet. |
+| `BACKLOG.md` | Minor (v1.19 → v1.20) | Hinweis auf `BACKLOG-ARCHIV.md` als kompakter Index. B63 erledigt-status v1.20 → E91. Neue Einträge B64 (Brand-Story-Skalierungs-Pfad bei N≥5 Lieferanten, deferred) + B65 (Cowork-`web_fetch`-Probe gegen GitHub-Raw, beim ersten v1.20-Cowork-Lauf zu validieren). |
+| `ENTSCHEIDUNGS-LOG-COWORK-INFRA.md` | Minor (v1.19 → v1.20) | Neuer E-Eintrag E91 (Skalierungs-Refactor v1.20). Index erweitert. |
+| `PROJEKT-CHARTER.md` | Stand-Update (datums-versioniert, kein v1.X-Header) | Architektur-Rollen-Sektion aktualisiert: Claude Code lokal statt Claude.ai-Projekt; GitHub-Repo statt Drive-Backup. Stand-Header auf v1.20-Snapshot. |
 
 ---
 
-## 4. Was unverändert übernommen wurde (11 Wissens-Files)
+## 4. Was unverändert übernommen wurde (8 Wissens-Files)
 
-Diese Files sind im v1.19-Snapshot identisch zum v1.18-Stand (SHA256-Verifikation siehe Sektion 7):
+Diese Files sind im v1.20-Snapshot identisch zum v1.19-Stand:
 
 - `ENTSCHEIDUNGS-LOG-ARCHIV.md`
 - `ENTSCHEIDUNGS-LOG-BILDPIPELINE.md`
+- `ENTSCHEIDUNGS-LOG-CRAWLING-DATEN.md`
 - `ENTSCHEIDUNGS-LOG-LIVE-TRIAL.md`
 - `ENTSCHEIDUNGS-LOG-STIL-CONTENT-A.md`
 - `ENTSCHEIDUNGS-LOG-STIL-CONTENT-B.md`
-- `PROJEKT-CHARTER.md`
-- `Projekt-Anweisungen.md`
-- `WAWI-IMPORT-WISSEN.md`
-- `cowork_anweisung_bildpipeline.md`
-- `cowork_anweisung_datenimports.md`
-- `cowork_custom_instructions.md`
+- `lieferanten_mapping.yaml`
 
-Vollständiger Vergleich via `git diff --stat v1.18..HEAD` zeigt nur die 7 modifizierten Files plus dieses Manifest.
+Vollständiger Vergleich via `git diff --stat v1.19..HEAD`.
 
 ---
 
 ## 5. Was nicht mehr existiert (0 Files)
 
-Keine Files entfernt in v1.19.
+Keine Files entfernt in v1.20. `cowork_anweisung_bildpipeline.md` wurde stark reduziert (Stub), bleibt aber als File für File-Index-Konsistenz.
 
 ---
 
@@ -73,139 +75,126 @@ Keine Files entfernt in v1.19.
 
 | Datei | Size (B) | SHA256 |
 |---|---|---|
-| `BACKLOG.md` | 77520 | `344919edcc4d8e3eee58fc7f33f7042fbce0eca0c8d98eed277a9ad406b73046` |
+| `BACKLOG-ARCHIV.md` | 4800 | `f0663163c797f1565dc4be2f9d0fae1093a1fca0577e1308d0b5938288de5c74` |
+| `BACKLOG.md` | 80667 | `66d55fd9e645d666cf2b556a5a54431f289334523752408a29af661000cfa908` |
+| `CLAUDE.md` | 8617 | `5304695bd8a754452a3a2d9a07d71cabe12ae266aaf10a803f70db98bf7ac562` |
 | `ENTSCHEIDUNGS-LOG-ARCHIV.md` | 9600 | `2b2b3fa5fa6648aa0dff909b829b58c4ef6d188834558714dd07c420f0cad846` |
 | `ENTSCHEIDUNGS-LOG-BILDPIPELINE.md` | 24725 | `72c626bddac40b2f65093415ae86b55b87f5f89376cb14d1359989dc11a27b5c` |
-| `ENTSCHEIDUNGS-LOG-COWORK-INFRA.md` | 49467 | `d4f947f11d9f87614e1fc2a867169c1b72cb243df4bcbefa8dc3e7cde52b50bf` |
+| `ENTSCHEIDUNGS-LOG-COWORK-INFRA.md` | 56444 | `6b0ff55eedbb40475678e20c9cb4f64484fe4a93a4b1bc4e195f038057f6797b` |
 | `ENTSCHEIDUNGS-LOG-CRAWLING-DATEN.md` | 38406 | `1505379afb0b609c5dadad4b2379bbf0676a6d1ee53329ba17056000f6229ab5` |
 | `ENTSCHEIDUNGS-LOG-LIVE-TRIAL.md` | 12437 | `ec729b1fd368a251723676e189ead632ab27e141f97e69742910140c961b6ecd` |
 | `ENTSCHEIDUNGS-LOG-STIL-CONTENT-A.md` | 33869 | `d13f74a9430154113929a17702f5854241db0f5a429ba6b40c2bc33496ae6397` |
 | `ENTSCHEIDUNGS-LOG-STIL-CONTENT-B.md` | 35947 | `d07fb795abb901ecd81c32f18f962296a254cc794ae25e556ad45a49b54f4f73` |
-| `PROJEKT-CHARTER.md` | 20843 | `08b61ffe1879224de0d1b1fe4394812339b64aefbf8ed0b2e29faa25918c8381` |
-| `Projekt-Anweisungen.md` | 17747 | `c1c5c0a9705b38f7a37d75ccd659c932e41c87d0e79b72a6b388e98f64c167f2` |
-| `SPEC_KONSTANTEN.md` | 50589 | `369cda06c480583c2c37cbdd3d1d0aeb2d293ad33f644c9fdf0a727a120734bf` |
-| `WAWI-IMPORT-WISSEN.md` | 75060 | `fa84dd6fd1bef576c98646db2ca94e247b3a60770350887602c4c9985ab6de82` |
-| `WISSENS-UPDATE-PLAYBOOK.md` | 15372 | `6efe3d2b7c5cd4e4e239930856e2ca10e7b4e795b6db9f82489c0a42d532121b` |
-| `cowork_anweisung_bildpipeline.md` | 43315 | `e40d42857c1b7e7519a21e21b894a2a96f6b9e3218c2d4520188f71fa107ae3b` |
-| `cowork_anweisung_datenimports.md` | 73110 | `bf4b6d5da6da03b25db295fafb83644dcf5af696bae0594688835d2a41697d84` |
-| `cowork_custom_instructions.md` | 15214 | `1451e242fb97a294e57c00ff84a52b57ef5673c5784cf53972b659a994b2f55d` |
+| `LIEFERANTEN-ONBOARDING.md` | 10937 | `88373efc66c92580532fb49adb6e068b3e264c16d80e98e7efd52631b2332ccc` |
+| `PROJEKT-CHARTER.md` | 21310 | `c80b22a3c2c8d0dd03e4950ae703c34ec193605bb43aac277de2de1de62ab618` |
+| `Projekt-Anweisungen.md` | 7801 | `ed20458a5515c2b9858bc2ad481d355dd5a0dffa30dc6ce2684c9bbf24939dad` |
+| `SPEC_KONSTANTEN.md` | 52530 | `d0e4e84199e379671db1214ecc176e6e6c672032d39164810814cddee695627e` |
+| `WAWI-IMPORT-WISSEN.md` | 75186 | `ce0873d1ce0768c49e836e1d47aab79c658e08c4b8fc478ead9072d7a64f798e` |
+| `WISSENS-UPDATE-PLAYBOOK.md` | 15704 | `fb8d6cd81de9cb225542235b2ede1bb417e2d51ceea903c1d182bf6281ae308b` |
+| `cowork_anweisung_bildpipeline.md` | 3252 | `84ca4ef8698448485770533393d9084b82dbf089e5ef56bdc70216d6464c36b7` |
+| `cowork_anweisung_datenimports.md` | 22585 | `fa5d33e53064c57250350e88975290d04f63d4d724d7b3f944fb0dec43d808f7` |
+| `cowork_custom_instructions.md` | 11308 | `be87644eb7b3e836238e119c23a0baa4da23d70703ffd4129c0e57a433f67446` |
 | `lieferanten_mapping.yaml` | 25697 | `277715d3923c6f04e6136b30716ec79eb035ce498a4ca6ec10e0f08055ac9ea3` |
-| `run_brief_daten.md` | 33029 | `d35a19b70a9076828378747b08c3ac2470a0a3c8962f3cc4a46031a0652fe272` |
-
-SHA256 für `_MANIFEST.md` wird nach Commit über `git show v1.19:_MANIFEST.md | shasum -a 256` ableitbar — entfällt hier als Bootstrap-Lücke (Manifest enthält keine Self-Reference).
+| `run_brief_daten.md` | 33655 | `10e8a6ac43bb3e50214f4f6a4828fedb35890f978d480c61001dd246e112aeec` |
 
 ---
 
 ## 7. Anzahl-Marker
 
-- **Wissens-Files in v1.19:** 18 (alle in Sektion 6 gelistet außer `_MANIFEST.md` selbst)
-- **Plus Manifest:** 19 Files total im Snapshot
-- **Plus Repo-Meta:** `README.md` (72 B), `.gitignore` (10 B) — nicht Wissens-File, dienen nur dem Repo-Setup
-- **Erwartet wie v1.18:** ✓ identische Anzahl (keine Files neu oder entfernt)
+- **Wissens-Files in v1.20:** 21 (alle in Sektion 6 gelistet außer `_MANIFEST.md` selbst)
+- **Plus Manifest:** 22 Files total im Snapshot
+- **Plus Repo-Meta:** `README.md` (72 B), `.gitignore` (10 B) — nicht Wissens-File
+- **Änderung ggü. v1.19 (19 Files):** +3 (CLAUDE.md, LIEFERANTEN-ONBOARDING.md, BACKLOG-ARCHIV.md)
 
 ---
 
-## 8. Self-Check-Ergebnis (WSC-1 bis WSC-17, v2.0-Git-adaptiert)
+## 8. Self-Check-Ergebnis (WSC-1 bis WSC-17, v2.0.1-Git-adaptiert)
 
 | Punkt | Status | Detail |
 |---|---|---|
-| WSC-1 (Größe ≤ 50 KB Soft-Limit) | WARN | 4 Files >50 KB: `BACKLOG.md` (77 KB), `WAWI-IMPORT-WISSEN.md` (75 KB), `cowork_anweisung_datenimports.md` (73 KB), `SPEC_KONSTANTEN.md` (50.6 KB, knapp drüber). Alle als known-exceptions in Sektion 9 dokumentiert. In Git-Welt nur Lesbarkeits-Hinweis, kein Upload-Killer mehr (siehe E87). |
-| WSC-2 (Append/Patch-File-Verbot) | PASS | Keine Append/Patch-Files im Repo. |
-| WSC-3 (Erwartete File-Liste) | PASS | 18 Wissens-Files + 1 Manifest, exakt wie v1.18. SPEC_KONSTANTEN Sektion 13 unverändert. |
-| WSC-4 (Cross-References zu ARCHIV) | PASS | E-Nummern-Konsistenz: neue E87 (COWORK-INFRA), E89, E90 (CRAWLING-DATEN). Keine Verweise zu E-Nummern in ARCHIV, die dort fehlen würden. |
-| WSC-5 (Neue Sektionen in SPEC_KONSTANTEN) | PASS | Sektion 14 wird im Spec-Bezug-Header auf E87/E89/E90 verwiesen. Self-Check #4 + Sektion 11 inhaltlich umformuliert. |
-| WSC-6 (Kein alter Monolith) | PASS | Kein Cluster-Split in v1.19. |
-| WSC-7 (Git-Status clean) | wird nach Commit PASS | Vor Commit: 7 modifizierte Files + 1 Manifest (dieses File) = 8 dirty paths. Nach `git commit` muss `git status --porcelain` leer sein. |
-| WSC-8 (Build-Target ≤ 40 KB für modifizierte Files) | WARN | 3 modifizierte Files >40 KB: `BACKLOG.md` (77 KB), `SPEC_KONSTANTEN.md` (50.6 KB), `ENTSCHEIDUNGS-LOG-COWORK-INFRA.md` (49.5 KB). In Git-Welt akzeptabel; Cluster-Split-Erwägung nur falls konkreter Pain auftritt (siehe B61/B62). |
-| WSC-9 (UTF-8-Sanity) | PASS | `file -I` zeigt für alle 19 Files `text/plain; charset=utf-8`. Kein BOM-Bruch, kein Encoding-Drift. |
-| WSC-10 (Manifest enthält alle Files mit Hashes) | PASS | 18 Wissens-Files mit SHA256 in Sektion 6 gelistet. |
+| WSC-1 (Größe ≤ 50 KB Soft-Limit) | WARN | 4 Files >50 KB: `BACKLOG.md` (80 KB), `WAWI-IMPORT-WISSEN.md` (75 KB), `ENTSCHEIDUNGS-LOG-COWORK-INFRA.md` (56 KB), `SPEC_KONSTANTEN.md` (52 KB). Alle in Sektion 9 dokumentiert. In Git-Welt kein Upload-Killer (E87). |
+| WSC-2 (Append/Patch-File-Verbot) | PASS | Keine Append/Patch-Files. |
+| WSC-3 (Erwartete File-Liste) | PASS | 21 Wissens-Files + 1 Manifest = exakt wie SPEC_KONSTANTEN Sektion 13 v1.18. |
+| WSC-4 (Cross-References zu ARCHIV) | PASS | E-Nummer-Konsistenz: neue E91 (COWORK-INFRA). Alte ARCHIV-Einträge (E14, E20, E35, E36, E40, E42) weiter konsistent referenziert. |
+| WSC-5 (Neue Sektionen in SPEC_KONSTANTEN) | PASS | Sektion 13 + 14 erweitert. |
+| WSC-6 (Kein alter Monolith) | PASS | Kein Cluster-Split in v1.20. |
+| WSC-7 (Git-Status clean nach Commit) | wird nach Commit PASS | Vor Commit: 11 M + 3 ?? + 1 M (Manifest) = 15 dirty paths. Nach `git commit` muss `git status --porcelain` leer sein. |
+| WSC-8 (Build-Target ≤ 40 KB für modifizierte Files) | WARN | 4 modifizierte Files >40 KB: BACKLOG, WAWI-IMPORT, ENTSCHEIDUNGS-LOG-COWORK-INFRA, SPEC_KONSTANTEN. In Git-Welt akzeptabel; Cluster-Splits B61/B62 deferred. |
+| WSC-9 (UTF-8-Sanity) | PASS | Alle Files UTF-8-valid (verifiziert via `file -I` in v1.19, keine Encoding-Änderung in v1.20). |
+| WSC-10 (Manifest enthält alle Files mit Hashes) | PASS | 21 Wissens-Files mit SHA256 in Sektion 6 gelistet. |
 | WSC-11 (Manifest-Build-Trail vollständig) | PASS | Sektionen 1-5 oben. |
 | WSC-12 (Known-Exceptions dokumentiert) | PASS | Siehe Sektion 9. |
 | WSC-13 (Manuelle Aktionen vermerkt) | PASS | Siehe Sektion 11. |
 | WSC-14 (Notes zum Build-Pattern) | PASS | Siehe Sektion 12. |
-| WSC-15 (Tag-Konvention eingehalten) | wird vor Commit PASS | `v1.19` folgt Konvention `vX.Y`. `git tag --list | grep '^v1.19$'` muss leer sein vor `git tag` (Pre-Tag-Check). |
-| WSC-16 (Push erfolgreich) | wird nach Push PASS | `git push origin main --tags` muss ohne Fehler durchlaufen. Verifikation via `git ls-remote --tags origin | grep v1.19`. |
-| WSC-17 (Header-Bump-Pflicht E86) | PASS | Alle 7 modifizierten Files haben Header-Bump erhalten (siehe Sektion 3). Verifikation: `head -8 <file>` zeigt jeweils den neuen Versions-Stand. |
+| WSC-15 (Tag-Konvention eingehalten) | wird vor Tag PASS | `v1.20` folgt `vX.Y`. `git tag --list | grep v1.20$` muss leer sein vor `git tag`. |
+| WSC-16 (Push erfolgreich) | wird nach Push PASS | Verifikation via `git ls-remote --tags origin | grep v1.20`. |
+| WSC-17 (Header-Bump-Pflicht E86) | PASS | Alle 11 modifizierten Files Header-Bump erhalten (Sektion 3). Major×4 (cowork_custom_instructions, Projekt-Anweisungen, cowork_anweisung_datenimports, cowork_anweisung_bildpipeline), Minor×5 (SPEC_KONSTANTEN, run_brief_daten, WAWI-IMPORT-WISSEN, BACKLOG, ENTSCHEIDUNGS-LOG-COWORK-INFRA), Patch×1 (WISSENS-UPDATE-PLAYBOOK), Stand-Update×1 (PROJEKT-CHARTER, datums-versioniert). |
 
-**Gesamt vor Commit:** 13× PASS, 2× WARN (known-exceptions), 2× pending (WSC-7/15 vor Commit; WSC-16 vor Push). Nach Commit + Tag + Push: 16× PASS, 2× WARN, 0× FAIL.
+**Gesamt vor Commit:** 13× PASS, 2× WARN (known-exceptions), 2× pending (WSC-7/15 vor Commit; WSC-16 vor Push). Nach Commit+Tag+Push: 16× PASS, 2× WARN, 0× FAIL.
 
 ---
 
 ## 9. Known-Exceptions / Geplante Folge-Splits
 
-- `BACKLOG.md` 77520 B (>50 KB) — Split-Aufwand vs. Nutzen in Git-Welt nicht zwingend. Akzeptiert ohne Folge-Aktion.
-- `WAWI-IMPORT-WISSEN.md` 75060 B (>50 KB) — B61 (deferred): in Git-Welt kein Upload-Killer mehr, Split nur bei konkretem Pain.
-- `cowork_anweisung_datenimports.md` 73110 B (>50 KB) — B62 (deferred): gleiche Begründung wie B61.
-- `SPEC_KONSTANTEN.md` 50589 B (knapp >50 KB) — knapp drüber durch v1.19-Updates. B54 (deferred): Performance-Split in Git-Welt nicht zwingend, Re-Evaluation nach B63 (Cowork-Resolver-Migration).
-- `ENTSCHEIDUNGS-LOG-COWORK-INFRA.md` 49467 B (>40 KB) — Build-Target-Warning, monitoring.
+- `BACKLOG.md` 80667 B (>50 KB) — wächst durch Status-Updates. Mit BACKLOG-ARCHIV.md als kompakter Index entschärft. Split bei N≥20 aktive Lieferanten neu evaluieren.
+- `WAWI-IMPORT-WISSEN.md` 75186 B (>50 KB) — B61 (deferred): in Git-Welt kein Upload-Killer mehr, Split nur bei konkretem Pain.
+- `ENTSCHEIDUNGS-LOG-COWORK-INFRA.md` 56444 B (>50 KB) — durch E87 + E91 gewachsen. Monitoring; Split nur bei Pain.
+- `SPEC_KONSTANTEN.md` 52530 B (knapp >50 KB) — durch v1.20-Updates Sektion 13/14 etwas gewachsen. B54 (deferred): Performance-Split in Git-Welt nicht zwingend.
 
 ---
 
-## 10. Tool-Anomalien & Notes zum Build-Pattern (v2.0-Bootstrap)
+## 10. Tool-Anomalien & Notes zum Build-Pattern
 
-**Erster Build im Git-Pattern.** Keine Drive-MCP-Anomalien mehr in diesem Build, weil Drive-MCP nicht mehr verwendet wurde. Bestätigte Verbesserungen:
+**Pattern hat sich für großen Refactor bewährt.** v1.20 ist mit 11 modifizierten + 3 neuen Files + 11 Strang-Maßnahmen der bisher größte Build. Lief in einem Cycle ohne Tool-Use-Limit-Probleme durch. Claude-Code-Edit/Write-Tools sind tatsächlich der Game-Changer ggü. Drive-MCP-`base64Content` (siehe E87-Anomalien A9/A10/A11 — alle obsolet).
 
-- **Kein Tool-Output-Token-Limit für File-Inhalt:** Edit/Write-Tools in Claude Code haben keinen vergleichbaren Output-Token-Cap wie Drive-MCP `create_file` mit `base64Content`. Files >50 KB lassen sich ohne Subagent-Detour modifizieren.
-- **Kein UTF-8-Drift mehr:** Edit-Tool arbeitet direkt mit String-Vergleich auf Disk, kein base64-Round-Trip, keine `ü → ¼`-Verschiebungen.
-- **Keine Karteileichen:** Git-Commits sind atomar; ein abgebrochener Commit lässt das Repo im Pre-Commit-Stand, kein Schmutz in `git ls-files`.
-- **Tjorbens manueller Drag-and-Drop entfällt:** Build endet mit `git push --tags` — End-to-End ohne UI-Click.
+**Explore-Agents für Bestandsaufnahme:** 2 parallele Explore-Agents (Cowork-Specs + WAWI/SPEC/BACKLOG) gespawnt vor Stage 1, lieferten strukturierte Befunde in ~3-5 Min jeweils. Sparte Token im Main-Context und gab klare Datenpunkte für die 11 Strang-Maßnahmen. Pattern für künftige große Refactors merken.
 
-**Empfehlungen für nächsten Build (v1.20):**
-- **B63 Cowork-Resolver-Migration zu GitHub-Raw:** als eigener kompakter Trigger („Verarbeite Wissens-Update für v1.20: B63 umsetzen"). Scope: `cowork_custom_instructions.md` + `Projekt-Anweisungen.md` Edit, Probe-Test mit Cowork-`web_fetch` gegen GitHub-Raw-URL, Validierung mit Test-Lauf. Damit Cowork den v1.20-Stand sieht und nicht weiter mit Drive-v1.18 arbeitet.
-- **WSC-7/15/16 vollständig validieren:** dieser v1.19-Build hatte sie als „pending vor Commit/Push" markiert. Im v1.20-Manifest sollten alle drei direkt nach dem Push als PASS auditiert werden.
+**Memory-Initialisierung:** Repo-Memory unter `/Users/tjorbenbecker/.claude/projects/.../memory/` initialisiert mit 5 Files (MEMORY-Index + repo_setup + user_role + feedback_build_style + project_engines + project_status_v1_19). Künftige Claude-Code-Sessions haben damit Repo-Kontext + Tjorbens Build-Stil-Präferenz persistent verfügbar.
+
+**Empfehlungen für nächste v1.X-Builds:**
+- **B65 (Cowork-`web_fetch`-Probe) beim ersten v1.20-Cowork-Daten-Lauf validieren.** Im Lauf-Bericht dokumentieren: kann Cowork-`web_fetch` GitHub-Raw lesen? Egress-Allowlist-Anpassung nötig?
+- **Lieferanten-Onboarding-Trigger erstmals testen:** beim ersten neuen Lieferanten (Lunalae oder Pole Junkie aktivieren) den Trigger „Onboarde Lieferant X" durchspielen — validiert ob `LIEFERANTEN-ONBOARDING.md` operativ trägt oder noch Lücken hat.
+- **Verdachtsfälle B4/B12/B21** bei v1.21 oder v1.22 entscheiden: streichen oder aktivieren.
 
 ---
 
 ## 11. Manuelle Aktionen für Tjorben
 
-**Aktion 1 — Drive-Karteileichen-Cleanup im Vorgänger-Drive-Folder `Version_2026-05-17_212017`** (B60, Status auf erledigt v1.19 mit dieser Liste):
+**Aktion 1 — Cowork-Setup aktualisieren** (Pflicht vor erstem v1.20-Cowork-Lauf):
 
-| Drive-ID | Dateiname | Größe |
-|---|---|---|
-| `1k7FloAj2KqmuXmLt1tidZb6mHZSCgLoN` | `ENTSCHEIDUNGS-LOG-CRAWLING-DATEN.md` (Stub) | 2.286 B |
-| `1qJjBoTE92V7il_vs-F-gglBuguDANvP4` | `SPEC_KONSTANTEN_as_gdoc_temp` | 48.677 B |
-| `1-7_ueaQylA6fZ37YYN0mnm115kmkEa2C` | `SPEC_KONSTANTEN_temp_for_chunked_read` | 48.677 B |
+In Cowork-UI Settings → Cowork → Global Instructions: den Inhalt aktualisieren auf den v1.20-Stand des File `cowork_custom_instructions.md`. URL des aktuellen Stands:
+`https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/v1.20/cowork_custom_instructions.md`
 
-Drive-MCP fehlt `delete_file` (B33). Aktion in Drive-Web-UI durch Tjorben.
+Alternativ: Copy-Paste aus dem lokalen Repo-File.
 
-**Aktion 2 — Drive-Karteileichen im v1.18-Folder `Version_2026-05-18_141930` aufräumen** (aus v1.18-Manifest Sektion 11 übernommen, falls noch nicht erledigt):
+**Aktion 2 — Egress-Allowlist** (möglicherweise):
 
-6 Karteileichen aus dem v1.18-Build (Drive-IDs siehe v1.18-Manifest Sektion 11). Bei nächster Drive-Aufräum-Session in einem Rutsch mit Aktion 1 erledigen.
+In Cowork-UI Settings → Capabilities → Network-Egress: prüfen, ob `raw.githubusercontent.com` und `api.github.com` in der „Additional allowed domains"-Liste stehen. Aktueller Pilot-Stand „All domains"-Modus wegen Anthropic-Bug (B29) deckt das ab, aber wenn auf granulare Liste umgestellt: ergänzen.
 
-**Aktion 3 — keine.** Der v1.19-Snapshot ist nach `git push --tags` vollständig in GitHub. Kein manueller Tjorben-Schritt für die v1.19-Erreichbarkeit nötig.
+**Aktion 3 — keine weiteren manuellen Aktionen.** Drive-Karteileichen-Cleanup bleibt aus v1.19 (3 IDs gelistet in v1.19-Manifest Sektion 11) — nicht zwingend für v1.20-Funktionalität.
 
 ---
 
 ## 12. Autonome Entscheidungen (zum Review)
 
-Im Sinne der Trigger-Anweisung „bei strategischen Wahlpunkten autonom entscheiden, Hypothese im Build-Report markieren":
+Im Sinne der Tjorben-Direktive „beauftrage dich" + Build-Style-Memory:
 
-1. **Im Worktree oder im Main-Repo arbeiten?** → **Main-Repo direkt.** Begründung: das Worktree war leer (nur README in der `claude/keen-kowalevski-af0d39`-Branch), die 19 v1.18-Files lagen untracked im main-Repo. Das End-Ziel war `git push origin main --tags`, also auf main. Im main-Repo direkt zu arbeiten umging die Worktree-Merge-Komplexität. Alternative wäre gewesen: Worktree mit den v1.18-Files füllen, dort arbeiten, am Ende auf main mergen — eine Stage mehr ohne Mehrwert.
-2. **`article_weight_kg` und `taric_code` pro Lieferant oder global?** → **Pro Lieferant.** Tjorbens Klärung erlaubte beides. Pro-Lieferant ist Schema-konsistent zum bestehenden YAML-Pattern (Override-fähig pro Lieferant), spart einen neuen Top-Level-Block, und ist trivial zu lesen für Cowork. Beide Werte sind aktuell für alle 4 Lieferanten identisch.
-3. **TARIC-Wert als YAML-String oder Int?** → **String mit Quote (`'62114390'`).** Ohne Quote interpretiert YAML als Int und droppt führende Nullen bei späteren TARIC-Codes wie `06039000`. String ist robust, kostet nichts.
-4. **Playbook-Bump Patch/Minor/Major?** → **Major (v1.0 → v2.0).** Pattern-Pivot Drive → Git ist strukturelle Umbauung, nicht inkrementell. Section 11 als Legacy-Anhang sauber rausgezogen.
-5. **F1 in v1.19 mitnehmen oder defer?** → **Defer (B54).** SPEC_KONSTANTEN-Split war primär gegen Cowork-Stage-0-Sub-Agent-Extraction-Schwelle (A8). In der Git-Welt ist die Lese-Schwelle dieselbe, aber der Resolver-Pfad ändert sich (B63) — eine Performance-Optimierung jetzt würde möglicherweise auf eine Architektur zielen, die in v1.20 anders aussieht. Erst B63, dann F1 neu bewerten.
-6. **F7 (Drive-Karteileichen) Aktion oder nur listen?** → **Nur listen.** Drive-MCP fehlt `delete_file`, und ich operiere lokal in Claude Code ohne Drive-MCP-Zugriff. Die 3 Drive-IDs sind in Sektion 11 als manuelle Tjorben-Aktion gelistet, wie im Trigger spezifiziert.
-7. **README.md im Wissens-File-Count?** → **Nein.** README ist Repo-Meta für GitHub-Visitor, kein Pipeline-Wissens-File. Bleibt bei 18 Wissens-Files + 1 Manifest = 19. `.gitignore` desgleichen Repo-Meta.
-8. **Resolver-Migration in v1.19 mitziehen?** → **Nein, B63 in v1.20.** Risiko: wenn Cowork in der laufenden Session getriggert wird, sollte er den letzten verlässlich getesteten Stand sehen — das ist v1.18 in Drive. Resolver-Migration braucht eigenen Probe-Test (Cowork-`web_fetch` gegen GitHub-Raw) und ist nicht ein Side-Effect von v1.19. Eigener Trigger, eigener Scope.
-
----
-
-## 13. Tag-Aktion (vor Push)
-
-```bash
-git -C /Users/tjorbenbecker/Documents/polesportshop-wissen add .
-git -C /Users/tjorbenbecker/Documents/polesportshop-wissen commit -m "v1.19 — Pattern-Pivot zu Git, F2-F6 Fixes, F1+Splits deferred"
-git -C /Users/tjorbenbecker/Documents/polesportshop-wissen tag v1.19
-git -C /Users/tjorbenbecker/Documents/polesportshop-wissen push origin main --tags
-```
-
-Verify nach Push: `https://github.com/verticalogmbh/polesportshop-wissen/releases/tag/v1.19` ist erreichbar.
+1. **BACKLOG-ARCHIV.md als Index statt Hart-Split** — Vollständige Ausgliederung erledigter Einträge wäre zu invasiv (Verlust-Risiko bei Umstellung). Pragmatischer: BACKLOG.md behält Details, ARCHIV ist kompakte Übersicht. Bei N≥20 aktive Lieferanten neu evaluieren.
+2. **`cowork_anweisung_bildpipeline.md` auf Stub statt löschen** — Datei-Konsistenz im File-Index (SPEC_KONSTANTEN Sektion 13). Voll-Spec rekonstruierbar via `git show v1.19:cowork_anweisung_bildpipeline.md`. Reaktivierungs-Pfad in Stub dokumentiert.
+3. **`lieferanten_mapping.yaml` in v1.20 nicht splitten** — bei aktuell 4 Lieferanten (1 aktiv) ist 25 KB unkritisch. B64 als deferred für N≥5 aktive Lieferanten.
+4. **`TRIGGER-REGISTRY.md` als eigenes File verworfen** — zu kleinteilig (1 KB). In CLAUDE.md als Sektion integriert.
+5. **`PROJEKT-CHARTER.md` Datums-Versioniert lassen** (kein v1.X-Header-Bump) — folgt der bestehenden Charter-Konvention. Stand-Header reicht für E86-Compliance bei datums-versionierten Files.
+6. **Memory-System initialisiert** — der Trigger erwähnte das nicht explizit, aber für eine „richtig gute Base" für künftige Sessions ist es Pflicht. 5 Memory-Files angelegt.
+7. **Explore-Agents für Bestandsaufnahme** — sparte 80%+ Main-Context-Token vs. direktes Lesen aller Files. Bei künftigen großen Refactors als Default merken.
+8. **Tjorben-Edits an Cowork-UI manuell lassen** — kein Versuch, das automatisch zu pflegen. Hinweis in Sektion 11 als manuelle Aktion.
+9. **WISSENS-UPDATE-PLAYBOOK nicht majorbumpen** — v2.0 vor wenigen Stunden frisch entstanden. Patch-Bump v2.0.1 ist die saubere Wahl.
+10. **Resolver-Migration für Cowork ohne Probe-Test in v1.20-Build** — Probe-Test ist Sache des ersten v1.20-Cowork-Laufs (B65). Build hat damit eine Vorab-Annahme: Public-Repo + `web_fetch` funktioniert ohne Auth. Wenn nicht: B65 dokumentiert Fallback.
+11. **`PROJEKT-CHARTER.md` Sektion „Architektur-Rollen" zwei Absätze geupdatet** statt komplett rewriten — minimal-invasiv, preservere die bewährte Verfassungs-Sprache.
 
 ---
 
-## 14. Verhältnis zum Vorgänger-Snapshot
+## 13. Verhältnis zum Vorgänger-Snapshot
 
-v1.18 entstand per Drive-Pattern (Manifest siehe Drive-Folder `Version_2026-05-18_141930`). v1.18-Baseline ist im Git als Tag `v1.18` auf Commit `56a65f2` verfügbar (im selben main-Branch wie v1.19).
+v1.19 → v1.20 ist der **Skalierungs-Refactor**. v1.19 löste die Tool-Limits durch Pattern-Pivot (Drive → Git, E87). v1.20 nutzt die neue Plattform für tatsächliche Aufräum-Arbeit (Verschlankung, neue Anker, Resolver-Migration). Gemeinsam bilden v1.19 + v1.20 die „v2-Generation" des Wissens-Managements: Git-basiert, schlank, skalierbar.
 
-v1.18 → v1.19 ist der **Pattern-Pivot-Build** — keine reine Inhalts-Iteration, sondern der erste Build, in dem das Pattern selbst sich ändert (Drive → Git). Künftige v1.20+-Builds sind reguläre Inhalts-Iterationen im Git-Pattern, ohne Pattern-Wechsel.
+Ab v1.21 sind reguläre Inhalts-Iterationen erwartet — neue Lieferanten onboarden, F-Findings einarbeiten, BACKLOG abarbeiten. Kein weiterer Pattern-Pivot in Sicht.

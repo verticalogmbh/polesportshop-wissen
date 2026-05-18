@@ -1,0 +1,159 @@
+# CLAUDE.md — Daily-Workflow für Wissens-Management
+
+**Stand:** v1.0, 2026-05-18 (NEU mit v1.20-Refactor E91)
+**Zweck:** Cheatsheet für Tjorben + jede Claude-Code-Session, die das Repo `polesportshop-wissen` aufmacht. Beantwortet: Wie starte ich was, wie reviewe ich, wo finde ich was, wie commite ich kleine Edits.
+**Auch von Claude Code automatisch gelesen:** Diese Datei liegt im Repo-Root und wird von Claude Code beim Session-Start als Projekt-Kontext aufgenommen. Daher kurz und bündig halten.
+
+---
+
+## Repo-Identität
+
+- **Pfad:** `~/Documents/polesportshop-wissen/`
+- **Remote:** `https://github.com/verticalogmbh/polesportshop-wissen` (public)
+- **Branch:** `main` (kein Feature-Branch-Workflow)
+- **Snapshots:** Git-Tags `vMAJOR.MINOR` (z.B. `v1.20`). Aktueller Stand siehe `git describe --tags --abbrev=0`.
+- **Engine:** Claude Code lokal (Opus 4.7 / Sonnet je nach Aufgabe). Cowork (Browser-Engine) liest GitHub-Raw für Daten-Pipeline-Läufe — siehe `cowork_custom_instructions.md`.
+
+## File-Map (Orientierung)
+
+| Frage / Bedarf | Datei |
+|---|---|
+| Verfassung, Prinzipien, Trade-offs | `PROJEKT-CHARTER.md` |
+| Wie führe ich einen Wissens-Update-Build durch | `WISSENS-UPDATE-PLAYBOOK.md` |
+| Wie führe ich Tjorben das Projekt | `Projekt-Anweisungen.md` |
+| Cowork-Side (Daten-Pipeline-Ausführung) | `cowork_custom_instructions.md` |
+| Cowork-Daten-Pipeline operative Spec | `cowork_anweisung_datenimports.md` |
+| Cowork-Daten-Pipeline kompakter Run-Brief (Cowork-Stage-0) | `run_brief_daten.md` |
+| Cowork-Bildpipeline (archiviert) | `cowork_anweisung_bildpipeline.md` |
+| Onboarding neuer Lieferant | `LIEFERANTEN-ONBOARDING.md` |
+| Lieferanten-Metadaten | `lieferanten_mapping.yaml` |
+| WaWi-Pilot-Wissen (CSV-Stolperfallen, Vorlagen-Setup) | `WAWI-IMPORT-WISSEN.md` |
+| Alle Konstanten (Schema, SEO, Sprach-Lookup, Self-Check, AP1-AP12, File-Index, E-Nummer-Index) | `SPEC_KONSTANTEN.md` |
+| Architektur-Entscheidungen | `ENTSCHEIDUNGS-LOG-*.md` (6 Cluster + ARCHIV; Index in SPEC_KONSTANTEN Sektion 14) |
+| Offene Punkte, Risiken, neue Findings | `BACKLOG.md` |
+| Erledigte / deferred B-Einträge | `BACKLOG-ARCHIV.md` |
+| Manifest des aktuellen Snapshots | `_MANIFEST.md` |
+
+## Trigger-Registry
+
+**Wissens-Update-Build** (im Claude-Code-Chat):
+- „Verarbeite Wissens-Update für v1.X+1: <Scope>"
+- „Baue Snapshot v1.X+1"
+- „Wissens-Build v1.X+1"
+
+→ Claude Code folgt `WISSENS-UPDATE-PLAYBOOK.md` v2.0 (7-Stage-Pattern, Git-basiert). Ende: `git push origin main --tags`.
+
+**Daten-Pipeline-Lauf** (im Cowork-Chat, **nicht** in Claude Code):
+- „Verarbeite neue Artikel von <LIEFERANT>: <Details>"
+
+→ Cowork lädt `run_brief_daten.md` + `SPEC_KONSTANTEN.md` + `lieferanten_mapping.yaml` aus dem jüngsten Git-Tag via GitHub-Raw, führt Pipeline aus, gibt 5 CSVs + Lauf-Bericht per `present_files` aus.
+
+**Lieferanten-Onboarding** (im Claude-Code-Chat für Mapping/Brand-Story, dann Cowork für Probe-Lauf):
+- „Onboarde Lieferant <NAME>"
+
+→ Claude Code folgt `LIEFERANTEN-ONBOARDING.md`. Ergebnis: erweitertes `lieferanten_mapping.yaml`, ggf. neue Brand-Stories, dann minimaler Commit oder Sammel-Commit. Anschließend Probe-Lauf in Cowork.
+
+**Bildpipeline** (archiviert):
+- „Verarbeite Bilder von <LIEFERANT>" → Hinweis: nicht aktiv, Bilder manuell in WaWi.
+
+## Daily-Ops für Tjorben (Quick-Reference)
+
+### Stand schnell sehen
+```bash
+git -C ~/Documents/polesportshop-wissen describe --tags --abbrev=0   # aktueller Tag
+git -C ~/Documents/polesportshop-wissen log --oneline -5             # letzte Commits
+git -C ~/Documents/polesportshop-wissen status                       # untracked / modified
+```
+
+### Kleinen manuellen Edit machen (z.B. Typo, Cross-Reference-Update)
+1. Datei direkt editieren (Editor deiner Wahl oder Claude Code).
+2. `git -C ~/Documents/polesportshop-wissen status` — was wurde geändert.
+3. `git -C ~/Documents/polesportshop-wissen add <datei>` — gezielt staging.
+4. `git -C ~/Documents/polesportshop-wissen commit -m "<Kurz-Begründung>"` — kein Tag-Bump für Mini-Edit.
+5. `git -C ~/Documents/polesportshop-wissen push` — nicht `--tags`, weil kein neuer Tag.
+
+Der nächste reguläre Wissens-Update-Build zieht die Edits ein.
+
+### Wissens-Update-Build starten
+
+Im Claude-Code-Chat im Repo:
+```
+Verarbeite Wissens-Update für v1.X+1: <kompakter Scope-Vorschlag, was rein soll>
+```
+
+Claude Code antwortet mit kompaktem Plan, fährt dann autonom durch alle 7 Stages, am Ende: Commit, Tag, Push, Abschluss-Bericht. Bei strategischen Wahlpunkten autonom entschieden, im Bericht gelistet (siehe `WISSENS-UPDATE-PLAYBOOK.md` Sektion 10).
+
+### Daten-Pipeline-Lauf reviewen
+
+Cowork gibt nach Lauf via `present_files` 5 CSVs + Lauf-Bericht aus:
+1. Lauf-Bericht öffnen — Stage 0.5 Scope, Self-Check 16 Punkte, autonome Entscheidungen, ggf. Eigeninterpretations-Marker (E70).
+2. Falls Self-Check 16/16 grün: CSVs im WaWi-Ameise importieren in Reihenfolge `_1_Stammdaten`, `_2_Variationen`, `_3_Merkmale`, `_4_Attribute`, `_5_CrossSelling`.
+3. Im Shop-Review: Artikel anschauen, Sara reviewt + entfernt 546-Zuweisung (E89-Workflow).
+4. Bei Findings: in den nächsten Wissens-Update-Build mitnehmen oder via Daily-Edit reparieren.
+
+### Memory aktualisieren (Claude-Code-spezifisch)
+
+Memory-Dir: `/Users/tjorbenbecker/.claude/projects/-Users-tjorbenbecker-Documents-polesportshop-wissen/memory/`
+
+Nach größeren Builds: `project_status_v1_X.md` updaten, `MEMORY.md`-Index pflegen. Macht Claude Code in der Regel selbst, wenn der Build durch ist.
+
+## Naming-Konventionen (Wichtig)
+
+- **Tag:** `vMAJOR.MINOR`, z.B. `v1.20`. Patch-Tag `v1.20.1` nur für Hotfix zwischen regulären Snapshots.
+- **Commit-Message bei Wissens-Update-Build:** `vX.Y — <Kurz-Beschreibung>` plus Body mit Strang-Übersicht. HEREDOC für Mehrzeiler. Co-Authored-By-Footer.
+- **File-Header-Bumps (E86):** Patch v1.15 → v1.15.1 (Cross-Reference-Update), Minor v1.15 → v1.16 (Inhalts-Update), Major v1.X → v2.0 (struktureller Umbau). Edge-Case: nur mitgenommen ohne Edit = kein Bump.
+- **CSV-Files (Cowork-Output):** `<NR>_<Typ>_<LIEFERANT>_<YYYY-MM-DD_HHMM>.csv` (AP11).
+
+## Charter-Prinzipien (12 Stück, kurz)
+
+Volle Liste in `PROJEKT-CHARTER.md`. Kurzform für Daily-Reference:
+1. Mensch initiiert, Maschine arbeitet
+2. Claude.ai plant, Cowork produziert *(seit v1.19: Claude Code statt Claude.ai)*
+3. Cowork schreibt nichts in WaWi
+4. Lineare Pipeline ohne User-Gate
+5. Multi-Input statt erzwungener Standard
+6. Deutsch ist Master
+7. Pipeline-Output ist normalisiert
+8. Pipeline-Kalkulation ist tabellengestützt
+9. Klein nach groß, modular wachsen
+10. Mapping-Bibel mit Konsultations-Pflicht
+11. Konstanten-Datei-Architektur (SPEC_KONSTANTEN)
+12. File-Header-Versionierungs-Disziplin (E86)
+
+## Was Claude Code in diesem Repo NIE tut
+
+- `git push --force` auf `main`
+- `git rebase -i` (interaktiv, nicht supported)
+- `--no-verify`, `--no-gpg-sign`
+- Git-Config ändern
+- `lieferanten_mapping.yaml` ohne explizite Tjorben-Bestätigung schreiben
+- Drive-Schreibzugriffe (Drive ist Read-Only-Archiv seit v1.19, E87)
+- API-Keys/Credentials annehmen oder ausgeben
+
+## Häufige Sessions
+
+| Session | Trigger | Dauer (grob) |
+|---|---|---|
+| Klärungs-Chat (Architektur-Frage) | „Warum machen wir X so?" | 5-10 Min |
+| Daily-Edit | „Fix Typo in <Datei>" | 2-5 Min |
+| Kleiner Wissens-Update-Build (1-2 Files) | „Wissens-Update v1.X+1: nur F-Fix Y" | 10-20 Min |
+| Großer Wissens-Update-Build (Refactor) | „Wissens-Update v1.X+1: Refactor <Scope>" | 30-90 Min (mehrere Cycles möglich) |
+| Lieferanten-Onboarding | „Onboarde <Lieferant>" | 15-30 Min für Mapping + Brand-Story |
+
+## Bei Problemen
+
+- **Git in komischem Zustand:** `git status` zeigt alles. Bei Conflict: niemals destruktiv handeln, erst nachfragen.
+- **GitHub-Push abgelehnt:** Pull mit Rebase oder Merge, dann Push. Bei Force-Push-Wunsch: zuerst nachfragen.
+- **Cowork sieht den neuen Tag nicht:** Cowork-Session neu starten (Stage 0 Resolution holt dann den neuen Tag).
+- **Claude Code findet `SPEC_KONSTANTEN.md` nicht:** falsches Verzeichnis. `pwd` checken.
+
+## Memory-System
+
+Claude Code hat ein persistentes Memory-System unter `/Users/tjorbenbecker/.claude/projects/-Users-tjorbenbecker-Documents-polesportshop-wissen/memory/`. Dort liegen:
+- `repo_setup.md` — Repo-Pfad, Remote, Tag-Konvention
+- `user_role.md` — Tjorbens Rolle, Präferenzen
+- `feedback_build_style.md` — autonomer Build-Stil
+- `project_engines.md` — Claude Code vs. Cowork
+- `project_status_v1_X.md` — aktueller Projekt-Stand
+
+Werden automatisch in jeden Claude-Code-Chat geladen. Bei Bedarf aktualisieren.

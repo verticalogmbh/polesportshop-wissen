@@ -1,8 +1,8 @@
 # Wissens-Update-Playbook
 
-**Stand:** v2.0, 2026-05-18 (Berlin)
+**Stand:** v2.0.1, 2026-05-18 (Patch: Referenz auf E91 + Erfahrungs-Note aus v1.20-Build ergänzt — Pattern hat sich für 12-Stage-Refactor bewährt). · **Vorheriger Stand:** v2.0, 2026-05-18 (Pattern-Pivot Drive → Git).
 **Zweck:** Operative Spec für Claude-Code-getriebene Wissens-Update-Builds im Git-Repo `polesportshop-wissen`. Wird bei Trigger „Verarbeite Wissens-Update für v<NEW>..." gelesen und als Wie-Vorgabe befolgt.
-**Bezug:** Charter-Prinzip 12 (File-Header-Versionierungs-Disziplin), E85 (Build-Pattern als Standard), E86 (SemVer-Konvention), **E87 (Migration Drive → Git als Wissens-Backbone, NEU v1.19)**.
+**Bezug:** Charter-Prinzip 12 (File-Header-Versionierungs-Disziplin), E85 (Build-Pattern als Standard), E86 (SemVer-Konvention), E87 (Migration Drive → Git als Wissens-Backbone, NEU v1.19), **E91 (Skalierungs-Refactor v1.20: Pattern hat sich für 12-Stage-Refactor mit 3 neuen Files + 7 modifizierten + 11 Strang-Maßnahmen bewährt)**.
 **Pattern-Pivot:** v2.0 ersetzt das Drive-Snapshot-Pattern (v1.0–v1.18) durch Git-Tags. Single Source of Truth ist das lokale Git-Repo, jeder Build endet mit `git commit`, `git tag v<NEW>`, `git push origin main --tags`. Drive-Build-Pattern bleibt als Legacy-Anhang dokumentiert (Sektion 11).
 
 ---

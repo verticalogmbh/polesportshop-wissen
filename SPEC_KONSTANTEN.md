@@ -2,7 +2,7 @@
 
 **🔒 KANONISCH — IN STEIN GEMEISSELT** (Charter-Prinzipien 10 + 11, E61)
 
-**Stand:** v1.17, 2026-05-18 · **Spec-Bezug:** v1.19-Snapshot (Git-Tag) · **Quelle:** verbatim aus v1.9-Snapshot Version_2026-05-15_233800 (cowork_anweisung_datenimports.md Sektionen 5.1, 5.1.1, 5.1.2, 5.3, Stage 6 + WAWI-IMPORT-WISSEN.md Sektion 10.5), iterativ erweitert v1.13 (E72-E77), v1.14 (E78-E80), v1.15 (E80-Erweiterung Kinder-Replikation, E82-Stilprinzip, AP9-AP12), v1.16 (Sektion 13 um WISSENS-UPDATE-PLAYBOOK.md erweitert, Sektion 14 um E85+E86 erweitert), **v1.17 (F2-F6-Fixes aus HotCakes-Run-Report 2026-05-18: Self-Check #4 umformuliert für Multi-Kategorie-Pattern E89 + Sara-546-Pflicht-Zuweisung; Sektion 11 size_and_fit um Modelname-Konvention F5/B58; Sektion 14 um E87/E89/E90)**
+**Stand:** v1.18, 2026-05-18 · **Spec-Bezug:** v1.20-Snapshot (Git-Tag) · **Quelle:** verbatim aus v1.9-Snapshot Version_2026-05-15_233800 (cowork_anweisung_datenimports.md Sektionen 5.1, 5.1.1, 5.1.2, 5.3, Stage 6 + WAWI-IMPORT-WISSEN.md Sektion 10.5), iterativ erweitert v1.13 (E72-E77), v1.14 (E78-E80), v1.15 (E80-Erweiterung Kinder-Replikation, E82-Stilprinzip, AP9-AP12), v1.16 (Sektion 13 um WISSENS-UPDATE-PLAYBOOK.md erweitert, Sektion 14 um E85+E86 erweitert), v1.17 (F2-F6-Fixes aus HotCakes-Run-Report 2026-05-18), **v1.18 (Skalierungs-Refactor v1.20: Sektion 13 auf Git-Tag-Pattern + Snapshot-Set angepasst auf 21 Files inkl. CLAUDE.md/LIEFERANTEN-ONBOARDING.md/BACKLOG-ARCHIV.md; Sektion 14 um E87/E89/E90/E91 nachgezogen — E87 + E91 Cluster-COWORK-INFRA, E89 + E90 Cluster-CRAWLING-DATEN)**
 
 ---
 
@@ -491,52 +491,72 @@ Hekate Bodysuit hat keine Outfit-Pair-Beziehung (Bodysuit ist Solo-Typ) und in d
 
 ---
 
-## 13. SNAPSHOT_KNOWLEDGE_FILES (NEU v1.17)
+## 13. SNAPSHOT_KNOWLEDGE_FILES (v1.18 — Git-Tag-Pattern)
 
-**Zweck:** Single Source of Truth für die Liste aller Wissens-Files, die in einem kompletten Snapshot vorhanden sein müssen. Resolver-Specs (`cowork_anweisung_datenimports.md`, `cowork_anweisung_bildpipeline.md`, `Projekt-Anweisungen.md`, `cowork_custom_instructions.md`) referenzieren diese Liste statt eigene File-Listen zu führen — Drift-Schutz auf Ebene 1.
+**Zweck:** Single Source of Truth für die Liste aller Wissens-Files, die in einem kompletten Snapshot vorhanden sein müssen. Resolver-Specs (`cowork_anweisung_datenimports.md`, `cowork_custom_instructions.md`, `Projekt-Anweisungen.md`, `run_brief_daten.md`) referenzieren diese Liste, statt eigene File-Listen zu führen — Drift-Schutz auf Ebene 1.
+
+**Snapshot-Konzept ab v1.20 (E87 + E91):** Ein Snapshot ist ein **Git-Tag** auf `main` im Repo `https://github.com/verticalogmbh/polesportshop-wissen`. Die Liste unten beschreibt die Files, die im Repo-Root unter dem Tag liegen müssen. Drive-Sub-Folder-Snapshots (v1.0–v1.18) sind Read-Only-Archiv und nicht mehr aktualisiert.
 
 **Bedeutung der Spalten:**
-- `Datei`: Dateiname im Snapshot-Folder (case-sensitive).
-- `MaxKB`: Hard-Limit für die Dateigröße (50 KB). Architektur-Ziel: ≤ 40 KB pro File (Build-Target, gibt Sicherheits-Buffer zum 50 KB-Hard-Limit).
-- `STATUS`: `OK` wenn aktuell unter 50 KB; `KNOWN_EXCEPTION: split geplant in v1.<x>` wenn das File aktuell überschritten und der Split bewusst aufgeschoben ist.
+- `Datei`: Dateiname im Repo-Root (case-sensitive).
+- `MaxKB`: Soft-Limit für die Dateigröße (50 KB). Architektur-Ziel: ≤ 40 KB pro File (Build-Target). In der Git-Welt ist >50 KB kein Tool-Limit-Killer mehr (E87), nur ein Lesbarkeits-Hinweis.
+- `STATUS`: `OK` wenn aktuell unter 50 KB; `KNOWN_EXCEPTION` wenn überschritten und der Split bewusst aufgeschoben ist (mit Begründung).
 
-**Konvention:** Self-Check (Step 10 in jedem Snapshot-Build) liest diese Liste, vergleicht mit tatsächlichem Folder-Inhalt und prüft Größen. Files in `STATUS = KNOWN_EXCEPTION` werden NICHT als Fail gewertet, sondern als informational Warning im Self-Check-Report.
+**Konvention:** Self-Check (WSC-3 + WSC-1) liest diese Liste, vergleicht mit tatsächlichem Repo-Inhalt und prüft Größen. `KNOWN_EXCEPTION`-Files sind kein Fail, sondern informational Warning.
 
 | Datei | MaxKB | STATUS |
 |---|---|---|
 | PROJEKT-CHARTER.md | 50 | OK |
-| BACKLOG.md | 50 | KNOWN_EXCEPTION: aktuell 63 KB, Split geplant in v1.18+ |
-| WAWI-IMPORT-WISSEN.md | 50 | KNOWN_EXCEPTION: aktuell 75 KB, Split geplant in v1.18+ |
-| cowork_anweisung_datenimports.md | 50 | KNOWN_EXCEPTION: aktuell 72 KB, Split geplant in v1.18+ |
-| cowork_anweisung_bildpipeline.md | 50 | OK |
-| lieferanten_mapping.yaml | 50 | OK |
-| run_brief_daten.md | 50 | OK |
+| CLAUDE.md | 50 | OK (NEU v1.20 — Daily-Workflow-Cheatsheet für Claude Code) |
+| LIEFERANTEN-ONBOARDING.md | 50 | OK (NEU v1.20 — Standard-Prozess für Lieferant 2-21) |
+| WISSENS-UPDATE-PLAYBOOK.md | 50 | OK |
 | Projekt-Anweisungen.md | 50 | OK |
 | cowork_custom_instructions.md | 50 | OK |
-| SPEC_KONSTANTEN.md | 50 | OK |
+| SPEC_KONSTANTEN.md | 50 | OK (knapp >50 KB nach v1.19, monitoring) |
+| run_brief_daten.md | 50 | OK |
+| cowork_anweisung_datenimports.md | 50 | OK (ab v2.0 v1.20 verschlankt — Konstanten + Self-Check + AP1-AP12 ausgelagert nach SPEC_KONSTANTEN) |
+| cowork_anweisung_bildpipeline.md | 50 | OK (ab v2.0 v1.20 als Stub mit Verweis auf E63 + B36-B40; Voll-Spec im v1.19-Tag erhalten) |
+| WAWI-IMPORT-WISSEN.md | 50 | KNOWN_EXCEPTION — operatives Pilot-Wissen, Verschlankung bei B61-Trigger |
+| lieferanten_mapping.yaml | 50 | OK (linear-skalierend; bei N≥5 Lieferanten Brand-Story-Split per B64) |
+| BACKLOG.md | 50 | KNOWN_EXCEPTION — Pflege-Datei; erledigte Einträge in BACKLOG-ARCHIV.md ausgegliedert ab v1.20 |
+| BACKLOG-ARCHIV.md | 50 | OK (NEU v1.20 — erledigte und deferred B-Einträge) |
+| ENTSCHEIDUNGS-LOG-ARCHIV.md | 50 | OK |
 | ENTSCHEIDUNGS-LOG-CRAWLING-DATEN.md | 50 | OK |
 | ENTSCHEIDUNGS-LOG-COWORK-INFRA.md | 50 | OK |
 | ENTSCHEIDUNGS-LOG-BILDPIPELINE.md | 50 | OK |
 | ENTSCHEIDUNGS-LOG-STIL-CONTENT-A.md | 50 | OK |
 | ENTSCHEIDUNGS-LOG-STIL-CONTENT-B.md | 50 | OK |
 | ENTSCHEIDUNGS-LOG-LIVE-TRIAL.md | 50 | OK |
-| ENTSCHEIDUNGS-LOG-ARCHIV.md | 50 | OK |
-| WISSENS-UPDATE-PLAYBOOK.md | 50 | OK |
 | _MANIFEST.md | 50 | OK |
 
-**Gesamt: 19 Files pro kompletter Snapshot (18 Wissens-Files + 1 Manifest).** Hinweis: ab v1.18 (E85) ist `WISSENS-UPDATE-PLAYBOOK.md` Teil des Snapshots.
+**Gesamt: 22 Files pro kompletter Snapshot (21 Wissens-Files + 1 Manifest).** Änderungen ggü. v1.19 (19 Files): 3 neue Files (CLAUDE.md, LIEFERANTEN-ONBOARDING.md, BACKLOG-ARCHIV.md).
 
-**Reihenfolge der Resolver-Ladung** (in dieser Sequenz beim Snapshot-Start zu lesen, sofern relevant für den Lauf-Trigger):
+Repo-Meta-Files NICHT im Snapshot-Count: `README.md` (GitHub-Visitor-Doku), `.gitignore` (Worktree-Ausnahmen).
 
-1. `PROJEKT-CHARTER.md` (Prinzipien-Reset)
-2. `SPEC_KONSTANTEN.md` (diese Datei — alle Konstanten + diese Tabelle + E-Nummer-Index)
-3. Aktive Spec (`cowork_anweisung_datenimports.md` ODER `cowork_anweisung_bildpipeline.md` je nach Trigger)
-4. `lieferanten_mapping.yaml` (Lieferanten-Kontext)
-5. `BACKLOG.md` querlesen (aktive Risiken/Anomalien)
-6. Bei Bedarf: Cluster-File aus `ENTSCHEIDUNGS-LOG-*.md` via E-Nummer-Index in Sektion 14
-7. Bei Architektur-/Warum-Fragen: ARCHIV-LOG
+**Reihenfolge der Resolver-Ladung** (Cowork-Stage-0 oder Claude-Code-Klärungs-Sessions, je nach Trigger-Typ):
 
-**Append-File-Verbot:** Wissens-Files dürfen NIE als `*_Append.md` oder `*_Patch.md` existieren — alle Änderungen werden im Master-File konsolidiert. Self-Check fail-t bei Pattern `*_Append*` oder `*_Patch*` im Snapshot-Folder.
+**Daten-Lauf-Trigger** („Verarbeite neue Artikel von …"):
+1. `run_brief_daten.md` (kompakte operative Spec — E68)
+2. `SPEC_KONSTANTEN.md` (diese Datei)
+3. `lieferanten_mapping.yaml`
+
+**Wissens-Update-Trigger** („Verarbeite Wissens-Update für v…"):
+1. `WISSENS-UPDATE-PLAYBOOK.md`
+2. `PROJEKT-CHARTER.md`
+3. `BACKLOG.md` (aktive Risiken, neue Findings)
+4. Betroffene Cluster-Files je nach Scope
+
+**Onboarding-Trigger** („Onboarde neuen Lieferanten …", NEU v1.20):
+1. `LIEFERANTEN-ONBOARDING.md`
+2. `lieferanten_mapping.yaml`
+3. `SPEC_KONSTANTEN.md` (Sektion 7 Merkmalwerte, Sektion 8 Goldstandard-Referenz)
+
+**Klärungs-Chat** (Architektur-Fragen, kein Pipeline-Lauf):
+- `CLAUDE.md` für Daily-Workflow-Fragen
+- Bei Substanz: `PROJEKT-CHARTER.md` + relevantes `ENTSCHEIDUNGS-LOG-*.md` via E-Nummer-Index in Sektion 14
+- Historische E-Nummern: `ENTSCHEIDUNGS-LOG-ARCHIV.md`
+
+**Append-File-Verbot:** Wissens-Files dürfen NIE als `*_Append.md` oder `*_Patch.md` existieren — alle Änderungen werden im Master-File konsolidiert. Self-Check fail-t bei Pattern `*_Append*` oder `*_Patch*` im Repo-Root.
 
 ---
 
@@ -628,6 +648,10 @@ Hekate Bodysuit hat keine Outfit-Pair-Beziehung (Bodysuit ist Solo-Typ) und in d
 | E84 | LIVE-TRIAL | Familien-erhaltende Split-Regel |
 | E85 | COWORK-INFRA | Wissens-Update-Build-Pattern als Standard-Playbook |
 | E86 | COWORK-INFRA | File-Header-Versionierungs-Konvention (SemVer für Snapshot-Disziplin) |
+| E87 | COWORK-INFRA | Migration Drive → Git als Wissens-Backbone (Pattern-Pivot v1.19) |
+| E89 | CRAWLING-DATEN | Category-Pattern + Sara-Review-Workflow (präzisiert E57, WaWi-Key 546) |
+| E90 | CRAWLING-DATEN | F2-F6-Implementierung in v1.19 (Sammeleintrag: B55-B59 erledigt) |
+| E91 | COWORK-INFRA | Skalierungs-Refactor v1.20 — Verschlankung, neue Anker (CLAUDE.md, LIEFERANTEN-ONBOARDING.md, BACKLOG-ARCHIV.md), Cowork-Resolver auf GitHub-Raw (B63 erledigt) |
 
 **Cluster-File-Kurz-Lookup (Datei-Mapping zum Cluster-Namen oben):**
 

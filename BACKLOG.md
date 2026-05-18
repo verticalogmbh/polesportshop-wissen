@@ -1,6 +1,8 @@
 # Backlog: Strategische Entscheidungsbedarfe
 
-**Stand:** v1.19, 2026-05-18 (B54-B60 statussen nach v1.19-Build: B55-B60 erledigt oder deferred, B61-B63 neu aus Pattern-Pivot Drive → Git). · **Vorheriger Stand:** v1.18 (B54-B60 aus HotCakes-Run-Report). · **Vor-vorheriger Stand:** v1.17 (B1-B53, inkl. Live-Trial-Erkenntnisse 2026-05-17).
+**Stand:** v1.20, 2026-05-18 (im v1.20-Refactor E91: erledigte/deferred Einträge nach `BACKLOG-ARCHIV.md` ausgelagert als kompakter Index, B63 erledigt, B64 neu für Brand-Story-Skalierung). · **Vorheriger Stand:** v1.19 (B54-B60 statussen). · **Vor-vorheriger Stand:** v1.18 (B54-B60 aus HotCakes-Run-Report). · Älteste Einträge B1-B53 aus v1.17 (Live-Trial).
+
+> **Hinweis ab v1.20:** Erledigte und deferred B-Einträge stehen kompakt als Index in `BACKLOG-ARCHIV.md`. Diese Datei enthält weiter alle Details — ARCHIV gibt nur schnelle Übersicht „was ist nicht mehr aktiv".
 
 Offene Punkte, die *Entscheidungen* brauchen — nicht Tasks. Tasks gehören in die Pipeline. Sortiert nach Priorität.
 
@@ -600,7 +602,8 @@ Drive-MCP hat keine Delete-Operation. Tjorben muss die 3 Files in Drive-Web-UI r
 *Stand:* deferred — gleiche Begründung wie B61. In der Drive-Welt war >50 KB der Tool-Limit-Killer, in der Git-Welt nur ein Lesbarkeits-Hinweis. Re-Evaluation bei konkretem Pain oder nach B63-Migration.
 *Priorität:* niedrig.
 
-**B63 — Cowork-Resolver-Migration zu GitHub-Raw-URL. — NEU v1.19, v1.20-Scope**
+**B63 — Cowork-Resolver-Migration zu GitHub-Raw-URL. — ERLEDIGT v1.20 → E91**
+*Update v1.20 (2026-05-18):* GitHub-Raw-Resolution in `cowork_custom_instructions.md` v2.0 verankert (Sektion „Wissens-Quelle: GitHub-Raw-Resolution"), `Projekt-Anweisungen.md` v2.0, `cowork_anweisung_datenimports.md` v2.0 Stage 0, `run_brief_daten.md` Sektion „DARF". Drive-Folder bleibt Read-Only-Archiv für Pre-v1.19-Stände. Probe-Test mit Cowork `web_fetch` gegen Tag-URL ausstehend bei nächstem Cowork-Lauf — falls Auth-Issue (Public-Repo sollte aber ohne Auth funktionieren): in `BACKLOG.md` erfassen.
 *Bezug:* E87 (Drive → Git Pivot v1.19), `cowork_custom_instructions.md`, `Projekt-Anweisungen.md`, WISSENS-UPDATE-PLAYBOOK v2.0 Sektion 2.3.
 *Stand:* offen, Priorität HOCH (v1.20-Scope, eigener Trigger).
 *Problem:* Cowork resolved aktuell den letzten gültigen Drive-Sub-Folder (`Version_2026-05-18_141930` = v1.18-Stand). Mit dem v1.19-Pattern-Pivot E87 liegt der aktuelle Stand als Git-Tag `v1.19` im GitHub-Repo `verticalogmbh/polesportshop-wissen`, nicht in Drive. Cowork sieht den v1.19-Stand also bis zur Resolver-Migration nicht.
@@ -614,3 +617,26 @@ Drive-MCP hat keine Delete-Operation. Tjorben muss die 3 Files in Drive-Web-UI r
 - Tag-Aktualität: Wenn ein Build noch nicht gepusht ist, sieht Cowork den alten Stand. Push-Disziplin (siehe WISSENS-UPDATE-PLAYBOOK v2.0 Sektion 5) ist Pflicht.
 - Drive-Snapshot bleibt parallel als Read-Only-Archiv erhalten, aber wird ab v1.19 nicht mehr aktualisiert. Klar in der Spec markieren, damit niemand versehentlich Drive-Stand als aktuellen Stand interpretiert.
 *Trigger:* eigener Wissens-Update-Trigger für v1.20, sobald Tjorben für die Resolver-Migration bereit ist.
+
+
+## v1.20 — neue Einträge B64+ aus Skalierungs-Refactor (E91)
+
+**B64 — Brand-Story-Skalierungs-Pfad in `lieferanten_mapping.yaml`. — NEU v1.20, deferred bis N≥5 Lieferanten**
+*Bezug:* `lieferanten_mapping.yaml` aktuell 25 KB bei 4 Lieferanten (1 aktiver), Brand-Story-Felder dominieren mit ~3 KB pro Lieferant in 5 Sprachen. Bei 20 Lieferanten Hochrechnung: ~250 KB Mapping-File (Brand-Stories ~60 KB davon allein).
+*Stand:* offen, Priorität NIEDRIG bis N=5 aktive Lieferanten, dann hoch.
+*Problem:* YAML-Lesen + Cache durch Cowork wird ineffizient. Pro Lauf wird das ganze YAML geladen, auch wenn nur 1 Lieferant gebraucht wird.
+*Lösungs-Optionen (zu evaluieren wenn Trigger greift):*
+1. **Brand-Story-Split:** `brand-stories/<kuerzel>.yaml` pro Lieferant, vom Mapping-YAML per `$include` referenziert (oder Cowork lädt zusätzlich pro Lauf das jeweilige Brand-Story-File).
+2. **Mapping pro Lieferant in eigene Datei:** `lieferanten/<KUERZEL>.yaml`. Vollständig dezentralisiert, Mapping-Index zeigt nur Liste. Onboarding-Spec entsprechend anpassen.
+3. **Inline behalten:** wenn YAML-Read in Cowork unproblematisch bei 250 KB ist (zu validieren), dann nichts ändern. Charter-Prinzip 9 (klein nach groß).
+*Trigger zur Re-Evaluation:* bei Onboarding des 5. aktiven Lieferanten, oder bei messbarem Performance-Issue in Cowork-Stage-0 (`yaml.safe_load` >5 s).
+*Priorität:* niedrig aktuell, hoch sobald Trigger greift.
+
+**B65 — Probe-Test Cowork-`web_fetch` gegen GitHub-Raw — NEU v1.20**
+*Bezug:* B63-Erledigung, E91, `cowork_custom_instructions.md` v2.0.
+*Stand:* offen, Priorität HOCH, soll im ersten v1.20-Cowork-Daten-Lauf validiert werden.
+*Problem:* Mit B63-Migration liest Cowork ab v1.20 die Wissens-Files über GitHub-Raw-URLs. Tool-Mechanik unbestätigt: kann Cowork `web_fetch` auf `https://raw.githubusercontent.com/...` URLs? Hat das Egress-Allowlist-Implikationen?
+*Lösungs-Pfad:* beim ersten produktiven Cowork-Daten-Lauf nach v1.20-Push verifizieren. Im Lauf-Bericht dokumentieren: Stage 0 Wallclock, ob Raw-URLs erreichbar, ob Egress-Allowlist angepasst werden muss.
+*Falls Issue:* Fallback: Tjorben kopiert die 3 Stage-0-Files in den Drive-Folder als temporäre Brücke, B63-Migration in v1.21 nachschärfen mit Auth/Allowlist-Klärung.
+*Trigger zur Re-Evaluation:* erster Cowork-Lauf nach v1.20-Push.
+
