@@ -56,3 +56,60 @@ def upload_vater(client, prefix: str, artnr: str, images: list[ProcessedImage]) 
 
 def make_client():
     return _client()
+
+
+# --- Originale-Galerie (B34): öffentliche index.html für Social-Media -----
+def _list_originals(client, prefix: str) -> dict[str, list[str]]:
+    """{artnr: [public_url, ...]} aus den R2-Originalen unter originals/<prefix>/."""
+    import re
+    from collections import defaultdict
+    out = defaultdict(list)
+    token = None
+    base = f"originals/{prefix}/"
+    while True:
+        kw = {"Bucket": config.R2_BUCKET, "Prefix": base}
+        if token:
+            kw["ContinuationToken"] = token
+        resp = client.list_objects_v2(**kw)
+        for obj in resp.get("Contents", []):
+            key = obj["Key"]
+            fname = key[len(base):]
+            if not fname or fname.endswith(".html"):
+                continue
+            m = re.match(r"^(.*)-(\d+)\.[^.]+$", fname)  # <artnr>-<N>.<ext>
+            artnr = m.group(1) if m else fname
+            idx = int(m.group(2)) if m else 0
+            out[artnr].append((idx, f"{config.R2_PUBLIC_BASE}/{key}"))
+        if not resp.get("IsTruncated"):
+            break
+        token = resp.get("NextContinuationToken")
+    return {a: [u for _, u in sorted(v)] for a, v in sorted(out.items())}
+
+
+def build_originals_index(client, prefix: str, name_map: dict | None = None,
+                          titel: str = "Originalbilder") -> str:
+    """Galerie-HTML aller Originale generieren + nach originals/<prefix>/index.html
+    hochladen. Gibt die Public-URL der Galerie zurück."""
+    groups = _list_originals(client, prefix)
+    name_map = name_map or {}
+    cards = []
+    for artnr, urls in groups.items():
+        head = name_map.get(artnr, artnr)
+        thumbs = "".join(
+            f'<a href="{u}" target="_blank" download>'
+            f'<img loading="lazy" src="{u}" alt="{artnr}-{i+1}"></a>'
+            for i, u in enumerate(urls))
+        cards.append(f'<section><h2>{head}</h2><div class="g">{thumbs}</div></section>')
+    html = f"""<!doctype html><html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>{titel}</title>
+<style>body{{font-family:system-ui,sans-serif;margin:0;background:#faf7f5;color:#222}}
+header{{padding:24px;background:#fff;border-bottom:1px solid #eee}}h1{{margin:0;font-size:20px}}
+.sub{{color:#888;font-size:13px;margin-top:4px}}section{{padding:16px 24px}}
+h2{{font-size:15px;color:#444;margin:8px 0}}.g{{display:flex;flex-wrap:wrap;gap:10px}}
+.g img{{height:220px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.12);object-fit:cover}}
+a{{display:inline-block}}</style></head><body>
+<header><h1>{titel}</h1><div class="sub">Klick auf ein Bild = Original in voller Auflösung (zum Download). {sum(len(u) for u in groups.values())} Bilder, {len(groups)} Artikel.</div></header>
+{''.join(cards)}
+</body></html>"""
+    _put(client, f"originals/{prefix}/index.html", html.encode("utf-8"), "text/html; charset=utf-8")
+    return f"{config.R2_PUBLIC_BASE}/originals/{prefix}/index.html"

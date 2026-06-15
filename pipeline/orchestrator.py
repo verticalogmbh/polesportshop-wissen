@@ -89,6 +89,13 @@ def _run_images(priced, hc) -> None:
         artnr = spec.vater_artnr(v.garment_type, v.modell_basis, v.farbe_raw)
         imgs = process.process_vater(v.image_urls[:10], profile)
         v.r2_bild_urls = r2.upload_vater(client, prefix, artnr, imgs)
+    # Originale-Galerie (B34) für Social-Media — öffentliche index.html
+    name_map = {spec.vater_artnr(v.garment_type, v.modell_basis, v.farbe_raw):
+                spec.vater_artikelname(hc["marke_kurz"], v.garment_type,
+                                       v.modell_basis, v.farbe_raw, "de")
+                for v in priced}
+    r2.build_originals_index(client, prefix, name_map,
+                             titel=f"{hc['anzeigename']} Originalbilder")
 
 
 def _report(hc, priced, missing, ds, checks, written, stamp) -> str:
