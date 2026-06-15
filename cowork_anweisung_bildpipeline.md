@@ -1,3 +1,5 @@
+> **🗄️ DEPRECATED ab v1.22 (2026-06-15).** Die Bildpipeline läuft jetzt als lokaler Code (`pipeline/images/`, siehe `pipeline/README.md`). Diese Datei ist **historische / Fallback-Referenz für die Cowork-Ausführung** und wird nicht mehr aktiv synchron gehalten — nicht für aktuelle Läufe verwenden.
+
 # Cowork-Anweisung: Bildpipeline polesports
 
 > ## 🟢 AKTIV — reaktiviert mit v1.21 (E93, 2026-05-18)

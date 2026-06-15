@@ -1,3 +1,5 @@
+> **🗄️ DEPRECATED ab v1.22 (2026-06-15).** Die Artikelanlage läuft jetzt als lokaler Code (`pipeline/`, siehe `pipeline/README.md`). Dieser Run-Brief war die kompakte Cowork-Ausführungs-Spec und ist jetzt **historische / Fallback-Referenz** — nicht mehr aktiv synchron gehalten, nicht für aktuelle Läufe verwenden. Das Schema bleibt kanonisch in `SPEC_KONSTANTEN.md`.
+
 # RUN-BRIEF: Daten-Pipeline (E68, offiziell in v1.12 verankert, Stand 2026-05-18, v1.18)
 
 Dieser Brief ist die kompakte operative Spec für einen reinen Daten-Lauf. Er

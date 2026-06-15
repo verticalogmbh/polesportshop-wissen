@@ -1,3 +1,5 @@
+> **🗄️ DEPRECATED ab v1.22 (2026-06-15).** Die Artikelanlage läuft jetzt als lokaler Code (`pipeline/`, siehe `pipeline/README.md`). Diese Datei ist **historische / Fallback-Referenz für die Cowork-Ausführung** und wird nicht mehr aktiv synchron gehalten — nicht für aktuelle Läufe verwenden.
+
 # Cowork-Projekt: Artikelanlage Pipeline
 # Custom Instructions
 

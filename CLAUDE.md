@@ -30,10 +30,11 @@
 | Verfassung, Prinzipien, Trade-offs | `PROJEKT-CHARTER.md` |
 | Wie führe ich einen Wissens-Update-Build durch | `WISSENS-UPDATE-PLAYBOOK.md` |
 | Wie führe ich Tjorben das Projekt | `Projekt-Anweisungen.md` |
-| Cowork-Side (Daten-Pipeline-Ausführung) | `cowork_custom_instructions.md` |
-| Cowork-Daten-Pipeline operative Spec | `cowork_anweisung_datenimports.md` |
-| Cowork-Daten-Pipeline kompakter Run-Brief (Cowork-Stage-0) | `run_brief_daten.md` |
-| Cowork-Bildpipeline (REAKTIVIERT v1.21, E93) | `cowork_anweisung_bildpipeline.md` v2.1 |
+| **Pipeline-Bedienung (Code, primär)** | **`pipeline/README.md`** |
+| Cowork-Side — 🗄️ DEPRECATED v1.22, Fallback | `cowork_custom_instructions.md` |
+| Cowork-Daten-Pipeline operative Spec — 🗄️ DEPRECATED v1.22 | `cowork_anweisung_datenimports.md` |
+| Cowork-Run-Brief — 🗄️ DEPRECATED v1.22 | `run_brief_daten.md` |
+| Cowork-Bildpipeline — 🗄️ DEPRECATED v1.22 | `cowork_anweisung_bildpipeline.md` |
 | Onboarding neuer Lieferant | `LIEFERANTEN-ONBOARDING.md` |
 | Lieferanten-Metadaten | `lieferanten_mapping.yaml` |
 | WaWi-Pilot-Wissen (CSV-Stolperfallen, Vorlagen-Setup) | `WAWI-IMPORT-WISSEN.md` |

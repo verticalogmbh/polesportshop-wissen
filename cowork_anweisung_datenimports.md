@@ -1,3 +1,5 @@
+> **🗄️ DEPRECATED ab v1.22 (2026-06-15).** Die Artikelanlage läuft jetzt als lokaler Code (`pipeline/`, siehe `pipeline/README.md`). Diese Datei ist **historische / Fallback-Referenz für die Cowork-Ausführung** und wird nicht mehr aktiv synchron gehalten — nicht für aktuelle Läufe verwenden. Das Schema bleibt kanonisch in `SPEC_KONSTANTEN.md`.
+
 # Cowork-Anweisung: Daten-Pipeline (Stammdaten + Variationen + Merkmale + Attribute + Cross-Selling)
 
 **Stand:** v2.1, 2026-05-18 (Minor-Update im v1.21-Refactor E92+E93: Multi-Kategorie zurück auf 3-Zeilen-Pattern (Oberkategorie + Subkategorie + Sara-546), Farb-Lokalisierung DE für Marketing-Farben mit DE-Pendant, Stage 5.6+5.7 Bildpipeline wieder aktiv). · **Vorheriger Stand:** v2.0, 2026-05-18 (Major-Verschlankung v1.20). · **Vor-vorheriger Stand:** v1.15.1, 2026-05-18 (vor Verschlankung).
