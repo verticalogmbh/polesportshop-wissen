@@ -56,20 +56,29 @@ R2_PUBLIC_BASE = "https://pub-94a3cf669ee343b2857aa4d656f9b5d6.r2.dev"
 R2_REGION = "auto"
 
 
+R2_SECRETS_FILE = PIPELINE_DIR / ".secrets" / "r2_credentials.json"
+
+
 def r2_credentials() -> dict:
     """
-    R2 Access-Key + Secret aus env (R2_ACCESS_KEY_ID / R2_SECRET_ACCESS_KEY).
-    Wird erst in P9 (Upload) aufgerufen. Wirft mit klarer Anleitung, wenn nicht
-    gesetzt. Gibt die Werte NIE ins Log/Chat zurück gespiegelt.
+    R2 Access-Key + Secret aus (1) env (R2_ACCESS_KEY_ID/R2_SECRET_ACCESS_KEY)
+    oder (2) lokaler Datei pipeline/.secrets/r2_credentials.json (gitignored).
+    Wird erst in P9 (Upload) aufgerufen. Werte werden NIE ins Log/Chat gespiegelt.
     """
+    import json
     akid = os.environ.get("R2_ACCESS_KEY_ID")
     secret = os.environ.get("R2_SECRET_ACCESS_KEY")
+    if (not akid or not secret) and R2_SECRETS_FILE.exists():
+        data = json.loads(R2_SECRETS_FILE.read_text(encoding="utf-8"))
+        akid = akid or data.get("access_key_id") or data.get("R2_ACCESS_KEY_ID")
+        secret = secret or data.get("secret_access_key") or data.get("R2_SECRET_ACCESS_KEY")
     if not akid or not secret:
         raise RuntimeError(
-            "R2-Credentials fehlen. Setze sie lokal (nie im Chat/Repo):\n"
-            "  export R2_ACCESS_KEY_ID=...\n"
-            "  export R2_SECRET_ACCESS_KEY=...\n"
-            "Quelle: Cloudflare R2 API-Token (S3-kompatibel)."
+            "R2-Credentials fehlen. Lege sie lokal an (nie im Chat/Repo):\n"
+            f"  Datei {R2_SECRETS_FILE} mit "
+            '{"access_key_id": "...", "secret_access_key": "..."}\n'
+            "  ODER export R2_ACCESS_KEY_ID=... / R2_SECRET_ACCESS_KEY=...\n"
+            "Quelle: Cloudflare R2 -> Manage R2 API Tokens -> S3-Credentials."
         )
     return {
         "aws_access_key_id": akid,

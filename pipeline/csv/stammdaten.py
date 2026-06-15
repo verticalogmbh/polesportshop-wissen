@@ -33,6 +33,14 @@ def _kategorie_rows(is_vater: bool, garment_type: str) -> list[tuple[str, str]]:
     return rows
 
 
+def _bild_fields(v: Vater) -> dict:
+    """Bild 1..10 aus v.r2_bild_urls (P9). Leer wenn noch keine Bilder."""
+    out = {}
+    for i in range(1, C.MAX_BILD_SPALTEN + 1):
+        out[f"Bild {i}"] = v.r2_bild_urls[i - 1] if i - 1 < len(v.r2_bild_urls) else ""
+    return out
+
+
 def _names(marke: str, gtype: str, modell: str, farbe: str) -> dict[str, str]:
     return {lang: spec.vater_artikelname(marke, gtype, modell, farbe, lang)
             for lang in C.LANGUAGES}
@@ -74,7 +82,7 @@ def build_rows(vaeter: list[Vater], supplier: dict, run_date: str) -> list[dict]
                 "Global-Französisch: Artikelname": vnames["fr"],
                 "Global-Italienisch: Artikelname": vnames["it"],
                 "Global-Spanisch: Artikelname": vnames["es"],
-                **seo,
+                **seo, **_bild_fields(v),
             })
             rows.append(r)
 
@@ -97,6 +105,7 @@ def build_rows(vaeter: list[Vater], supplier: dict, run_date: str) -> list[dict]
                     "Global-Französisch: Artikelname": knames["fr"],
                     "Global-Italienisch: Artikelname": knames["it"],
                     "Global-Spanisch: Artikelname": knames["es"],
+                    **_bild_fields(v),
                 })
                 rows.append(r)
     return rows

@@ -21,7 +21,7 @@ EK_FILE = "ek_hotcakes_00034.csv"
 CONTENT_FILE = "hotcakes_content.json"
 
 
-def run(stamp: str | None = None) -> dict:
+def run(stamp: str | None = None, with_images: bool = False) -> dict:
     stamp = stamp or datetime.now().strftime("%Y-%m-%d_%H%M")
     run_date = datetime.now().strftime("%d.%m.%Y")
     hc = config.get_supplier(SUPPLIER_KEY)
@@ -33,6 +33,10 @@ def run(stamp: str | None = None) -> dict:
     # Stage 4: Pricing (EK aus Rechnung; ohne EK = out of scope)
     ek_map = pricing.load_ek_csv(config.EK_INPUT_DIR / EK_FILE)
     priced, missing = pricing.apply_pricing(ds["keep"], ek_map)
+
+    # Stage 5.6/5.7: Bildpipeline + R2 (nur mit Credentials) -> r2_bild_urls
+    if with_images:
+        _run_images(priced, hc)
 
     # Stage 5: Content laden + validieren
     content = C.load_content(config.PIPELINE_DIR / "content" / CONTENT_FILE)
@@ -73,6 +77,18 @@ def run(stamp: str | None = None) -> dict:
 
     return {"out": out, "priced": priced, "missing": missing, "checks": checks,
             "written": written, "review": ds["review"], "exclude": ds["exclude"]}
+
+
+def _run_images(priced, hc) -> None:
+    """Stage 5.6/5.7: pro Vater Bilder verarbeiten + R2-Upload, URLs setzen."""
+    from .images import process, r2
+    client = r2.make_client()
+    prefix = hc["r2_prefix"]
+    profile = hc["crop_profile"]
+    for v in priced:
+        artnr = spec.vater_artnr(v.garment_type, v.modell_basis, v.farbe_raw)
+        imgs = process.process_vater(v.image_urls[:10], profile)
+        v.r2_bild_urls = r2.upload_vater(client, prefix, artnr, imgs)
 
 
 def _report(hc, priced, missing, ds, checks, written, stamp) -> str:
