@@ -96,6 +96,7 @@ def _run_images(priced, hc) -> None:
                 for v in priced}
     r2.build_originals_index(client, prefix, name_map,
                              titel=f"{hc['anzeigename']} Originalbilder")
+    r2.build_master_index(client)  # permanente Landing-Page über ALLE Kollektionen
 
 
 def _report(hc, priced, missing, ds, checks, written, stamp) -> str:

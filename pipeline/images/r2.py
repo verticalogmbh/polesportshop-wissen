@@ -74,7 +74,9 @@ def _list_originals(client, prefix: str) -> dict[str, list[str]]:
         for obj in resp.get("Contents", []):
             key = obj["Key"]
             fname = key[len(base):]
-            if not fname or fname.endswith(".html"):
+            # Aktuelles Schema: <artnr>-<N>.<ext>, artnr enthält NIE '_'. Alte
+            # Cowork-Trial-Originale (..._NN_HOTCAKES_YYYY-MM-...) ausfiltern.
+            if not fname or fname.endswith(".html") or "_" in fname or "/" in fname:
                 continue
             m = re.match(r"^(.*)-(\d+)\.[^.]+$", fname)  # <artnr>-<N>.<ext>
             artnr = m.group(1) if m else fname
@@ -113,3 +115,57 @@ a{{display:inline-block}}</style></head><body>
 </body></html>"""
     _put(client, f"originals/{prefix}/index.html", html.encode("utf-8"), "text/html; charset=utf-8")
     return f"{config.R2_PUBLIC_BASE}/originals/{prefix}/index.html"
+
+
+def build_master_index(client, titel: str = "Originalbilder — alle Kollektionen") -> str:
+    """EINE permanente Landing-Page über ALLE Lieferanten/Kollektionen.
+    Auto-entdeckt jeden originals/<prefix>/-Ordner; verlinkt auf dessen Galerie.
+    Upload nach originals/index.html. Gibt die permanente Public-URL zurück."""
+    # Lieferanten-Ordner via Delimiter entdecken (keine Voll-Liste nötig)
+    prefixes = []
+    token = None
+    while True:
+        kw = {"Bucket": config.R2_BUCKET, "Prefix": "originals/", "Delimiter": "/"}
+        if token:
+            kw["ContinuationToken"] = token
+        resp = client.list_objects_v2(**kw)
+        for cp in resp.get("CommonPrefixes", []):
+            seg = cp["Prefix"][len("originals/"):].strip("/")
+            if seg:
+                prefixes.append(seg)
+        if not resp.get("IsTruncated"):
+            break
+        token = resp.get("NextContinuationToken")
+
+    # Anzeigenamen aus lieferanten_mapping (r2_prefix -> anzeigename)
+    namen = {}
+    for s in config.load_mapping().get("lieferanten", {}).values():
+        if s.get("r2_prefix"):
+            namen[s["r2_prefix"]] = s.get("anzeigename", s["r2_prefix"])
+
+    cards = []
+    for p in sorted(prefixes):
+        imgs = _list_originals(client, p)
+        n_art = len(imgs)
+        n_img = sum(len(u) for u in imgs.values())
+        preview = next(iter(imgs.values()), [None])[0]
+        name = namen.get(p, p.title())
+        prev_html = f'<img loading="lazy" src="{preview}" alt="{name}">' if preview else ""
+        cards.append(
+            f'<a class="card" href="{p}/index.html">{prev_html}'
+            f'<div class="meta"><strong>{name}</strong>'
+            f'<span>{n_art} Artikel · {n_img} Bilder</span></div></a>')
+
+    html = f"""<!doctype html><html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>{titel}</title>
+<style>body{{font-family:system-ui,sans-serif;margin:0;background:#faf7f5;color:#222}}
+header{{padding:24px;background:#fff;border-bottom:1px solid #eee}}h1{{margin:0;font-size:20px}}
+.sub{{color:#888;font-size:13px;margin-top:4px}}.grid{{display:flex;flex-wrap:wrap;gap:16px;padding:24px}}
+.card{{width:240px;background:#fff;border-radius:12px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 1px 6px rgba(0,0,0,.1)}}
+.card img{{width:100%;height:300px;object-fit:cover;display:block}}
+.meta{{padding:12px}}.meta strong{{display:block;font-size:15px}}.meta span{{color:#888;font-size:12px}}</style></head><body>
+<header><h1>{titel}</h1><div class="sub">Klick auf eine Kollektion = alle Originalbilder in voller Auflösung zum Download. Neue Kollektionen erscheinen automatisch.</div></header>
+<div class="grid">{''.join(cards)}</div>
+</body></html>"""
+    _put(client, "originals/index.html", html.encode("utf-8"), "text/html; charset=utf-8")
+    return f"{config.R2_PUBLIC_BASE}/originals/index.html"
