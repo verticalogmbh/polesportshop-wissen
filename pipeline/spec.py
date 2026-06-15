@@ -158,6 +158,12 @@ def vater_artikelname(marke_kurz: str, garment_type: str, modell: str,
 ARTNR_PREFIX = "HC"
 
 
+def set_artnr_prefix(prefix: str) -> None:
+    """Pro Lieferant gesetzt (z.B. 'RO' für Rolling). Orchestrator ruft das am Lauf-Start."""
+    global ARTNR_PREFIX
+    ARTNR_PREFIX = prefix
+
+
 def _slug(s: str) -> str:
     return "".join(w.capitalize() for w in s.replace("-", " ").split())
 

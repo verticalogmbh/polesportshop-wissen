@@ -205,6 +205,92 @@ lieferanten:
     max_groesse: null   # NEU v1.15
     bemerkung: "Onboarding ausstehend. **WICHTIG (E49):** Pole-Junkie-Crawl ohne Halt-und-Nachfrage — Owner-Direktive Tjorben Becker 2026-05-15, volle rechtliche und operative Verantwortung wird übernommen. Im Lauf-Bericht jedes Pole-Junkie-Laufs den E49-Verweis dokumentieren (Audit-Spur). Bei expliziter Cease-and-Desist-Forderung sofort eskalieren und pausieren. Pole Junkie ist Retailer (multi-brand), pro Artikel den Hersteller aus den Produktdaten ableiten. **Plus (E53):** Pole Junkie ist Stil-Inspirations-Quelle für Artikeldetails-Reduktion — siehe `stil_inspiration: true`."
 
+  ROLLING_CLOTHING:
+    anzeigename: "Rolling"
+    kuerzel: ROLLING
+    hersteller: "Rolling Clothing"
+    marke_kurz: "Rolling"           # Präfix vor dem Artikelnamen (z.B. "Rolling Top Ceci Schwarz")
+    artnr_prefix: RO                # Artikelnummer-Präfix (analog HC bei HotCakes)
+    herkunftsland: BR
+    waehrung: USD                   # Rechnung in USD; VK in EUR via fx_to_eur
+    fx_to_eur: 0.8612               # Tageskurs 2026-06-15 (USD->EUR); EK*fx, dann *2 -> ,90
+    steuerklasse: "OSS2-undefiniert - Standard alle Länder"
+    shop_url: https://www.shoprolling.com.br
+    fallback_retailer_url: null
+    drive_ordner_id: null
+    drive_eingang_id: null
+    r2_prefix: rolling
+    lieferantennummer_wawi: null
+    article_weight_kg: 0.05
+    taric_code: '62114390'
+    groessen_konvention: fix_xs_xl  # NEU: immer XS,S,M,L,XL (Tjorben-Vorgabe; BR-Größen PP/P/M/G... werden nicht übernommen)
+    category: fashion
+    crop_profile: fashion
+    pose_sort: manufacturer_order
+    crawl_mechanik: vnda_browser    # NEU: VNDA-Plattform mit Anti-Bot -> Browser-Scrape (Claude-in-Chrome), nicht shopify_json
+    # Brand-Story (evergreen, von Tjorben 2026-06-15 geliefert; markentext-Quelle E72/E79)
+    brand_story_de: |
+      Rolling Brand ist ein portugiesischer Hersteller für Pole Dance und
+      Pole Fitness Wear. Inspiriert vom Floorwork kreiert die Marke Pole
+      Dance Kleidung, die nicht nur funktional ist, sondern durch
+      ausgefallene Designs voller Harmonie und Intimität besticht. Eine neue
+      Sichtweise in die Welt bringen, Inklusion, Akzeptanz und Selbstliebe
+      leben, das schreibt sich Rolling Brand auf die Fahne. Darüber hinaus
+      ist es dem Hersteller essentiell wichtig, dass die Produkte und
+      Prozesse so nachhaltig wie möglich sind. Die Rolling Community ist
+      offen, motivierend und pusht sich gegenseitig hoch. Werde Teil dieser
+      besonderen Gemeinschaft und rolle mit ihr!
+    brand_story_en: |
+      Rolling Brand is a Portuguese maker of pole dance and pole fitness
+      wear. Inspired by floorwork, the label creates pole dance clothing
+      that is not only functional but stands out through bold designs full
+      of harmony and intimacy. Bringing a new perspective into the world,
+      living inclusion, acceptance and self-love, that is what Rolling Brand
+      stands for. Beyond that, it is essential to the maker that products
+      and processes are as sustainable as possible. The Rolling community is
+      open, motivating and lifts each other up. Become part of this special
+      community and roll with it!
+    brand_story_fr: |
+      Rolling Brand est un fabricant portugais de vêtements de pole dance et
+      de pole fitness. Inspirée du floorwork, la marque crée des vêtements
+      de pole dance qui ne sont pas seulement fonctionnels, mais qui se
+      distinguent par des designs audacieux pleins d'harmonie et
+      d'intimité. Apporter un nouveau regard au monde, vivre l'inclusion,
+      l'acceptation et l'amour de soi, voilà ce que défend Rolling Brand.
+      Au-delà, il est essentiel pour la marque que les produits et les
+      processus soient aussi durables que possible. La communauté Rolling
+      est ouverte, motivante et se soutient mutuellement. Rejoins cette
+      communauté unique et roule avec elle !
+    brand_story_it: |
+      Rolling Brand è un produttore portoghese di abbigliamento per pole
+      dance e pole fitness. Ispirato al floorwork, il marchio crea
+      abbigliamento da pole dance non solo funzionale, ma che si distingue
+      per design audaci pieni di armonia e intimità. Portare una nuova
+      prospettiva nel mondo, vivere l'inclusione, l'accettazione e l'amore
+      per sé: è questo ciò in cui crede Rolling Brand. Inoltre, per il
+      marchio è essenziale che i prodotti e i processi siano il più
+      sostenibili possibile. La community Rolling è aperta, motivante e si
+      sostiene a vicenda. Entra a far parte di questa community speciale e
+      rotola con lei!
+    brand_story_es: |
+      Rolling Brand es un fabricante portugués de ropa para pole dance y
+      pole fitness. Inspirada en el floorwork, la marca crea ropa de pole
+      dance que no solo es funcional, sino que destaca por diseños atrevidos
+      llenos de armonía e intimidad. Traer una nueva mirada al mundo, vivir
+      la inclusión, la aceptación y el amor propio: eso es lo que defiende
+      Rolling Brand. Además, para la marca es esencial que los productos y
+      procesos sean lo más sostenibles posible. La comunidad Rolling es
+      abierta, motivadora y se impulsa mutuamente. ¡Únete a esta comunidad
+      especial y rueda con ella!
+    ameise_vorlagen:
+      stammdaten:       null
+      variationen:      null
+      merkmale:         null
+      attribute:        null
+      cross_selling:    null
+    max_groesse: null
+    bemerkung: "Onboarding 2026-06-15 (erster Lieferant nach HotCakes via Code-Pipeline). VNDA-Plattform mit Anti-Bot -> Crawl via Claude-in-Chrome-Browser (shopify_json greift nicht). Erst-Lieferung: 4 Ceci-Botanica-Artikel (Top/Shorts in Schwarz/Weiß), Rechnung POLESPORTSHOP APRIL26, EK je 22 USD. Größen fix XS-XL (BR-Größen PP/P/M/G nicht übernommen). marke_kurz='Rolling' vor Artikelnamen. Markentext sagt 'portugiesischer Hersteller' — laut Rechnung tatsächlich Brasilien (SAO PAULO); Tjorben-Wording belassen, ggf. prüfen."
+
 # ============================================================================
 # Schema-Dokumentation
 # ============================================================================

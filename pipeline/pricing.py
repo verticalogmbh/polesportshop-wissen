@@ -38,10 +38,13 @@ def load_ek_csv(path: Path) -> dict[tuple[str, str, str], float]:
     return ek
 
 
-def apply_pricing(vaeter: list[Vater], ek_map: dict[tuple[str, str, str], float]):
+def apply_pricing(vaeter: list[Vater], ek_map: dict[tuple[str, str, str], float],
+                  fx_to_eur: float = 1.0):
     """
-    Setzt ek_netto + vk_brutto auf jedem Vater, für den ein EK existiert.
-    -> (priced: list[Vater], missing: list[Vater]).
+    Setzt ek_netto (in EUR) + vk_brutto auf jedem Vater, für den ein EK existiert.
+    fx_to_eur: Umrechnungsfaktor falls Rechnung nicht in EUR (z.B. USD 0.8612).
+    EK_eur = EK_roh * fx; VK = EK_eur * 2.0 -> kaufm. ,90.
+    -> (priced, missing).
     """
     priced, missing = [], []
     for v in vaeter:
@@ -49,7 +52,8 @@ def apply_pricing(vaeter: list[Vater], ek_map: dict[tuple[str, str, str], float]
         if ek is None:
             missing.append(v)
             continue
-        v.ek_netto = ek
-        v.vk_brutto = round_vk_90(ek * C.AUFSCHLAGSFAKTOR)
+        ek_eur = round(ek * fx_to_eur, 2)
+        v.ek_netto = ek_eur
+        v.vk_brutto = round_vk_90(ek_eur * C.AUFSCHLAGSFAKTOR)
         priced.append(v)
     return priced, missing
