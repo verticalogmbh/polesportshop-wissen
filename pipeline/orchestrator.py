@@ -112,7 +112,9 @@ def _report(hc, priced, missing, ds, checks, written, stamp) -> str:
 
 
 if __name__ == "__main__":
-    r = run()
+    import sys
+    with_images = "--images" in sys.argv  # Bilder verarbeiten + R2-Upload (braucht Keys)
+    r = run(with_images=with_images)
     n_ok = sum(1 for c in r["checks"] if c[2])
     print(f"Self-Check: {n_ok}/16")
     for typ, (p, n) in r["written"].items():

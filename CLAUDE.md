@@ -1,6 +1,6 @@
 # CLAUDE.md — Daily-Workflow für Wissens-Management
 
-**Stand:** v1.1, 2026-05-19 (v1.21-Update: Bildpipeline reaktiviert E93, Multi-Kategorie + Farb-Lokalisierung-Korrektur E92). · **Vorheriger Stand:** v1.0, 2026-05-18 (v1.20)
+**Stand:** v1.2, 2026-06-15 (v1.22: **Daten-Pipeline nach Claude Code lokal portiert** — neues `pipeline/`-Code-Package, siehe unten + `pipeline/README.md`). · **Vorheriger Stand:** v1.1, 2026-05-19 (v1.21: Bildpipeline reaktiviert E93, Multi-Kategorie + Farb-Lokalisierung E92)
 **Zweck:** Cheatsheet für Tjorben + jede Claude-Code-Session, die das Repo `polesportshop-wissen` aufmacht. Beantwortet: Wie starte ich was, wie reviewe ich, wo finde ich was, wie commite ich kleine Edits.
 **Auch von Claude Code automatisch gelesen:** Diese Datei liegt im Repo-Root und wird von Claude Code beim Session-Start als Projekt-Kontext aufgenommen. Daher kurz und bündig halten.
 
@@ -13,6 +13,15 @@
 - **Branch:** `main` (kein Feature-Branch-Workflow)
 - **Snapshots:** Git-Tags `vMAJOR.MINOR` (z.B. `v1.20`). Aktueller Stand siehe `git describe --tags --abbrev=0`.
 - **Engine:** Claude Code lokal (Opus 4.7 / Sonnet je nach Aufgabe). Cowork (Browser-Engine) liest GitHub-Raw für Daten-Pipeline-Läufe — siehe `cowork_custom_instructions.md`.
+
+## Daten-Pipeline als Code (NEU v1.22 — lokal in Claude Code)
+
+**Großer Pivot 2026-06-15:** Die Artikelanlage-Pipeline läuft jetzt als **lokaler Python-Code im `pipeline/`-Package**, ausgeführt von Claude Code auf Tjorbens Mac — nicht mehr in Cowork. Cowork (Browser-Engine, liest die Markdown-Specs via GitHub-Raw) bleibt als **Fallback** bestehen, ist aber nicht mehr der Primärpfad. Das kippt Charter-Prinzip 2 (bewusst).
+
+- **Bedienung / Setup / Run:** siehe **`pipeline/README.md`** (Runbook — clone, venv, EK + R2-Keys, `python -m pipeline.orchestrator [--images]`). Selbst-bootstrappend: neue Session/neuer Laptop braucht nur `git clone` + Runbook.
+- **Erst-Lauf 2026-06-15:** HotCakes 21 Modelle (Rechnung #00034), 5 CSVs + Bilder auf R2, Self-Check 16/16, in WaWi importiert.
+- **Code ist führend; Markdown-Specs = Referenz + Cowork-Fallback.** Bei Logik-Änderung: Code in `pipeline/` ändern + betroffene Spec synchron halten + commit/push.
+- **Lernpunkte (in WaWi 1.11 verifiziert):** (1) Variationen-CSV braucht Spalten `Sortiernummer Variation`+`Sortiernummer Variationswert`, sonst sortiert JTL alphabetisch (L,M,S,XS) — und sie müssen in der Ameise-Vorlage gemappt sein. (2) `Bild 1`–`Bild 10` müssen in der Stammdaten-Vorlage gemappt sein. (3) Farbmerkmal qualitativ aus Kundensicht (dominante Such-Farbe, im Zweifel mehrere) statt `Bunt`-Listen.
 
 ## File-Map (Orientierung)
 
@@ -43,10 +52,11 @@
 
 → Claude Code folgt `WISSENS-UPDATE-PLAYBOOK.md` v2.0 (7-Stage-Pattern, Git-basiert). Ende: `git push origin main --tags`.
 
-**Daten-Pipeline-Lauf** (im Cowork-Chat, **nicht** in Claude Code):
-- „Verarbeite neue Artikel von <LIEFERANT>: <Details>"
+**Daten-Pipeline-Lauf** (ab v1.22 **primär in Claude Code lokal**, Code in `pipeline/`):
+- „Verarbeite neue Artikel von <LIEFERANT>: <Details>" + EK-Liste/Rechnung
 
-→ Cowork lädt `run_brief_daten.md` + `SPEC_KONSTANTEN.md` + `lieferanten_mapping.yaml` aus dem jüngsten Git-Tag via GitHub-Raw, führt Pipeline aus, gibt 5 CSVs + Lauf-Bericht per `present_files` aus.
+→ Claude Code: EK-Liste in `pipeline/EK_input/` legen, `python -m pipeline.orchestrator [--images]` laufen, 5 CSVs + Lauf-Bericht in `pipeline/outputs/`, reviewen, in WaWi-Ameise importieren. Details: **`pipeline/README.md`**.
+→ **Fallback Cowork:** lädt `run_brief_daten.md` + `SPEC_KONSTANTEN.md` + `lieferanten_mapping.yaml` aus dem jüngsten Git-Tag via GitHub-Raw und gibt 5 CSVs per `present_files` aus (nicht mehr Primärpfad).
 
 **Lieferanten-Onboarding** (im Claude-Code-Chat für Mapping/Brand-Story, dann Cowork für Probe-Lauf):
 - „Onboarde Lieferant <NAME>"
