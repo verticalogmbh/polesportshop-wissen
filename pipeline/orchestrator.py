@@ -27,6 +27,9 @@ SUPPLIERS = {
     "lunalae":  {"key": "LUNALAE", "ek": "ek_lunalae_3124.csv",
                  "content": "lunalae_content.json", "builder": "lunalae",
                  "scope": "Rechnung #3124 (Diamante May Release)"},
+    "lunalae-odessa": {"key": "LUNALAE", "ek": "ek_lunalae_odessa.csv",
+                 "content": "lunalae_odessa_content.json", "builder": "lunalae_odessa",
+                 "scope": "Rechnung #D413 (Odessa)"},
 }
 
 
