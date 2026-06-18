@@ -157,6 +157,10 @@ lieferanten:
     fx_to_eur: 0.6104               # Tageskurs 2026-06-15 (AUD->EUR); EK*fx, dann *2 -> ,90
     steuerklasse: "OSS2-undefiniert - Standard alle Länder"
     shop_url: https://www.lunalae.com
+    # Feste Standing-Quelle für ALLE Lunalae-Artikeldaten + UTC-Barcodes (EAN), immer derselbe Link (E95).
+    # Bei jeder Lunalae-Anlage durchgehen: Barcodes pro Größe, Composition, Key Features, Sizing, Care, Preise, Bild-/Video-Links.
+    # Lesen via Google-Drive-MCP read_file_content mit File-ID 1XA0ocJW7fhpiccRR8Y3-1HpL6pluAFrUcnZGhIOORhQ.
+    daten_sheet_url: https://docs.google.com/spreadsheets/d/1XA0ocJW7fhpiccRR8Y3-1HpL6pluAFrUcnZGhIOORhQ/edit?gid=1348618293
     fallback_retailer_url: null
     drive_ordner_id: null
     drive_eingang_id: null
