@@ -39,12 +39,13 @@ def load_ek_csv(path: Path) -> dict[tuple[str, str, str], float]:
 
 
 def apply_pricing(vaeter: list[Vater], ek_map: dict[tuple[str, str, str], float],
-                  fx_to_eur: float = 1.0):
+                  fx_to_eur: float = 1.0, ek_aufschlag: float = 0.0, vk_aufschlag: float = 0.0):
     """
     Setzt ek_netto (in EUR) + vk_brutto auf jedem Vater, für den ein EK existiert.
     fx_to_eur: Umrechnungsfaktor falls Rechnung nicht in EUR (z.B. USD 0.8612).
-    EK_eur = EK_roh * fx; VK = EK_eur * 2.0 -> kaufm. ,90.
-    -> (priced, missing).
+    EK_eur = EK_roh * fx; VK = (EK_eur + ek_aufschlag) * 2.0 -> kaufm. ,90 + vk_aufschlag.
+    ek_aufschlag/vk_aufschlag: Interim-Margen-Schutz (E98), fließen NUR in den VK,
+    nicht in den dokumentierten EK/GLD. -> (priced, missing).
     """
     priced, missing = [], []
     for v in vaeter:
@@ -55,7 +56,7 @@ def apply_pricing(vaeter: list[Vater], ek_map: dict[tuple[str, str, str], float]
         ek_eur = round(ek * fx_to_eur, 2)
         v.ek_original = round(ek, 2)   # Lieferanten-Währung (z.B. AUD) -> Lieferanten-Netto-EK
         v.ek_netto = ek_eur            # EUR -> GLD / VK
-        # VK = EK*2 -> ,90, plus Interim-Margen-Aufschlag (E98, erhält ,90).
-        v.vk_brutto = round(round_vk_90(ek_eur * C.AUFSCHLAGSFAKTOR) + C.VK_AUFSCHLAG_EUR, 2)
+        # VK = (EK + EK-Aufschlag)*2 -> ,90, plus VK-Aufschlag (E98, erhält ,90).
+        v.vk_brutto = round(round_vk_90((ek_eur + ek_aufschlag) * C.AUFSCHLAGSFAKTOR) + vk_aufschlag, 2)
         priced.append(v)
     return priced, missing

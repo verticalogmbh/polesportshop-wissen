@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from . import config, extract, pricing, spec, numbering, content as C, selfcheck
+from . import config, constants, extract, pricing, spec, numbering, content as C, selfcheck
 from .crawl import shopify_json
 from .csv import stammdaten, variationen, merkmale, attribute, crossselling
 from .csv._writer import write_csv
@@ -54,9 +54,13 @@ def run(supplier: str = "hotcakes", stamp: str | None = None,
         keep = import_module(f".suppliers.{cfg['builder']}", __package__).build_vaeter()
         review, exclude = [], []
 
-    # Pricing (EK aus Rechnung; fx falls Nicht-EUR)
+    # Pricing (EK aus Rechnung; fx falls Nicht-EUR). Interim-Margen-Schutz (E98)
+    # nach Herkunft: Nicht-EU -> +5 EUR auf VK; EU/EUR -> +1 EUR auf EK (via ×2 in VK).
+    is_eur = (sup.get("waehrung", "EUR") == "EUR")
+    ek_auf = constants.EK_AUFSCHLAG_EU_EUR if is_eur else 0.0
+    vk_auf = 0.0 if is_eur else constants.VK_AUFSCHLAG_AUSLAND_EUR
     ek_map = pricing.load_ek_csv(config.EK_INPUT_DIR / cfg["ek"])
-    priced, missing = pricing.apply_pricing(keep, ek_map, fx)
+    priced, missing = pricing.apply_pricing(keep, ek_map, fx, ek_aufschlag=ek_auf, vk_aufschlag=vk_auf)
 
     # Weg B (E94): A-Nummern aus dem WaWi-Nummernkreis vorab vergeben.
     artnr_next = numbering.assign(priced, start=start_artnr, persist=persist_counter)
@@ -85,7 +89,7 @@ def run(supplier: str = "hotcakes", stamp: str | None = None,
     at = attribute.build_rows(priced, sup, content)
     cs = crossselling.build_rows(priced)
 
-    checks = selfcheck.run(sd, va, mk, at, cs, priced)
+    checks = selfcheck.run(sd, va, mk, at, cs, priced, ek_aufschlag=ek_auf, vk_aufschlag=vk_auf)
 
     # Schreiben (AP12: leere CSVs nicht ausgeben)
     kz = sup["kuerzel"]

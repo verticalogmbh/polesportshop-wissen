@@ -7,7 +7,8 @@ from __future__ import annotations
 from . import spec, constants as C
 
 
-def run(stammdaten, variationen, merkmale, attribute, crossselling, vaeter) -> list[tuple]:
+def run(stammdaten, variationen, merkmale, attribute, crossselling, vaeter,
+        ek_aufschlag: float = 0.0, vk_aufschlag: float = 0.0) -> list[tuple]:
     res = []
     def chk(n, name, ok, detail=""):
         res.append((n, name, bool(ok), detail))
@@ -82,8 +83,9 @@ def run(stammdaten, variationen, merkmale, attribute, crossselling, vaeter) -> l
 
     # Preise: VK = EK*2 -> ,90 (Komma-Dezimal)
     from .pricing import round_vk_90
-    vk_calc_ok = all(round(v.vk_brutto, 2) == round(round_vk_90(v.ek_netto * C.AUFSCHLAGSFAKTOR)
-                                                    + C.VK_AUFSCHLAG_EUR, 2) for v in vaeter)
+    vk_calc_ok = all(round(v.vk_brutto, 2) == round(
+        round_vk_90((v.ek_netto + ek_aufschlag) * C.AUFSCHLAGSFAKTOR) + vk_aufschlag, 2)
+        for v in vaeter)
     fmt_ok = all(r["Brutto-VK"].endswith(",90") for r in stammdaten)
-    chk(16, f"Preise VK = EK×2 +{C.VK_AUFSCHLAG_EUR:.0f}€ kaufm. ,90 + Komma-Dezimal", vk_calc_ok and fmt_ok)
+    chk(16, "Preise VK = (EK+Aufschlag)×2 kaufm. ,90 + Komma-Dezimal", vk_calc_ok and fmt_ok)
     return res

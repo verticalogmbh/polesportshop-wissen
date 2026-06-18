@@ -11,10 +11,14 @@ from __future__ import annotations
 
 # --- Pricing (run_brief_daten.md Stage 4) --------------------------------
 AUFSCHLAGSFAKTOR = 2.0  # VK = EK_netto * 2.0, danach kaufmännisch auf ,90
-# Interim-Margen-Schutz (E98): pauschal +4,00 EUR auf den Brutto-VK, weil der GLD
-# Zoll/Versand/Bankgebühren noch nicht enthält -> Marge sonst verzerrt. +4,00 (ganzer
-# Euro) erhält das ,90-Ende. Zukunft: pro Lieferant aus historischen Mittelwerten (Backlog).
-VK_AUFSCHLAG_EUR = 4.00
+# Interim-Margen-Schutz (E98), bis der GLD Zoll/Versand/Bankgebühren enthält (B68).
+# Nach Herkunft differenziert:
+# - Nicht-EU-Lieferant (Zoll + Versand + Bankgebühren): +5,00 EUR auf den Brutto-VK
+#   (ganzer Euro erhält das ,90-Ende).
+# - EU/EUR-Lieferant (kein Zoll, geringe Versandkosten): +1,00 EUR auf den EK -> via ×2 in den VK.
+# Erkennung EU vs. Nicht-EU über die Lieferanten-Währung (EUR = EU).
+VK_AUFSCHLAG_AUSLAND_EUR = 5.00
+EK_AUFSCHLAG_EU_EUR = 1.00
 
 # --- Sprachen ------------------------------------------------------------
 LANGUAGES = ["de", "en", "fr", "it", "es"]  # DE ist Master (Charter-Prinzip 6)
