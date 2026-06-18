@@ -33,6 +33,7 @@
 - **E95** — EAN/GTIN-Spalte im Stammdaten-Schema (48→49) + Barcode-Anreicherung pro Größe aus Lieferanten-Referenz (Lunalae UTC-Barcodes)
 - **E97** — Lieferanten-Netto-EK in Original-Währung (AUD) statt EUR + Lieferzeit/Lieferdatum pro Lieferant + Lieferantenbestellungs-Builder (Ameise-Import)
 - **E98** — Interim-Margen-Aufschlag: VK differenziert nach Herkunft (Nicht-EU +5€ VK, EU +1€ EK) + GLD +2,30€/Stück (Buchhaltungs-Marge); Lieferzeit aus Stammdaten raus; Zukunft pro Lieferant aus historischen Mittelwerten (B68)
+- **E99** — Lieferantenbestellung als fester 6. Pipeline-Output (wenn `menge_<x>.csv` vorliegt) + universelle Ameise-Vorlage (Header-Felder als Spalten) + Referenz-Konvention (pipe-getrennt, beschreibend, im Feld „Zugehörige Auftragsnummer")
 
 ---
 
@@ -594,3 +595,21 @@ E89-Sara-Workflow bleibt unverändert (Sara entfernt 546 nach Approval). Vorlage
 *Code:* `pipeline/constants.py` (`VK_AUFSCHLAG_AUSLAND_EUR = 5.00`, `EK_AUFSCHLAG_EU_EUR = 1.00`, `GLD_AUFSCHLAG_EUR = 2.30`), `pipeline/model.py` (`Vater.gld`), `pipeline/pricing.py` (`apply_pricing(..., ek_aufschlag, vk_aufschlag)` + `v.gld`), `pipeline/orchestrator.py` (EU-Erkennung über `waehrung`), `pipeline/csv/stammdaten.py` (GLD = `v.gld`, Lieferzeit leer), `pipeline/selfcheck.py` (#16 angepasst).
 
 *Wirkung (2026-06-18):* Lunalae (AUD, +5 VK, +2,30 GLD): Odessa Shorts VK 35,90 → 40,90 / GLD 18,01 → 20,31, Odessa Top VK 41,90 → 46,90 / GLD 21,06 → 23,36, Imogen Bodysuit VK 57,90 → 62,90 / GLD 28,99 → 31,29. Rolling (USD, +5 VK): Ceci 37,90 → 42,90. HotCakes (EUR, +1 EK): Top Peonies 53,90 → 55,90, Shorts 41,90 → 43,90. Alle VK weiter auf ,90, je Self-Check 16/16.
+
+---
+
+**E99 — Lieferantenbestellung als fester 6. Pipeline-Output + Referenz-Konvention + universelle Ameise-Vorlage. (NEU 2026-06-18)**
+
+*Kontext:* Die Lieferantenbestellung (E97, `csv/bestellung.py`) ist aus der Prototyp- in die Produktiv-Phase gegangen — Lunalae (72 Pos) + Rolling (20 Pos) erfolgreich in WaWi importiert (BE20261014465/466). Damit wird sie fester Bestandteil der Pipeline.
+
+*Entscheidung:*
+- **6. Output by default:** Der Orchestrator gibt neben den 5 Artikel-CSVs eine `6_Lieferantenbestellung_<KZ>_<stamp>.csv` aus, sobald `EK_input/menge_<x>.csv` vorliegt (Registry-Key `menge`). Lieferdatum = Importdatum + `lieferzeit_tage` (Mapping). So entsteht die Bestellung beim Standard-Lauf direkt mit (Tjorben-Direktive: „beim ersten Upload normal mit ausgeben").
+- **Universelle Ameise-Vorlage:** Header-Felder **Lieferant / Warenlager / Firma / Benutzer als CSV-Spalten** statt Ameise-Standardwerte → EINE Importvorlage für alle Lieferanten, keine pro-Lieferant-Vorlage. Warenlager/Firma/Benutzer sind WaWi-instanz-konstant (Defaults in `bestellung.py`: `Standardlager_WMS` / `Verticalo GmbH - Polesportshop` / `Tjorben Becker`), Lieferant = anzeigename pro Lauf.
+- **Referenz-Konvention (Feld „Zugehörige Auftragsnummer"):** beschreibend, stichpunktartig, **einzeilig mit Pipe ` | ` als Trenner** — Aufbau `Rechnung <Nr> | <Kollektion/Quelle>` (z.B. `Rechnung #3124 | Diamante`, `Rechnung #D413 | Odessa`). Pro Quelle gesetzt (bei mehreren Rechnungen je Position die richtige); fehlt eine Nummer → sinnvoller Zeitstempel (Rolling `APRIL26`). „Jede Info hilft dem Lager bei der Zuordnung." Künftig pipe-getrennt weitere Stichpunkte (vorab an Lieferanten vergebene B-/Bestellnummern, die auf Etikett/Dokumenten stehen — separates Thema, später).
+- **EK NICHT in der BE:** Einstellung „Netto-EK aus Lieferantenartikel übernehmen = Ja" zieht den (Original-Währungs-)EK aus dem Artikel (E97).
+
+*Schema BE:* `Artikelnummer; Menge; Lieferdatum; Zugehörige Auftragsnummer; Lieferant; Warenlager; Firma; Benutzer`. Identifizieren anhand Artikelnummer (A-Nummer, JTL-Default). Ameise-Import-Typ „Lieferanten > Lieferantenbestellungen", UTF-8.
+
+*Mengen-Quelle:* `EK_input/menge_<lieferant>.csv` (`modell_basis;garment_type;farbe;groesse;menge`) aus der Bestell-Rechnung. Diamante-Mengen aus Bestell-Mail-Regel, Odessa/Rolling aus Rechnung (gegen Summe verifiziert).
+
+*Code:* `pipeline/orchestrator.py` (6. Output + Registry-Key `menge` + Param `bestell_referenz`), `pipeline/csv/bestellung.py` (Header-Spalten + Referenz-Konvention).

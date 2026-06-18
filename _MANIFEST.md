@@ -1,14 +1,18 @@
 # Snapshot-Manifest
 
-**Snapshot-Tag:** `v1.24` (Konsolidierungs-Build — Wissensbasis verschlankt, Code-Pipeline-Stand)
-**Stand:** 2026-06-18 (Berlin) · **Vorgänger:** `v1.23` (Code-only-Refactor: Charter-Pivot + Cowork deprecated) · `v1.22` (Daten-Pipeline-Code-Pivot) · E94–E98 als Daily-Commits dazwischen
+**Snapshot-Tag:** `v1.25` (Lieferantenbestellung produktiv + als fester 6. Pipeline-Output, E99)
+**Stand:** 2026-06-18 (Berlin) · **Vorgänger:** `v1.24` (Konsolidierungs-Build — Wissensbasis verschlankt) · `v1.23` (Code-only-Refactor) · E94–E99
 **Engine:** Claude Code lokal (Opus 4.8) · **Repo:** `https://github.com/verticalogmbh/polesportshop-wissen` · **Branch:** `main`
 
 > **Lean-Hinweis (v1.23):** Dieses Manifest ist bewusst schlank. Datei-Integrität/Historie liefert **git** (kein SHA256-Block mehr), die E-Nummern der `SPEC_KONSTANTEN.md`-Index, offene Punkte der `BACKLOG.md`. Pro Snapshot nur noch: Build-Trail + Architektur-Stand + Slot-Pattern.
 
 ---
 
-## 1. Was dieser Build gemacht hat (Konsolidierung)
+## 0. v1.25 — Lieferantenbestellung produktiv (E99)
+
+Lieferantenbestellung (E97/E99) ist produktiv: Lunalae (72 Pos) + Rolling (20 Pos) in WaWi importiert. Jetzt **fester 6. Pipeline-Output** (`6_Lieferantenbestellung_<x>.csv`, wenn `menge_<x>.csv` vorliegt). Universelle Ameise-Vorlage (Header-Felder als Spalten). Referenz pipe-getrennt + beschreibend (Feld „Zugehörige Auftragsnummer"). Lieferdatum = Importdatum + `lieferzeit_tage`. Doku E99 (Decision-Log + SPEC-Index + CLAUDE.md).
+
+## 1. Vorgänger-Build (v1.24, Konsolidierung)
 
 Ziel: schlank + agil bleiben für die kommenden ~50 Lieferanten. Sicherheit vor Risiko — **archiviert/gekennzeichnet statt gelöscht.**
 - **Cowork-Docs als Cold-Storage gekennzeichnet** (`cowork_anweisung_datenimports.md`, `cowork_anweisung_bildpipeline.md`, `cowork_custom_instructions.md`, `run_brief_daten.md`): deprecated seit v1.22-Code-Pivot, Deprecation-Kopf ergänzt. **Nicht verschoben** (in ~15 Files querverlinkt → Verschieben bräche Referenzen). Voller Inhalt bleibt + via git-Tag `v1.21`.

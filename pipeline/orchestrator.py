@@ -1,19 +1,21 @@
 """
-Orchestrator (P10, generalisiert): Lauf für einen Lieferanten -> 5 CSVs + Bericht.
+Orchestrator (P10, generalisiert): Lauf für einen Lieferanten -> 5 CSVs
+(+ optional 6. Lieferantenbestellung) + Bericht.
 
 Stages: Väter-Quelle (Shopify-Crawl ODER Browser-Scrape-Builder) -> Pricing
-(EK aus Rechnung, ggf. fx USD->EUR) -> Content (Hybrid) -> 5 CSVs -> Self-Check
--> optional Bilder/R2 -> Bericht.
+(EK aus Rechnung, ggf. fx USD->EUR) -> A-Nummern -> EAN -> Content -> Bilder/R2
+-> 5 CSVs -> Self-Check -> Lieferantenbestellung (E99, wenn menge_<x>.csv vorliegt)
+-> Bericht.
 
-Aufruf: python -m pipeline.orchestrator [--supplier hotcakes|rolling] [--images]
+Aufruf: python -m pipeline.orchestrator [--supplier hotcakes|rolling] [--images] [--referenz "..."]
 """
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from . import config, constants, extract, pricing, spec, numbering, content as C, selfcheck
 from .crawl import shopify_json
-from .csv import stammdaten, variationen, merkmale, attribute, crossselling
+from .csv import stammdaten, variationen, merkmale, attribute, crossselling, bestellung
 from .csv._writer import write_csv
 
 # Lieferanten-Registry: builder=None -> Shopify-Crawl; sonst Modul mit build_vaeter()
@@ -23,21 +25,22 @@ SUPPLIERS = {
                  "scope": "Rechnung #00034"},
     "rolling":  {"key": "ROLLING_CLOTHING", "ek": "ek_rolling_april26.csv",
                  "content": "rolling_content.json", "builder": "rolling",
+                 "menge": "menge_rolling.csv",
                  "scope": "Rechnung APRIL26 (4 Ceci)"},
     "lunalae":  {"key": "LUNALAE", "ek": "ek_lunalae_3124.csv",
                  "content": "lunalae_content.json", "builder": "lunalae",
-                 "ean": "ean_lunalae.csv",
+                 "ean": "ean_lunalae.csv", "menge": "menge_lunalae.csv",
                  "scope": "Rechnung #3124 (Diamante May Release)"},
     "lunalae-odessa": {"key": "LUNALAE", "ek": "ek_lunalae_odessa.csv",
                  "content": "lunalae_odessa_content.json", "builder": "lunalae_odessa",
-                 "ean": "ean_lunalae.csv",
+                 "ean": "ean_lunalae.csv", "menge": "menge_lunalae.csv",
                  "scope": "Rechnung #D413 (Odessa)"},
 }
 
 
 def run(supplier: str = "hotcakes", stamp: str | None = None,
         with_images: bool = False, start_artnr: int | None = None,
-        persist_counter: bool = False) -> dict:
+        persist_counter: bool = False, bestell_referenz: str = "") -> dict:
     cfg = SUPPLIERS[supplier]
     stamp = stamp or datetime.now().strftime("%Y-%m-%d_%H%M")
     run_date = datetime.now().strftime("%d.%m.%Y")
@@ -109,6 +112,20 @@ def run(supplier: str = "hotcakes", stamp: str | None = None,
         write_csv(p, cols, rows, quote_all=qa)
         written[typ] = (p, len(rows))
 
+    # E99: Lieferantenbestellung als 6. Output, wenn Bestell-Mengen vorliegen.
+    menge_file = cfg.get("menge")
+    if menge_file and (config.EK_INPUT_DIR / menge_file).exists():
+        lz = int(sup.get("lieferzeit_tage", 0) or 0)
+        lieferdatum = (datetime.now() + timedelta(days=lz)).strftime("%d.%m.%Y")
+        be = bestellung.build_rows(
+            bestellung.load_menge(config.EK_INPUT_DIR / menge_file),
+            bestellung.artnr_map(priced), lieferdatum,
+            referenz=bestell_referenz, lieferant=sup["anzeigename"])
+        if be:
+            p = out / f"6_Lieferantenbestellung_{kz}_{stamp}.csv"
+            write_csv(p, bestellung.COLUMNS, be, quote_all=False)
+            written["Lieferantenbestellung"] = (p, len(be))
+
     artnr_range = (priced[0].artikelnummer, priced[-1].artikelnummer, artnr_next) if priced else None
     report = _report(sup, cfg, priced, missing, review, exclude, checks, written, stamp,
                      with_images, artnr_range)
@@ -169,7 +186,8 @@ if __name__ == "__main__":
     if "--supplier" in sys.argv:
         supplier = sys.argv[sys.argv.index("--supplier") + 1]
     with_images = "--images" in sys.argv
-    r = run(supplier=supplier, with_images=with_images)
+    referenz = sys.argv[sys.argv.index("--referenz") + 1] if "--referenz" in sys.argv else ""
+    r = run(supplier=supplier, with_images=with_images, bestell_referenz=referenz)
     n_ok = sum(1 for c in r["checks"] if c[2])
     print(f"[{supplier}] Self-Check: {n_ok}/16")
     for typ, (p, n) in r["written"].items():
