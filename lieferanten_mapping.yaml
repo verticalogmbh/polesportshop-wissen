@@ -30,10 +30,58 @@ lieferanten:
     kuerzel: POLE-ADDICT
     hersteller: POLE ADDICT
     marke_kurz: "POLE ADDICT"   # NEU mit v1.12 — bei POLE ADDICT identisch zur Hersteller-Spalte, weil keine kürzere Marketing-Form existiert. Feld trotzdem explizit gepflegt für Konsistenz.
-    herkunftsland: PT
+    artnr_prefix: PA            # NEU 2026-06-21 (Code-Pipeline-Onboarding) — Präfix für sprechende Artikelnummer (Lieferant), z.B. PA-Goddess-Top-Black. Bestätigt Tjorben.
+    herkunftsland: PL           # KORRIGIERT 2026-06-21: war PT (Portugal), faktisch Polen — Rechnung WDT/10 + Produktseite "designed and sewn in Poland". Bestätigt Tjorben.
     waehrung: EUR
+    lieferzeit_tage: 45         # NEU 2026-06-21 (Tjorben) — Standard-Lieferzeit POLE ADDICT: BE-Lieferdatum = Importdatum + 45 Tage (E97/E99)
     steuerklasse: "OSS2-undefiniert - Standard alle Länder"
-    shop_url: https://poleaddict.com
+    shop_url: https://shop.poleaddict.eu   # KORRIGIERT 2026-06-21: war poleaddict.com; realer Shop (PrestaShop) ist shop.poleaddict.eu
+    # Brand-Story = offizieller bestehender Markentext (Tjorben 2026-06-21, DE geliefert; en/fr/it/es übersetzt). markentext-Quelle E72/E79.
+    brand_story_de: |
+      Pole Addict bzw. die Menschen dahinter sind dem Pole Dance und Pole
+      Fitness genauso verfallen wie du. Ziel der Marke ist es, schöne,
+      farbenfrohe und strapazierfähige Kleidung zu erschwinglichen Preisen zu
+      bieten, die jeden Pole Move mitmacht. Die Pole Dance Bekleidung von Pole
+      Addict ist so kreiert, dass sich jede Trägerin in ihr wohlfühlt. Die
+      Designs überzeugen durch faszinierende Muster, kräftige Farben und ihre
+      große Kombinationsvielfalt. Wer auf der Suche nach außergewöhnlicher
+      Polewear zu fairen Preisen ist, wird hier mit Sicherheit fündig.
+    brand_story_en: |
+      Pole Addict, and the people behind it, are just as devoted to pole dance
+      and pole fitness as you are. The brand's goal is to offer beautiful,
+      colourful and hard-wearing clothing at affordable prices that keeps up
+      with every pole move. Pole Addict's pole dance wear is created so that
+      every woman feels good in it. The designs win you over with fascinating
+      patterns, bold colours and their huge mix-and-match variety. Anyone
+      looking for extraordinary polewear at fair prices will be sure to find it
+      here.
+    brand_story_fr: |
+      Pole Addict, et les personnes derrière la marque, sont aussi passionnées
+      de pole dance et de pole fitness que toi. L'objectif de la marque est de
+      proposer des vêtements beaux, colorés et résistants à des prix
+      abordables, qui suivent chaque mouvement de pole. Les vêtements de pole
+      dance de Pole Addict sont conçus pour que chaque femme s'y sente bien.
+      Les designs séduisent par des motifs fascinants, des couleurs vives et
+      leur grande variété de combinaisons. Quiconque cherche une polewear
+      hors du commun à des prix justes la trouvera assurément ici.
+    brand_story_it: |
+      Pole Addict, e le persone dietro al marchio, sono appassionate di pole
+      dance e pole fitness proprio come te. L'obiettivo del marchio è offrire
+      abbigliamento bello, colorato e resistente a prezzi accessibili, che
+      assecondi ogni movimento di pole. L'abbigliamento da pole dance di Pole
+      Addict è creato perché ogni donna si senta a proprio agio. I design
+      conquistano con motivi affascinanti, colori intensi e la loro grande
+      versatilità di abbinamento. Chi cerca polewear fuori dal comune a prezzi
+      onesti la troverà sicuramente qui.
+    brand_story_es: |
+      Pole Addict, y las personas detrás de la marca, están tan entregadas al
+      pole dance y al pole fitness como tú. El objetivo de la marca es ofrecer
+      ropa bonita, colorida y resistente a precios asequibles, que acompañe
+      cada movimiento de pole. La ropa de pole dance de Pole Addict está
+      creada para que cada mujer se sienta a gusto con ella. Los diseños
+      convencen por sus patrones fascinantes, sus colores intensos y su gran
+      variedad de combinaciones. Quien busque polewear fuera de lo común a
+      precios justos seguro la encontrará aquí.
     fallback_retailer_url: null
     drive_ordner_id: 1uNJCmmGHxHqoSeK9iTyCKtUHLusB57js
     drive_eingang_id: 1SaQsPW6qmEErRL-U_iwhDutLsA3P3QJP

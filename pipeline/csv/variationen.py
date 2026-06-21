@@ -12,8 +12,13 @@ from .. import spec, constants as C
 from ..model import Vater
 
 
-def _rank(groesse: str) -> int:
-    return C.GROESSEN_RANG.index(groesse) if groesse in C.GROESSEN_RANG else -1
+def _rank(groesse: str, position: int = 0) -> int:
+    # Standardgrößen behalten ihren absoluten Rang (XS=0..XXL=5). Nicht-Standard-
+    # Werte (z.B. kombinierte Cup-Größen „XS/S Fairy") sortieren stabil nach ihrer
+    # Quell-Position, hinter den Standardgrößen.
+    if groesse in C.GROESSEN_RANG:
+        return C.GROESSEN_RANG.index(groesse)
+    return len(C.GROESSEN_RANG) + position
 
 COLUMNS = [
     "Artikelnummer", "Variationsname", "Darstellungsform", "Variationswertname",
@@ -34,8 +39,8 @@ def build_rows(vaeter: list[Vater], supplier: dict, run_date: str) -> list[dict]
     for v in vaeter:
         # Weg B (E94): Variation referenziert den Vater über dessen A-Nummer.
         # Aufsteigend ausgeben; die Anzeige-Reihenfolge steuert die Sortiernummer.
-        for k in sorted(v.kinder, key=lambda x: _rank(x.groesse)):
-            sort_wert = _rank(k.groesse) + 1  # XS=1, S=2, M=3, L=4, XL=5
+        for k in sorted(v.kinder, key=lambda x: _rank(x.groesse, x.position)):
+            sort_wert = _rank(k.groesse, k.position) + 1  # XS=1..XL=5; kombinierte Werte dahinter
             rows.append({
                 "Artikelnummer": v.artikelnummer,
                 "Variationsname": VARIATIONSNAME["de"], "Darstellungsform": "IMGSWATCHES",

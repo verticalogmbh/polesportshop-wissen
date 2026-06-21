@@ -180,4 +180,10 @@ def vater_artnr(garment_type: str, modell: str, farbe_raw: str) -> str:
 
 
 def kind_artnr(vater_nr: str, groesse: str) -> str:
-    return f"{vater_nr}_{groesse}"
+    # Slug-sicherer Suffix: Standardgrößen (XS/S/M/L/XL) bleiben unverändert.
+    # Beschreibende Klammer-Zusätze (z.B. "XS/S Fairy (kleinere Oberweite)") sind
+    # reine Anzeige und fliegen aus der ID; "/" und Spaces werden ID-tauglich.
+    import re
+    base = re.sub(r"\s*\(.*?\)", "", groesse)
+    suffix = base.replace("/", "").replace(" ", "-").strip("-")
+    return f"{vater_nr}_{suffix}"
