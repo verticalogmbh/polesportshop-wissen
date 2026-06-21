@@ -157,21 +157,46 @@ def build_originals_index(client, prefix: str, name_map: dict | None = None,
         dt = _latest(items)
         marker = dt.strftime("%Y-%m") if dt else ""
         thumbs = "".join(
-            f'<a href="{u}" target="_blank" download>'
+            f'<a class="dl" href="{u}" target="_blank" download>'
             f'<img loading="lazy" src="{u}" alt="{artnr}-{j+1}"></a>'
             for j, u in enumerate(_urls(items)))
-        cards.append(f'<section><h2>{title} <span class="badge">{marker} · #{num}</span></h2>'
-                     f'<div class="g">{thumbs}</div></section>')
+        cards.append(
+            f'<section><h2>{title} <span class="badge">{marker} · #{num}</span>'
+            f'<button class="dlall" data-name="{a or artnr}" onclick="zipDownload(this)">⬇ Alle herunterladen</button>'
+            f'</h2><div class="g">{thumbs}</div></section>')
     html = f"""<!doctype html><html lang="de"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{titel}</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <style>body{{font-family:system-ui,sans-serif;margin:0;background:#faf7f5;color:#222}}
 header{{padding:24px;background:#fff;border-bottom:1px solid #eee}}h1{{margin:0;font-size:20px}}
+.crumbs{{font-size:13px;margin-bottom:10px}}.crumbs a{{color:#a0508c;text-decoration:none}}.crumbs a:hover{{text-decoration:underline}}
 .sub{{color:#888;font-size:13px;margin-top:4px}}section{{padding:16px 24px}}
-h2{{font-size:15px;color:#444;margin:8px 0}}.badge{{color:#a0508c;font-size:12px;font-weight:600;margin-left:6px}}.artnr{{color:#555;font-size:12px;font-weight:600;margin-left:4px}}.g{{display:flex;flex-wrap:wrap;gap:10px}}
+h2{{font-size:15px;color:#444;margin:8px 0;display:flex;align-items:center;flex-wrap:wrap;gap:8px}}
+.badge{{color:#a0508c;font-size:12px;font-weight:600}}.artnr{{color:#555;font-size:12px;font-weight:600;margin-left:4px}}
+.dlall{{margin-left:auto;background:#a0508c;color:#fff;border:0;border-radius:6px;padding:6px 12px;font-size:13px;cursor:pointer}}.dlall:disabled{{opacity:.6;cursor:default}}
+.g{{display:flex;flex-wrap:wrap;gap:10px}}
 .g img{{height:220px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.12);object-fit:cover}}
-a{{display:inline-block}}</style></head><body>
-<header><h1>{titel}</h1><div class="sub">Klick auf ein Bild = Original in voller Auflösung (zum Download). {sum(len(u) for u in groups.values())} Bilder, {len(groups)} Artikel.</div></header>
+.g a{{display:inline-block}}</style></head><body>
+<header><div class="crumbs"><a href="../index.html">&larr; Alle Kollektionen</a></div><h1>{titel}</h1>
+<div class="sub">Klick auf ein Bild = Original in voller Auflösung. Oder „Alle herunterladen" je Artikel als ZIP. {sum(len(u) for u in groups.values())} Bilder, {len(groups)} Artikel.</div></header>
 {''.join(cards)}
+<script>
+async function zipDownload(btn){{
+  const sec=btn.closest('section'), links=[...sec.querySelectorAll('a.dl')], name=btn.dataset.name||'bilder';
+  const orig=btn.textContent; btn.disabled=true; btn.textContent='Lädt…';
+  try{{
+    const zip=new JSZip();
+    for(let i=0;i<links.length;i++){{
+      const u=links[i].href, r=await fetch(u), b=await r.blob();
+      const ext=(u.split('.').pop()||'jpg').split('?')[0];
+      zip.file(name+'-'+(i+1)+'.'+ext, b);
+    }}
+    saveAs(await zip.generateAsync({{type:'blob'}}), name+'.zip');
+  }}catch(e){{alert('Download fehlgeschlagen: '+e);}}
+  btn.disabled=false; btn.textContent=orig;
+}}
+</script>
 </body></html>"""
     _put(client, f"originals/{prefix}/index.html", html.encode("utf-8"), "text/html; charset=utf-8")
     return f"{config.R2_PUBLIC_BASE}/originals/{prefix}/index.html"
