@@ -149,14 +149,15 @@ def build_originals_index(client, prefix: str, name_map: dict | None = None,
         num = i + 1
         head = name_map.get(artnr, artnr)
         a = aidx.get(artnr, "")
-        anr = f' <span class="artnr">{a}</span>' if a else ""
+        # A-Nummer VOR dem Artikelnamen, mit Bindestrich (Wunsch: Sarah sieht sofort die ArtNr).
+        title = f'<span class="artnr">{a}</span> - {head}' if a else head
         dt = _latest(items)
         marker = dt.strftime("%Y-%m") if dt else ""
         thumbs = "".join(
             f'<a href="{u}" target="_blank" download>'
             f'<img loading="lazy" src="{u}" alt="{artnr}-{j+1}"></a>'
             for j, u in enumerate(_urls(items)))
-        cards.append(f'<section><h2>{head}{anr} <span class="badge">{marker} · #{num}</span></h2>'
+        cards.append(f'<section><h2>{title} <span class="badge">{marker} · #{num}</span></h2>'
                      f'<div class="g">{thumbs}</div></section>')
     html = f"""<!doctype html><html lang="de"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{titel}</title>
@@ -217,7 +218,11 @@ def build_master_index(client, titel: str = "Originalbilder — alle Kollektione
         p, n_art, n_img, latest, preview, span = entries[i]
         num = i + 1
         marker = latest.strftime("%Y-%m") if latest else ""
-        spantxt = f'<span class="artnr">{span[0]} – {span[1]}</span>' if span else ""
+        # Einzelartikel -> nur eine Nummer, sonst von–bis.
+        spantxt = ""
+        if span:
+            s = span[0] if span[0] == span[1] else f"{span[0]} – {span[1]}"
+            spantxt = f'<span class="artnr">{s}</span>'
         name = namen.get(p, p.title())
         prev_html = f'<img loading="lazy" src="{preview}" alt="{name}">' if preview else ""
         cards.append(
