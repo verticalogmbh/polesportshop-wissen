@@ -140,12 +140,15 @@ def build_originals_index(client, prefix: str, name_map: dict | None = None,
     groups = _list_originals(client, prefix)
     name_map = name_map or {}
     aidx = _read_artikel_index(client, prefix)
-    # Chronologischer Rang: ältester Artikel = #1 (stabil); Anzeige neueste zuerst.
-    asc = sorted(groups.items(),
-                 key=lambda kv: _latest(kv[1]).timestamp() if _latest(kv[1]) else 0)
+
+    def _anum(artnr):
+        m = re.search(r"(\d+)", aidx.get(artnr, "") or "")
+        return int(m.group(1)) if m else 10 ** 12  # ohne A-Nummer ans Ende
+
+    # Aufsteigend nach Artikelnummer (übersichtlich); #1 = niedrigste ArtNr.
+    ordered = sorted(groups.items(), key=lambda kv: _anum(kv[0]))
     cards = []
-    for i in range(len(asc) - 1, -1, -1):
-        artnr, items = asc[i]
+    for i, (artnr, items) in enumerate(ordered):
         num = i + 1
         head = name_map.get(artnr, artnr)
         a = aidx.get(artnr, "")
