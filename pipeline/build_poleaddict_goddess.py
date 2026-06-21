@@ -177,8 +177,9 @@ def main() -> None:
         v.r2_bild_urls = r2.upload_vater(client, sup["r2_prefix"], vnr, imgs)
         r2.update_artikel_index(client, sup["r2_prefix"], {vnr: v.artikelnummer})
         name_de = spec.vater_artikelname(sup["marke_kurz"], v.garment_type, v.modell_basis, v.farbe_raw, "de")
+        marke = sup.get("hersteller") or sup.get("marke_kurz") or sup["anzeigename"]
         r2.build_originals_index(client, sup["r2_prefix"], {vnr: name_de},
-                                 titel=f"{sup['anzeigename']} Originalbilder")
+                                 titel=f"{marke} Originalbilder")
         r2.build_master_index(client)
         print(f"Bilder: {len(v.r2_bild_urls)} verarbeitet + R2-Upload ({sup['r2_prefix']})")
 

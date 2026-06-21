@@ -133,6 +133,11 @@ def _latest(items: list):
     return max(ds) if ds else None
 
 
+def _safe(s: str) -> str:
+    """Dateinamen-tauglich machen (verbotene Zeichen raus, Whitespace normalisieren)."""
+    return re.sub(r"\s+", " ", re.sub(r'[\\/:*?"<>|]+', "", s)).strip()
+
+
 def build_originals_index(client, prefix: str, name_map: dict | None = None,
                           titel: str = "Originalbilder") -> str:
     """Galerie-HTML aller Originale generieren + nach originals/<prefix>/index.html
@@ -154,15 +159,17 @@ def build_originals_index(client, prefix: str, name_map: dict | None = None,
         a = aidx.get(artnr, "")
         # A-Nummer VOR dem Artikelnamen, mit Bindestrich (Wunsch: Sarah sieht sofort die ArtNr).
         title = f'<span class="artnr">{a}</span> - {head}' if a else head
+        # Lesbarer Dateiname: A-Nummer + Hersteller/Modell, z.B. „A1009303 Pole Addict Top Goddess Schwarz".
+        filebase = _safe(f"{a} {head}")
         dt = _latest(items)
         marker = dt.strftime("%Y-%m") if dt else ""
         thumbs = "".join(
-            f'<a class="dl" href="{u}" target="_blank" download>'
-            f'<img loading="lazy" src="{u}" alt="{artnr}-{j+1}"></a>'
+            f'<a class="dl" href="{u}" target="_blank" download="{filebase}-{j+1}.{u.rsplit(".", 1)[-1].split("?")[0]}">'
+            f'<img loading="lazy" src="{u}" alt="{filebase}-{j+1}"></a>'
             for j, u in enumerate(_urls(items)))
         cards.append(
             f'<section><h2>{title} <span class="badge">{marker} · #{num}</span>'
-            f'<button class="dlall" data-name="{a or artnr}" onclick="zipDownload(this)">⬇ Alle herunterladen</button>'
+            f'<button class="dlall" data-name="{filebase}" onclick="zipDownload(this)">⬇ Alle herunterladen</button>'
             f'</h2><div class="g">{thumbs}</div></section>')
     html = f"""<!doctype html><html lang="de"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{titel}</title>
@@ -181,7 +188,7 @@ h2{{font-size:15px;color:#444;margin:8px 0;display:flex;align-items:center;flex-
 .g a{{display:inline-block}}</style></head><body>
 <header><div class="crumbs"><a href="../index.html">&larr; Alle Kollektionen</a></div><h1>{titel}</h1>
 <div class="sub">Klick auf ein Bild = Original in voller Auflösung. „Alle herunterladen" = ein Artikel als ZIP. {sum(len(u) for u in groups.values())} Bilder, {len(groups)} Artikel.</div>
-<button class="collbtn" data-name="{prefix}" onclick="zipAll(this)">⬇ Ganze Kollektion als ZIP</button></header>
+<button class="collbtn" data-name="{_safe(titel.replace(' Originalbilder', ''))}" onclick="zipAll(this)">⬇ Ganze Kollektion als ZIP</button></header>
 {''.join(cards)}
 <script>
 async function zipDownload(btn){{
