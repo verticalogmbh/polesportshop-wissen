@@ -28,8 +28,8 @@ lieferanten:
   POLE_ADDICT_WORKOUT_WEAR:
     anzeigename: "POLE ADDICT - WORKOUT WEAR"
     kuerzel: POLE-ADDICT
-    hersteller: POLE ADDICT
-    marke_kurz: "POLE ADDICT"   # NEU mit v1.12 — bei POLE ADDICT identisch zur Hersteller-Spalte, weil keine kürzere Marketing-Form existiert. Feld trotzdem explizit gepflegt für Konsistenz.
+    hersteller: "Pole Addict"   # KORRIGIERT 2026-06-21: Schreibweise „Pole Addict" (nicht Caps) — = WaWi-Herstellername; landet in Stammdaten-Hersteller + markentext-H2. Der LIEFERANT (anzeigename) bleibt Caps „POLE ADDICT - WORKOUT WEAR".
+    marke_kurz: "Pole Addict"   # KORRIGIERT 2026-06-21: Marke im Artikelnamen/Texten/SEO „Pole Addict" (nicht Caps). Identisch zur Hersteller-Schreibweise.
     artnr_prefix: PA            # NEU 2026-06-21 (Code-Pipeline-Onboarding) — Präfix für sprechende Artikelnummer (Lieferant), z.B. PA-Goddess-Top-Black. Bestätigt Tjorben.
     herkunftsland: PL           # KORRIGIERT 2026-06-21: war PT (Portugal), faktisch Polen — Rechnung WDT/10 + Produktseite "designed and sewn in Poland". Bestätigt Tjorben.
     waehrung: EUR
