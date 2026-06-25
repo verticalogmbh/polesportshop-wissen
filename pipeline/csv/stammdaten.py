@@ -62,6 +62,9 @@ def _seo_fields(names: dict[str, str]) -> dict:
 
 def build_rows(vaeter: list[Vater], supplier: dict, run_date: str) -> list[dict]:
     marke = supplier["marke_kurz"]
+    # Barcode-Ziel: echte GTIN/UTC -> "EAN" (Default, z.B. Lunalae); Hersteller-Codes
+    # (alphanumerisch, z.B. Shark „500425210XS") -> "HAN" (kein gültiger GTIN).
+    barcode_feld = supplier.get("barcode_feld", "EAN")
     rows: list[dict] = []
     # Weg B (E94): Artikelnummer = vorab vergebene A-Nummer aus dem WaWi-Nummernkreis
     # (numbering.assign). Verknüpfung Vater<->Kind + Cross-Selling über die A-Nummer;
@@ -99,7 +102,8 @@ def build_rows(vaeter: list[Vater], supplier: dict, run_date: str) -> list[dict]
                 r = _base_row(supplier, run_date)
                 r.update({
                     "Artikelnummer": k.artikelnummer, "Artikelnummer (Lieferant)": knr,
-                    "EAN": k.ean or "",   # GTIN/UTC pro Größe (E95), nur Kind
+                    "EAN": (k.ean or "") if barcode_feld == "EAN" else "",   # GTIN/UTC pro Größe (E95), nur Kind
+                    "HAN": (k.ean or "") if barcode_feld == "HAN" else "",   # Hersteller-Barcode (z.B. Shark) ins HAN-Feld
                     "Identifizierungsspalte Vaterartikel": v.artikelnummer,
                     "Artikelname": knames["de"],
                     "Variationsname 1": "Größe", "Variationswert 1": k.groesse,

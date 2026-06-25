@@ -494,8 +494,9 @@ lieferanten:
     hersteller: "Shark"                 # WaWi-Herstellername; markentext-H2
     marke_kurz: "Shark Polewear"        # Präfix im Artikelnamen (Tjorben 2026-06-25), z.B. „Shark Polewear Top Serenity Wine"
     artnr_prefix: SHARK
-    herkunftsland: GE                   # Rechnung/Versand aus Tbilisi, Georgien (Marke 2016 in Moskau gegründet) — ggf. prüfen
+    herkunftsland: AE                   # Arabische Emirate (Tjorben 2026-06-25; Rechnung kam aus Tbilisi, Ursprung aber AE)
     waehrung: USD                       # Rechnung in USD; VK in EUR via fx_to_eur
+    barcode_feld: HAN                   # Shark-Codes (alphanum., z.B. 500425210XS) sind keine GTIN -> ins HAN-Feld, nicht EAN
     fx_to_eur: 0.8808                   # Tageskurs 2026-06-25 (USD->EUR)
     lieferzeit_tage: 60                 # Tjorben 2026-06-25; Versandfrist 14.08. + FedEx-Transit aus Georgien
     steuerklasse: "OSS2-undefiniert - Standard alle Länder"
