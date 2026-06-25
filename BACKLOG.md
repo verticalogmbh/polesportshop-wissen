@@ -558,3 +558,13 @@ Trigger-Bedingung: nächster Lieferanten-Onboarding mit >15 Modellen in einem La
 *Stand:* offen, Priorität NIEDRIG. Filterlogik/Merkmalsverwaltung in der WaWi ist statisch (siehe Memory feedback_statische_merkmale) — neue Merkmalwerte/Kategorien nur bewusst + abgestimmt anlegen.
 *Aufgabe:* Wenn genug Röcke im Sortiment sind, ein sauberes Rock-Merkmal (Style-Wert oder eigene Kategorie) in WaWi anlegen und im Code (`spec.KATEGORIE_SUB`, `merkmale._style_merkmalname`, ggf. eigener `garment_type`) sauber abbilden, dann betroffene Artikel re-importieren.
 *Trigger:* mehrere Rock-Artikel im Sortiment ODER Tjorben-Freigabe für neuen Merkmalwert.
+
+**B70 — Preislogik strukturell sauber ziehen. — NEU 2026-06-25**
+*Bezug:* Beim Paradise-Chick-Import fiel auf, dass die Marge zu niedrig war (~37 % statt ~50 %). Ursache: die `×2` (`AUFSCHLAGSFAKTOR`) wurde fälschlich auf den **Brutto**-VK gerechnet, also inklusive 19 % MwSt — netto blieb nur `EK×1,68`. **Sofort-Fix 2026-06-25:** `MWST_FAKTOR=1,19` in `constants.py`; `pricing.py` + `selfcheck.py` rechnen die ×2 jetzt auf NETTO und addieren die MwSt obendrauf (Netto-VK = doppelter Netto-EK ≈ 52 % auf EK / ~46-48 % auf GLD). Paradise Chick neu bepreist (A1009325–333).
+*Stand:* Sofort-Fix erledigt, strukturelle Runde offen, Priorität MITTEL.
+*Offene Punkte für die strukturelle Runde:*
+1. **Bestandsartikel re-pricen:** HotCakes, Lunalae (+Odessa), Rolling, RAD, Shark wurden mit der alten (Brutto-)Logik angelegt → zu niedrige Marge. Preis-Update-Dateien erzeugen (VK neu) + in WaWi importieren. Reihenfolge/Umfang abstimmen.
+2. **Nicht-EU-Verzeichnis statt Währungs-Heuristik:** der +5-EUR-Puffer (Zoll/Versand/Bank) wird aktuell über `waehrung==EUR` als EU/Nicht-EU erkannt. Sauberer: ein explizites Feld pro Lieferant (`zollpflichtig`/`eu: true|false`), damit ein EUR-fakturierender Nicht-EU-Lieferant (oder umgekehrt) nicht falsch eingestuft wird. (Tjorben-Idee 2026-06-25.)
+3. **GLD-Aufschlag (+2,30 €, E98) im Margen-Kontext:** verzerrt die angezeigte Ø-Netto-EK-Marge nach unten. Zusammen mit B68 (historische Mittelwerte pro Lieferant) überdenken — gehört der Aufschlag in den GLD, oder besser in eine separate Kostenstelle?
+4. **Marge-Ziel dokumentieren:** soll der Standard „doppelter Netto-EK" (~50 % auf EK) bleiben, oder ein Ziel-% auf die angezeigte GLD-Marge? Policy in SPEC_KONSTANTEN festhalten.
+*Trigger:* nächste ruhige Runde / wenn die Bestandsartikel-Marge real weh tut.

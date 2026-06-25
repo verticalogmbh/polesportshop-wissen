@@ -10,7 +10,12 @@ damit nichts geraten wird (Charter-Prinzip 10).
 from __future__ import annotations
 
 # --- Pricing (run_brief_daten.md Stage 4) --------------------------------
-AUFSCHLAGSFAKTOR = 2.0  # VK = EK_netto * 2.0, danach kaufmännisch auf ,90
+AUFSCHLAGSFAKTOR = 2.0  # Netto-VK = EK_netto * 2.0 (Keystone auf NETTO)
+# Deutscher Mehrwertsteuer-Faktor. Die ×2-Marge gilt auf den NETTO-EK; die MwSt kommt
+# danach OBENDRAUF (Brutto-VK = Netto-VK * 1,19), nicht hinein. (Fix 2026-06-25: vorher
+# wurde ×2 fälschlich auf den Brutto gerechnet -> MwSt fraß die Marge, netto nur EK*1,68
+# = ~37% statt ~50%.) Strukturelle Sauber-Runde + Bestandsartikel-Repricing siehe Backlog.
+MWST_FAKTOR = 1.19
 # Interim-Margen-Schutz (E98), bis der GLD Zoll/Versand/Bankgebühren enthält (B68).
 # Nach Herkunft differenziert:
 # - Nicht-EU-Lieferant (Zoll + Versand + Bankgebühren): +5,00 EUR auf den Brutto-VK

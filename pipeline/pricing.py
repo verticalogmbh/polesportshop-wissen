@@ -1,8 +1,9 @@
 """
 Pricing (P3, run_brief Stage 4).
 
-VK_brutto = EK_netto * AUFSCHLAGSFAKTOR (2.0), dann kaufmännische Rundung auf
-das nächste X,90 (run_brief_daten.md:255-257; Bsp 27*2=54 -> 53,90).
+Netto-VK = EK_netto * AUFSCHLAGSFAKTOR (2.0) — Keystone auf NETTO. Brutto-VK =
+Netto-VK * MWST_FAKTOR (1,19), dann kaufm. Rundung auf das nächste X,90.
+(Fix 2026-06-25: vorher ×2 fälschlich auf Brutto -> MwSt fraß die Marge.)
 
 EK kommt aus einer EK-Liste/Rechnung (CSV in pipeline/EK_input/), gekeyt auf
 (modell_basis, garment_type, farbe). Fehlt für einen Vater der EK -> STOPP
@@ -65,8 +66,9 @@ def apply_pricing(vaeter: list[Vater], ek_map: dict[tuple[str, str, str], float]
         v.ek_original = round(ek, 2)   # Lieferanten-Währung (z.B. AUD) -> Lieferanten-Netto-EK
         v.ek_netto = ek_eur            # EUR -> Basis der VK-Kalkulation
         v.gld = round(ek_eur + C.GLD_AUFSCHLAG_EUR, 2)   # Ø-EK/GLD inkl. Kosten-Aufschlag (E98)
-        # VK = (EK + EK-Aufschlag)*2 -> ,90, plus VK-Aufschlag (E98); dann Charm-Korrektur (E101).
-        vk = round_vk_90((ek_eur + ek_aufschlag) * C.AUFSCHLAGSFAKTOR) + vk_aufschlag
+        # Keystone auf NETTO: Netto-VK = (EK + EK-Aufschlag)*2, dann MwSt OBENDRAUF (*1,19)
+        # -> Brutto-VK, kaufm. auf ,90; plus VK-Aufschlag (E98, Nicht-EU); dann Charm (E101).
+        vk = round_vk_90((ek_eur + ek_aufschlag) * C.AUFSCHLAGSFAKTOR * C.MWST_FAKTOR) + vk_aufschlag
         v.vk_brutto = charm_vk(round(vk, 2))
         priced.append(v)
     return priced, missing
