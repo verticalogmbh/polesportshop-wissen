@@ -1,4 +1,4 @@
-modell_basis;garment_type;farbe;groesse;ean
+﻿modell_basis;garment_type;farbe;groesse;ean
 Serenity;Top;wine;XS;500425210XS
 Serenity;Top;wine;S;500425210S
 Serenity;Top;wine;M;500425210M
@@ -34,11 +34,6 @@ Charlotte;Shorts;grape;S;400270260S
 Charlotte;Shorts;grape;M;400270260M
 Charlotte;Shorts;grape;L;400270260L
 Charlotte;Shorts;grape;XL;400270260XL
-Aura;Top;grape;XS;500410800XS
-Aura;Top;grape;S;500410800S
-Aura;Top;grape;M;500410800M
-Aura;Top;grape;L;500410800L
-Aura;Top;grape;XL;500410800XL
 Capri;Top;wine;XS;500470210XS
 Capri;Top;wine;S;500470210S
 Capri;Top;wine;M;500470210M
