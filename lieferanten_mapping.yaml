@@ -417,7 +417,7 @@ lieferanten:
     lieferantennummer_wawi: 1042
     article_weight_kg: 0.05
     taric_code: '62114390'
-    groessen_konvention: standard       # je Artikel exakt die bestellten Größen (Tjorben: Shop-Logik, nie XXL)
+    groessen_konvention: standard       # Varianten = voller Shop-Stand (alle verfügbaren Größen) außer XXL; BE nur bestellte Mengen (Tjorben 2026-06-25)
     category: fashion
     crop_profile: fashion
     pose_sort: manufacturer_order
@@ -486,7 +486,7 @@ lieferanten:
       attribute:        null
       cross_selling:    null
     max_groesse: null
-    bemerkung: "Onboarding 2026-06-25 (Code-Pipeline). Shopify (radpolewear.com), 9 Modelle alle Schwarz aus Bestellung #UM8DLUT8M. Größen je Artikel = bestellte Größen (nie XXL, Shop-Logik). Lara skirt als Shorts geführt (kein eigener Produkttyp — Merkmalsverwaltung statisch, Tjorben-Entscheidung). Modellnamen ohne Typ-Wort (Twinkle Tulle/Lara/Rad Strings). marke_kurz='RAD'."
+    bemerkung: "Onboarding 2026-06-25 (Code-Pipeline). Shopify (radpolewear.com), 9 Modelle alle Schwarz aus Bestellung #UM8DLUT8M. Varianten = voller Shop-Stand XS–XL (nie XXL, Shop-Logik); BE = nur bestellte Mengen. Lara skirt als Shorts geführt (kein eigener Produkttyp — Merkmalsverwaltung statisch, Tjorben-Entscheidung). Modellnamen ohne Typ-Wort (Twinkle Tulle/Lara/Rad Strings). marke_kurz='RAD'."
 
 # ============================================================================
 # Schema-Dokumentation

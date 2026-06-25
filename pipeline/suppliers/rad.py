@@ -1,10 +1,12 @@
 """
 RAD Polewear — Erstanlage (Bestellung #UM8DLUT8M, 2026-06-25). Shopify-Fetch.
 
-9 Väter, alle Schwarz. Größen = exakt die bestellten Größen je Modell (Tjorben:
-Shop-Logik, nie XXL). „Lara skirt" wird als Shorts geführt (kein eigener Produkttyp —
-WaWi-Merkmalsverwaltung ist statisch, Tjorben-Entscheidung 2026-06-25).
-Modellnamen ohne redundantes Typ-Wort (z.B. „Twinkle Tulle" statt „Twinkle tulle shorts").
+9 Väter, alle Schwarz. Varianten = ALLE im Shop verfügbaren Standardgrößen je Modell
+(Tjorben 2026-06-25: immer den vollen Shop-Stand anlegen, damit fehlende Größen später
+nachbestellbar sind), aber NIE XXL (Shop-Logik). Die Bestellmengen (BE) betreffen nur
+die tatsächlich bestellten Größen (menge_rad.csv) — unabhängig von den angelegten Varianten.
+„Lara skirt" wird als Shorts geführt (kein eigener Produkttyp — WaWi-Merkmalsverwaltung
+ist statisch, Tjorben-Entscheidung). Modellnamen ohne redundantes Typ-Wort.
 """
 from __future__ import annotations
 
@@ -15,18 +17,21 @@ from .. import constants as C
 from ..model import Vater, Kind
 
 _UA = {"User-Agent": "Mozilla/5.0"}
+# Anzulegende Standardgrößen in Reihenfolge; nur die, die der Shop führt, werden übernommen.
+# XXL bewusst NICHT dabei (Shop-Logik: wir führen nie XXL).
+ALLOWED_GROESSEN = ["XS", "S", "M", "L", "XL"]
 
-# (handle, modell_basis, garment_type, farbe_raw, [bestellte_groessen])
+# (handle, modell_basis, garment_type, farbe_raw) — Größen kommen aus dem Shop (s.u.)
 PRODUCTS = [
-    ("mercy-top-black",             "Mercy",          "Top",    "black", ["S", "M"]),
-    ("mercy-bottom-black",          "Mercy",          "Bottom", "black", ["S", "M", "L"]),
-    ("hecate-twinkle-top-black",    "Hecate Twinkle", "Top",    "black", ["XS", "S", "M", "L"]),
-    ("hecate-twinkle-bottom-black", "Hecate Twinkle", "Bottom", "black", ["S", "M", "L"]),
-    ("chandra-twinkle-top-black",   "Chandra Twinkle", "Top",   "black", ["XS", "S", "M", "L"]),
-    ("chandra-twinkle-bottom-black", "Chandra Twinkle", "Bottom", "black", ["XS", "S", "M", "L", "XL"]),
-    ("twinkle-tulle-shots-black",   "Twinkle Tulle",  "Bottom", "black", ["XS", "S", "M", "L", "XL"]),
-    ("lara-shirt-black",            "Lara",           "Bottom", "black", ["S", "M"]),
-    ("rad-strings-short-black",     "Rad Strings",    "Bottom", "black", ["XS", "S", "M", "L", "XL"]),
+    ("mercy-top-black",             "Mercy",          "Top",    "black"),
+    ("mercy-bottom-black",          "Mercy",          "Bottom", "black"),
+    ("hecate-twinkle-top-black",    "Hecate Twinkle", "Top",    "black"),
+    ("hecate-twinkle-bottom-black", "Hecate Twinkle", "Bottom", "black"),
+    ("chandra-twinkle-top-black",   "Chandra Twinkle", "Top",   "black"),
+    ("chandra-twinkle-bottom-black", "Chandra Twinkle", "Bottom", "black"),
+    ("twinkle-tulle-shots-black",   "Twinkle Tulle",  "Bottom", "black"),
+    ("lara-shirt-black",            "Lara",           "Bottom", "black"),
+    ("rad-strings-short-black",     "Rad Strings",    "Bottom", "black"),
 ]
 
 
@@ -35,17 +40,16 @@ def _fetch(handle: str) -> dict:
     return json.loads(urllib.request.urlopen(req, timeout=30).read())["product"]
 
 
-def _rank(g: str) -> int:
-    return C.GROESSEN_RANG.index(g) if g in C.GROESSEN_RANG else 99
-
-
 def build_vaeter() -> list[Vater]:
     vaeter = []
-    for handle, modell, typ, farbe, groessen in PRODUCTS:
+    for handle, modell, typ, farbe in PRODUCTS:
         p = _fetch(handle)
         images = [i["src"] for i in p.get("images", []) if i.get("src")]
+        shop_sizes = {v.get("title") for v in p.get("variants", [])}
+        # Voller Shop-Stand in Standard-Reihenfolge, XXL raus.
+        groessen = [g for g in ALLOWED_GROESSEN if g in shop_sizes]
         kinder = [Kind(groesse=g, groesse_raw=g, position=i)
-                  for i, g in enumerate(sorted(groessen, key=_rank))]
+                  for i, g in enumerate(groessen)]
         vaeter.append(Vater(
             handle=handle, product_id=p.get("id", 0), title_raw=p.get("title", ""),
             vendor="RAD Polewear", modell_basis=modell, garment_type=typ, farbe_raw=farbe,
