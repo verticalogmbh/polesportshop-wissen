@@ -39,6 +39,10 @@ SUPPLIERS = {
                  "content": "rad_content.json", "builder": "rad",
                  "menge": "menge_rad.csv",
                  "scope": "Bestellung #UM8DLUT8M (9 Modelle, alle Schwarz)"},
+    "shark":    {"key": "SHARK_POLEWEAR", "ek": "ek_shark.csv",
+                 "content": "shark_content.json", "builder": "shark",
+                 "ean": "ean_shark.csv", "menge": "menge_shark.csv",
+                 "scope": "Bestellung BE20261014488 (12 neue Artikel)"},
 }
 
 

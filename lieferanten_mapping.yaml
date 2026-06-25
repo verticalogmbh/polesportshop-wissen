@@ -488,6 +488,81 @@ lieferanten:
     max_groesse: null
     bemerkung: "Onboarding 2026-06-25 (Code-Pipeline). Shopify (radpolewear.com), 9 Modelle alle Schwarz aus Bestellung #UM8DLUT8M. Varianten = voller Shop-Stand XS–XL (nie XXL, Shop-Logik); BE = nur bestellte Mengen. Lara skirt als Shorts geführt (kein eigener Produkttyp — Merkmalsverwaltung statisch, Tjorben-Entscheidung). Modellnamen ohne Typ-Wort (Twinkle Tulle/Lara/Rad Strings). marke_kurz='RAD'."
 
+  SHARK_POLEWEAR:
+    anzeigename: "Shark Polewear"       # = WaWi-Lieferant (Nr. 1102)
+    kuerzel: SHARK
+    hersteller: "Shark"                 # WaWi-Herstellername; markentext-H2
+    marke_kurz: "Shark Polewear"        # Präfix im Artikelnamen (Tjorben 2026-06-25), z.B. „Shark Polewear Top Serenity Wine"
+    artnr_prefix: SHARK
+    herkunftsland: GE                   # Rechnung/Versand aus Tbilisi, Georgien (Marke 2016 in Moskau gegründet) — ggf. prüfen
+    waehrung: USD                       # Rechnung in USD; VK in EUR via fx_to_eur
+    fx_to_eur: 0.8808                   # Tageskurs 2026-06-25 (USD->EUR)
+    lieferzeit_tage: 60                 # Tjorben 2026-06-25; Versandfrist 14.08. + FedEx-Transit aus Georgien
+    steuerklasse: "OSS2-undefiniert - Standard alle Länder"
+    shop_url: https://sharkpolewear.com
+    fallback_retailer_url: null
+    drive_ordner_id: null
+    drive_eingang_id: null
+    r2_prefix: shark
+    lieferantennummer_wawi: 1102
+    article_weight_kg: 0.05
+    taric_code: '62114390'
+    groessen_konvention: standard       # Varianten = voller Shop-Stand (XS–XL) außer XXL; BE nur bestellte Mengen
+    category: fashion
+    crop_profile: fashion
+    pose_sort: manufacturer_order
+    crawl_mechanik: shopify_json         # sharkpolewear.com ist Shopify (products.json offen)
+    # Brand-Story = offizieller Markentext (Tjorben 2026-06-25 DE geliefert; en/fr/it/es übersetzt). E72/E79.
+    brand_story_de: |
+      SHARK wurde 2016 in einem bescheidenen Pole-Dance-Studio in Moskau
+      gegründet. Die Gründerin, Svetlana, begann mit der Gestaltung von Shorts
+      für ihre Studio-Kolleginnen und entwickelte SHARK zu einer international
+      anerkannten Marke für hochwertige Pole-Dance-Bekleidung. Die Marke steht
+      heute für bequeme, schöne und herausragende Qualität. Unser Ziel ist es,
+      nicht nur äußerlich ansprechende Kleidung zu schaffen, sondern auch ein
+      Gefühl von Inspiration und Wohlbefinden zu vermitteln.
+    brand_story_en: |
+      SHARK was founded in 2016 in a humble pole dance studio in Moscow. The
+      founder, Svetlana, started by designing shorts for her studio friends and
+      grew SHARK into an internationally recognised brand for high-quality pole
+      dance wear. Today the brand stands for comfortable, beautiful and
+      outstanding quality. Our goal is not only to create clothing that looks
+      appealing on the outside, but also to convey a feeling of inspiration and
+      well-being.
+    brand_story_fr: |
+      SHARK a été fondée en 2016 dans un modeste studio de pole dance à Moscou.
+      La fondatrice, Svetlana, a commencé par concevoir des shorts pour ses
+      camarades de studio et a fait de SHARK une marque reconnue
+      internationalement pour ses vêtements de pole dance de haute qualité.
+      Aujourd'hui, la marque est synonyme de qualité confortable, belle et
+      exceptionnelle. Notre objectif n'est pas seulement de créer des vêtements
+      esthétiques à l'extérieur, mais aussi de transmettre un sentiment
+      d'inspiration et de bien-être.
+    brand_story_it: |
+      SHARK è stata fondata nel 2016 in un modesto studio di pole dance a Mosca.
+      La fondatrice, Svetlana, ha iniziato disegnando shorts per le sue colleghe
+      di studio e ha trasformato SHARK in un marchio riconosciuto a livello
+      internazionale per abbigliamento da pole dance di alta qualità. Oggi il
+      marchio è sinonimo di qualità comoda, bella ed eccezionale. Il nostro
+      obiettivo non è solo creare capi belli esteticamente, ma anche trasmettere
+      una sensazione di ispirazione e benessere.
+    brand_story_es: |
+      SHARK fue fundada en 2016 en un modesto estudio de pole dance en Moscú. La
+      fundadora, Svetlana, comenzó diseñando shorts para sus compañeras de
+      estudio y convirtió SHARK en una marca reconocida internacionalmente por
+      su ropa de pole dance de alta calidad. Hoy la marca es sinónimo de calidad
+      cómoda, bonita y excepcional. Nuestro objetivo no es solo crear ropa
+      atractiva por fuera, sino también transmitir una sensación de inspiración y
+      bienestar.
+    ameise_vorlagen:
+      stammdaten:       null
+      variationen:      null
+      merkmale:         null
+      attribute:        null
+      cross_selling:    null
+    max_groesse: null
+    bemerkung: "Onboarding 2026-06-25 (Code-Pipeline). Shopify (sharkpolewear.com), USD. NUR 12 NEUE Artikel aus Dens Link-Liste (Serenity/Capri Top+Shorts, Charlotte Shorts, Aura Top in Wine/Grape/Sapphira) aus Bestellung BE20261014488 (Rechnung #14); restliche Rechnungspositionen sind Bestandsartikel. Varianten = voller Shop-Stand XS–XL (nie XXL); BE = bestellte Mengen. EAN = Rechnungs-Barcode + Größe (Shop-Barcode beim Wine-Top fehlerhaft = Sapphira-Code; Rechnung ist führend). marke_kurz='Shark Polewear', hersteller='Shark'. Hinweis: Aura-Grape teilt sich Rechnungs-Barcode 500410800 mit Cherry-Black (Bestandsartikel) — Anomalie, Aura selbst unter den 12 eindeutig."
+
 # ============================================================================
 # Schema-Dokumentation
 # ============================================================================

@@ -101,6 +101,10 @@ COLOR_LOOKUP = {
     "taupe": {"de": "Taupe", "en": "Taupe", "fr": "Taupe", "it": "Taupe", "es": "Taupe", "merkmal": "Beige"},
     "lilac": {"de": "Flieder", "en": "Lilac", "fr": "Lilas", "it": "Lilla", "es": "Lila", "merkmal": "Lila"},
     "chocolate": {"de": "Schokobraun", "en": "Chocolate", "fr": "Chocolat", "it": "Cioccolato", "es": "Chocolate", "merkmal": "Braun"},
+    # Shark-Markenfarben (2026-06-25) — Markennamen bleiben in allen Sprachen identisch; Merkmal = Filterfarbe.
+    "wine":     {"de": "Wine", "en": "Wine", "fr": "Wine", "it": "Wine", "es": "Wine", "merkmal": "Rot"},
+    "grape":    {"de": "Grape", "en": "Grape", "fr": "Grape", "it": "Grape", "es": "Grape", "merkmal": "Lila"},
+    "sapphira": {"de": "Sapphira", "en": "Sapphira", "fr": "Sapphira", "it": "Sapphira", "es": "Sapphira", "merkmal": "Blau"},
     # Print-Familien (§6/§7): identisch; Merkmal-Farbe = Bunt (Default Multi-Print)
     "original": {"de": "Original", "en": "Original", "fr": "Original", "it": "Original", "es": "Original", "merkmal": "Bunt"},
     "heat":     {"de": "Heat", "en": "Heat", "fr": "Heat", "it": "Heat", "es": "Heat", "merkmal": "Bunt"},
