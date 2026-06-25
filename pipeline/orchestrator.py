@@ -71,16 +71,12 @@ def run(supplier: str = "hotcakes", stamp: str | None = None,
         keep = builder_mod.build_vaeter()
         review, exclude = [], []
 
-    # Pricing — Interim-Margen-Schutz (E98/E103) nach EU/Nicht-EU, gesteuert über den
-    # expliziten Lieferanten-Tag `eu:` (Fallback: Währung == EUR). Nicht-EU -> +5 € VK
-    # + 2,30 € GLD; EU -> +1 € EK + 0,50 € GLD.
+    # Pricing — GLD = EK + EU/Nicht-EU-Aufschlag (E103, über expliziten Tag `eu:`,
+    # Fallback Währung); Brutto-VK = Marge-Modell (E104): aus der GLD auf MARGE_ZIEL (40 %).
     eu = bool(sup.get("eu", sup.get("waehrung", "EUR") == "EUR"))
-    ek_auf = constants.EK_AUFSCHLAG_EU_EUR if eu else 0.0
-    vk_auf = 0.0 if eu else constants.VK_AUFSCHLAG_AUSLAND_EUR
     gld_auf = constants.GLD_AUFSCHLAG_EU_EUR if eu else constants.GLD_AUFSCHLAG_NICHTEU_EUR
     ek_map = pricing.load_ek_csv(config.EK_INPUT_DIR / cfg["ek"])
-    priced, missing = pricing.apply_pricing(keep, ek_map, fx, ek_aufschlag=ek_auf,
-                                            vk_aufschlag=vk_auf, gld_aufschlag=gld_auf)
+    priced, missing = pricing.apply_pricing(keep, ek_map, fx, gld_aufschlag=gld_auf)
 
     # Weg B (E94): A-Nummern aus dem WaWi-Nummernkreis vorab vergeben.
     artnr_next = numbering.assign(priced, start=start_artnr, persist=persist_counter)
@@ -110,7 +106,7 @@ def run(supplier: str = "hotcakes", stamp: str | None = None,
     extra_pairs = getattr(builder_mod, "OUTFIT_PAIRS", None) if builder_mod else None
     cs = crossselling.build_rows(priced, extra_outfit_pairs=extra_pairs)
 
-    checks = selfcheck.run(sd, va, mk, at, cs, priced, ek_aufschlag=ek_auf, vk_aufschlag=vk_auf)
+    checks = selfcheck.run(sd, va, mk, at, cs, priced)
 
     # Schreiben (AP12: leere CSVs nicht ausgeben)
     kz = sup["kuerzel"]
@@ -152,7 +148,7 @@ def run(supplier: str = "hotcakes", stamp: str | None = None,
 
     artnr_range = (priced[0].artikelnummer, priced[-1].artikelnummer, artnr_next) if priced else None
     report = _report(sup, cfg, priced, missing, review, exclude, checks, written, stamp,
-                     with_images, artnr_range, ek_auf=ek_auf, vk_auf=vk_auf, gld_auf=gld_auf, eu=eu)
+                     with_images, artnr_range, gld_auf=gld_auf, eu=eu)
     (out / f"run_{stamp}_{kz}.md").write_text(report, encoding="utf-8")
     config.copy_to_downloads(out)   # WaWi-Imports immer auch nach ~/Downloads
 
@@ -185,7 +181,7 @@ def _run_images(priced, sup) -> None:
 
 
 def _report(sup, cfg, priced, missing, review, exclude, checks, written, stamp,
-            with_images, artnr_range=None, ek_auf=0.0, vk_auf=0.0, gld_auf=0.0, eu=True) -> str:
+            with_images, artnr_range=None, gld_auf=0.0, eu=True) -> str:
     n_ok = sum(1 for c in checks if c[2])
     kz = sup["kuerzel"]
     L = [f"# Lauf-Bericht {sup['anzeigename']} {stamp}", "",
@@ -193,11 +189,9 @@ def _report(sup, cfg, priced, missing, review, exclude, checks, written, stamp,
          f"**Scope:** {len(priced)} Väter ({cfg['scope']}), {sum(len(v.kinder) for v in priced)} Kinder",
          f"**Währung:** EK {sup.get('waehrung','EUR')}, fx_to_eur {sup.get('fx_to_eur', 1.0)}",
          f"**Herkunft:** {'EU (innereuropäisch)' if eu else 'Nicht-EU (Zoll/Versand)'}",
-         "**Margen-Schutz (E98/E103):** " + (
-             f"EU → +{ek_auf:.2f} € auf den EK (= ~+{ek_auf*2*1.19:.2f} € im VK) + {gld_auf:.2f} € auf den GLD"
-             if eu else
-             f"Nicht-EU → +{vk_auf:.2f} € auf den Brutto-VK + {gld_auf:.2f} € auf den GLD (Zoll/Versand/Bank)")
-         + " — angewendet, VK erzwungen via Self-Check #16.", ""]
+         f"**Preislogik (E103/E104):** GLD = EK + {gld_auf:.2f} € ({'EU' if eu else 'Nicht-EU'}-Aufschlag); "
+         f"Brutto-VK aus GLD auf Ziel-Marge {constants.MARGE_ZIEL*100:.0f} % (JTL-„Gewinn %“), kaufm. ,90 + Charm. "
+         f"— erzwungen via Self-Check #16.", ""]
     if artnr_range:
         L += [f"**Nummernkreis (Weg B, E94):** Väter {artnr_range[0]}–{artnr_range[1]} "
               f"(+ Kinder -001…). WaWi-Zähler 'Laufende Nummer' nach Import auf "

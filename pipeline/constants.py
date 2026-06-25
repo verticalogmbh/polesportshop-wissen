@@ -9,13 +9,15 @@ damit nichts geraten wird (Charter-Prinzip 10).
 """
 from __future__ import annotations
 
-# --- Pricing (run_brief_daten.md Stage 4) --------------------------------
-AUFSCHLAGSFAKTOR = 2.0  # Netto-VK = EK_netto * 2.0 (Keystone auf NETTO)
-# Deutscher Mehrwertsteuer-Faktor. Die ×2-Marge gilt auf den NETTO-EK; die MwSt kommt
-# danach OBENDRAUF (Brutto-VK = Netto-VK * 1,19), nicht hinein. (Fix 2026-06-25: vorher
-# wurde ×2 fälschlich auf den Brutto gerechnet -> MwSt fraß die Marge, netto nur EK*1,68
-# = ~37% statt ~50%.) Strukturelle Sauber-Runde + Bestandsartikel-Repricing siehe Backlog.
-MWST_FAKTOR = 1.19
+# --- Pricing (Marge-Modell E104) -----------------------------------------
+# Brutto-VK wird so gesetzt, dass die JTL-Spalte „Gewinn %" (= Marge: Netto-VK gegen
+# Ø-Netto-EK/GLD) einen Zielwert trifft. MARGE_ZIEL = 0,40 = 40 % (Haus-Standard, an dem
+# auch das Bestandssortiment liegt). Rechenweg: Netto-VK = GLD / (1 - MARGE_ZIEL);
+# Brutto-VK = Netto-VK * MWST_FAKTOR -> kaufm. auf ,90 -> Charm. Da der VK aus der GLD
+# folgt, treibt jede GLD-Änderung direkt den VK. (Löst E102-Fix ab: „EK×2" gab ~50 %.)
+MARGE_ZIEL = 0.40
+MWST_FAKTOR = 1.19  # DE-Mehrwertsteuer; Netto-VK -> Brutto-VK
+AUFSCHLAGSFAKTOR = 2.0  # LEGACY (altes „EK×2"-Modell) — vom Marge-Modell abgelöst, nicht mehr im VK
 # Interim-Margen-Schutz (E98/E103), bis pro Lieferant historische Werte vorliegen (B68/B70).
 # Nach EU/Nicht-EU differenziert — gesteuert über den expliziten Lieferanten-Tag `eu:`
 # im Mapping (NICHT mehr über die Währung; ein EUR-fakturierender Nicht-EU-Lieferant

@@ -7,8 +7,7 @@ from __future__ import annotations
 from . import spec, constants as C
 
 
-def run(stammdaten, variationen, merkmale, attribute, crossselling, vaeter,
-        ek_aufschlag: float = 0.0, vk_aufschlag: float = 0.0) -> list[tuple]:
+def run(stammdaten, variationen, merkmale, attribute, crossselling, vaeter) -> list[tuple]:
     res = []
     def chk(n, name, ok, detail=""):
         res.append((n, name, bool(ok), detail))
@@ -81,13 +80,11 @@ def run(stammdaten, variationen, merkmale, attribute, crossselling, vaeter,
     chk(14, "Cross-Selling rechts nur Väter (A-Nummer)", right_ok)
     chk(15, "Cross-Selling Kinder-Replikation links", left_has_kids or not crossselling)
 
-    # Preise: VK = EK*2 -> ,90 (Komma-Dezimal)
-    from .pricing import round_vk_90, charm_vk
-    vk_calc_ok = all(round(v.vk_brutto, 2) == charm_vk(
-        round_vk_90((v.ek_netto + ek_aufschlag) * C.AUFSCHLAGSFAKTOR * C.MWST_FAKTOR) + vk_aufschlag)
-        for v in vaeter)
+    # Preise: VK aus GLD auf Ziel-Marge (E104) -> ,90 (Komma-Dezimal)
+    from .pricing import vk_aus_marge
+    vk_calc_ok = all(round(v.vk_brutto, 2) == vk_aus_marge(v.gld) for v in vaeter)
     fmt_ok = all(r["Brutto-VK"].endswith(",90") for r in stammdaten)
     no_round_ten = all(int(round(v.vk_brutto, 2)) % 10 != 0 for v in vaeter)
-    chk(16, "Brutto-VK = (EK+Aufschlag)×2×MwSt ,90, Charm (keine runden Zehner), Komma-Dezimal",
+    chk(16, "Brutto-VK = Ziel-Marge auf GLD ,90, Charm (keine runden Zehner), Komma-Dezimal",
         vk_calc_ok and fmt_ok and no_round_ten)
     return res
