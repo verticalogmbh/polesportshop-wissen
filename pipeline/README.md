@@ -61,7 +61,7 @@ Import-Reihenfolge: `1_Stammdaten` → `2_Variationen` → `3_Merkmale` → `4_A
 - **Konstanten/Schema:** `spec.py` (SPEC_KONSTANTEN §1–§7 verbatim), `constants.py`.
 - **Pipeline-Stages:**
   `crawl/shopify_json.py` (Crawl) → `extract.py` (Modell/Farbe/Typ-Split, Scope-Filter)
-  → `pricing.py` (Netto-VK = EK netto ×2, dann MwSt ×1,19 → ,90) → `content.py`/`content/<lieferant>_content.json`
+  → `pricing.py` (GLD = EK + EU/Nicht-EU-Aufschlag; Brutto-VK aus GLD auf 40 % Ziel-Marge, E103/E104) → `content.py`/`content/<lieferant>_content.json`
   (Merkmale-Farbe/Style + Attribut-Texte, in `content_build.py` autoriert)
   → `csv/*` (5 CSV-Writer) → `selfcheck.py` (16 Punkte) → `orchestrator.py`.
 - **Bilder:** `images/process.py` (Crop fashion 2:3 1000×1500, <100 KB),
