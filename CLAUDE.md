@@ -181,3 +181,6 @@ Claude Code hat ein persistentes Memory-System unter `/Users/tjorbenbecker/.clau
 - `project_status_v1_X.md` — aktueller Projekt-Stand
 
 Werden automatisch in jeden Claude-Code-Chat geladen. Bei Bedarf aktualisieren.
+
+## Verbund — verticalo-ops (Leitstand)
+Teil des Verticalo-Automations-Verbunds. Übergreifende Standards (E-Mail-Stil, Naming/Git, Security, CI) + Katalog aller Automationen liegen im Leitstand-Repo **`verticalo-ops`** (`standards/`, `shared/`, `registry.yaml`) — dort pflegen, hier nicht kopieren. GitHub-Org: `Verticalo-GmbH`. _(ergänzt 2026-06-27)_
