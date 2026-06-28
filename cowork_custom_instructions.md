@@ -15,14 +15,14 @@ Die Planung und Spec-Pflege passiert via **Claude Code lokal** im Wissens-Repo `
 
 ## Wissens-Quelle: GitHub-Raw-Resolution (E87/E91, NEU v2.0)
 
-**Repo:** `https://github.com/verticalogmbh/polesportshop-wissen`
+**Repo:** `https://github.com/Verticalo-GmbH/polesportshop-wissen`
 **Branch:** `main`
 **Snapshot:** der jüngste `vX.Y`-Tag auf `main`. Aktueller Stand 2026-06-15: `v1.21`.
 
 **Resolution-Strategie** — bei jedem Lauf einmal ausführen am Stage-Start:
 
-1. **Tag-Lookup:** via GitHub-API `https://api.github.com/repos/verticalogmbh/polesportshop-wissen/tags` (anonym, public Repo) den jüngsten Tag holen, der dem Pattern `^v\d+\.\d+$` entspricht (Patch-Tags wie `v1.19.1` ebenfalls akzeptieren). Sortierung: SemVer descending. Fallback bei API-Fehler: Tag-Pattern aus Tjorbens Trigger-Chat parsen (z.B. „nutze Stand v1.21").
-2. **Raw-File-URL-Pattern:** `https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/<tag>/<file>` — direkte File-Abfrage via `web_fetch` oder Code-Execution + `curl/requests`.
+1. **Tag-Lookup:** via GitHub-API `https://api.github.com/repos/Verticalo-GmbH/polesportshop-wissen/tags` (anonym, public Repo) den jüngsten Tag holen, der dem Pattern `^v\d+\.\d+$` entspricht (Patch-Tags wie `v1.19.1` ebenfalls akzeptieren). Sortierung: SemVer descending. Fallback bei API-Fehler: Tag-Pattern aus Tjorbens Trigger-Chat parsen (z.B. „nutze Stand v1.21").
+2. **Raw-File-URL-Pattern:** `https://raw.githubusercontent.com/Verticalo-GmbH/polesportshop-wissen/<tag>/<file>` — direkte File-Abfrage via `web_fetch` oder Code-Execution + `curl/requests`.
 3. **Komplett-Marker:** lies `_MANIFEST.md` aus dem Tag. Wenn das Manifest die Sektion „File-Liste mit Sizes und SHA256" enthält und alle dort gelisteten Files via Raw-URL erreichbar sind, ist der Snapshot komplett. Unvollständige Tags sind extrem selten in der Git-Welt (atomarer Commit), aber Edge-Case bei Push-Abbruch.
 4. **Lese** die für den Lauf-Typ benötigten Files (siehe Stage-0-Lade-Regel unten).
 
@@ -86,7 +86,7 @@ Die 3 Wissens-Files in Stage 0 werden **einmalig zu Lauf-Beginn** geladen und lo
 
 ## Tools
 
-- **`web_fetch` / Code-Execution + `curl/requests`** — Wissens-Files aus GitHub-Raw lesen. Beispiel-URL: `https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/v1.21/run_brief_daten.md`. Repo ist public, keine Auth nötig.
+- **`web_fetch` / Code-Execution + `curl/requests`** — Wissens-Files aus GitHub-Raw lesen. Beispiel-URL: `https://raw.githubusercontent.com/Verticalo-GmbH/polesportshop-wissen/v1.21/run_brief_daten.md`. Repo ist public, keine Auth nötig.
 - **Google Drive Connector** — Lieferanten-Drive-Ordner (Crawl-Quellen für Drive-Modus, Credentials-File für R2-Upload der reaktivierten Bildpipeline, E93). **Wissens-Files NICHT mehr aus Drive lesen** (E87/E91).
 - **Cloudflare Developer Platform Connector** — Pre-Checks am R2-Bucket. **Mit E93 (v1.21) für Daten-Läufe wieder aktiv** (Bildpipeline-Sub-Process Stage 5.6/5.7).
 - **Code-Execution + Network-Egress** — Crawl-Mechanik (E48 shopify_json), CSV-Generation, Hash-Verifikation. Egress-Allowlist-Modus aktuell „All domains" (B29-Workaround).

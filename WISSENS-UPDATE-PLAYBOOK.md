@@ -25,7 +25,7 @@ Bei Daten-Pipeline-Triggern („Verarbeite neue Artikel von X...") lädt Cowork 
 ### 2.1 Single Source of Truth
 
 - **Lokales Git-Repo:** `~/Documents/polesportshop-wissen/` (Branch `main`)
-- **Remote:** `https://github.com/verticalogmbh/polesportshop-wissen`
+- **Remote:** `https://github.com/Verticalo-GmbH/polesportshop-wissen`
 - **Snapshots:** Git-Tags `v1.19`, `v1.20`, ... (kein `v` im Vorgänger? siehe `git tag --list` für aktuelle Konvention; Standard ist `vX.Y`)
 - **Snapshot-Inhalt:** alle Wissens-Files (Markdown + YAML) im Repo-Root plus `_MANIFEST.md`. Kein Sub-Folder-Pattern mehr.
 
@@ -37,7 +37,7 @@ Bei Daten-Pipeline-Triggern („Verarbeite neue Artikel von X...") lädt Cowork 
 
 ### 2.3 Resolution für Cowork (v1.20-Scope)
 
-Geplant: `https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/<tag>/<file>`
+Geplant: `https://raw.githubusercontent.com/Verticalo-GmbH/polesportshop-wissen/<tag>/<file>`
 - Tag-pinning ersetzt das Drive-Folder-Resolution-Pattern.
 - Cowork-`cowork_custom_instructions.md` und `Projekt-Anweisungen.md` werden in v1.20 entsprechend angepasst.
 - Bis dahin (v1.19): Cowork läuft weiter mit dem letzten gültigen Drive-Snapshot `Version_2026-05-18_141930`. Git-Snapshot v1.19 ist parallel verfügbar für lokale Klärungs-Chats und Claude-Code-Sessions.
@@ -182,7 +182,7 @@ Am Ende des Builds:
 - Commit mit aussagekräftiger Nachricht: `v<NEW> — <Kurz-Beschreibung>`
 - Tag: `git tag v<NEW>` auf dem Commit
 - Push: `git push origin main --tags`
-- Verify: `https://github.com/verticalogmbh/polesportshop-wissen/releases/tag/v<NEW>` ist erreichbar (Browser-Check optional, GitHub-Release-Page wird auto-generiert für lightweight tags)
+- Verify: `https://github.com/Verticalo-GmbH/polesportshop-wissen/releases/tag/v<NEW>` ist erreichbar (Browser-Check optional, GitHub-Release-Page wird auto-generiert für lightweight tags)
 - Lauf-Bericht im Chat: kompakter Abschluss-Report (siehe Sektion 10)
 
 ---
@@ -210,7 +210,7 @@ Autonome Entscheidungen (zum Review):
 
 Empfehlung nächster Scope: <v1.20-Scope-Vorschlag>
 
-Live: https://github.com/verticalogmbh/polesportshop-wissen/releases/tag/v<NEW>
+Live: https://github.com/Verticalo-GmbH/polesportshop-wissen/releases/tag/v<NEW>
 ```
 
 ---

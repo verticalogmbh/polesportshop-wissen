@@ -518,7 +518,7 @@ Hekate Bodysuit hat keine Outfit-Pair-Beziehung (Bodysuit ist Solo-Typ) und in d
 
 **Zweck:** Single Source of Truth für die Liste aller Wissens-Files, die in einem kompletten Snapshot vorhanden sein müssen. Resolver-Specs (`cowork_anweisung_datenimports.md`, `cowork_custom_instructions.md`, `Projekt-Anweisungen.md`, `run_brief_daten.md`) referenzieren diese Liste, statt eigene File-Listen zu führen — Drift-Schutz auf Ebene 1.
 
-**Snapshot-Konzept ab v1.20 (E87 + E91):** Ein Snapshot ist ein **Git-Tag** auf `main` im Repo `https://github.com/verticalogmbh/polesportshop-wissen`. Die Liste unten beschreibt die Files, die im Repo-Root unter dem Tag liegen müssen. Drive-Sub-Folder-Snapshots (v1.0–v1.18) sind Read-Only-Archiv und nicht mehr aktualisiert.
+**Snapshot-Konzept ab v1.20 (E87 + E91):** Ein Snapshot ist ein **Git-Tag** auf `main` im Repo `https://github.com/Verticalo-GmbH/polesportshop-wissen`. Die Liste unten beschreibt die Files, die im Repo-Root unter dem Tag liegen müssen. Drive-Sub-Folder-Snapshots (v1.0–v1.18) sind Read-Only-Archiv und nicht mehr aktualisiert.
 
 **Bedeutung der Spalten:**
 - `Datei`: Dateiname im Repo-Root (case-sensitive).

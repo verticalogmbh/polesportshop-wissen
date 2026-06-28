@@ -14,7 +14,7 @@ Pipeline für Verticalo GmbH / polesportshop.de, die aus Lieferanten-Input (Craw
 
 **Cowork** (Anthropic Claude im Browser mit Connectors) = **Daten-Pipeline-Ausführungs-Engine**. Liest Specs aus GitHub-Raw (ab v1.20, E87/E91/B63), führt Crawl/CSV-Generation aus, gibt Outputs lokal per `present_files` aus.
 
-**GitHub-Repo `verticalogmbh/polesportshop-wissen`** = Single Source of Truth für alle Wissens-Files. Branch `main`, Snapshots als Git-Tags. Beide Engines lesen daraus, nur Claude Code schreibt zurück.
+**GitHub-Repo `Verticalo-GmbH/polesportshop-wissen`** = Single Source of Truth für alle Wissens-Files. Branch `main`, Snapshots als Git-Tags. Beide Engines lesen daraus, nur Claude Code schreibt zurück.
 
 Kein User-Review-Gate vor CSV-Generierung; Quality-Loop läuft über Shop-Review → Feedback → Spec-Update im nächsten Wissens-Tag.
 
@@ -32,7 +32,7 @@ Für Claude Code lokal: Git-Commits niemals mit `--no-verify`, niemals Git-Confi
 
 ### GitHub-Repo als Single Source of Truth
 
-**Repo:** `https://github.com/verticalogmbh/polesportshop-wissen` (public)
+**Repo:** `https://github.com/Verticalo-GmbH/polesportshop-wissen` (public)
 **Branch:** `main` — keine Feature-Branches im aktuellen Workflow
 **Lokal:** `~/Documents/polesportshop-wissen/`
 **Snapshots:** Git-Tags `vMAJOR.MINOR` (z.B. `v1.20`)
@@ -114,7 +114,7 @@ Bei Commit-Konflikt (sehr selten — wir arbeiten Single-Operator): merge-resolv
 
 Nur zwei Erinnerungen — sie betreffen Versions-Hygiene und operative Vorbereitung.
 
-1. **Nach Wissens-Update-Build:** „Der Tag `v1.X+1` ist auf GitHub. Falls Cowork aktuell läuft, ggf. neu starten, damit die Resolution den neuen Tag greift. Live: `https://github.com/verticalogmbh/polesportshop-wissen/releases/tag/v1.X+1`."
+1. **Nach Wissens-Update-Build:** „Der Tag `v1.X+1` ist auf GitHub. Falls Cowork aktuell läuft, ggf. neu starten, damit die Resolution den neuen Tag greift. Live: `https://github.com/Verticalo-GmbH/polesportshop-wissen/releases/tag/v1.X+1`."
 
 2. **Vor dem ersten Import-Lauf eines neuen Lieferanten:** Verweis auf `LIEFERANTEN-ONBOARDING.md` — keine Ad-hoc-Onboardings. Pflicht: 5 Ameise-Vorlagen in WaWi anlegen, Standardlieferant in jeder Vorlage setzen (Bug-Lehre 2026-05-17), Eintrag in `lieferanten_mapping.yaml` mit allen Pflichtfeldern.
 

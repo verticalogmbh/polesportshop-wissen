@@ -404,10 +404,10 @@ Snapshot-Version (Folder-Name) und File-Header sind entkoppelt — der Snapshot 
 Tjorben hat parallel auf Claude Code als lokale CLI umgestellt. Damit ist ein lokales Git-Repo + GitHub-Remote technisch trivial pflegbar — und löst alle drei Schmerzpunkte gleichzeitig.
 
 *Entscheidung:*
-- **Wissens-Backbone:** lokales Git-Repo `~/Documents/polesportshop-wissen/`, Remote `https://github.com/verticalogmbh/polesportshop-wissen` (Branch `main`).
+- **Wissens-Backbone:** lokales Git-Repo `~/Documents/polesportshop-wissen/`, Remote `https://github.com/Verticalo-GmbH/polesportshop-wissen` (Branch `main`).
 - **Snapshots:** Git-Tags `v1.19`, `v1.20`, ... — kein Sub-Folder-Pattern mehr, kein sekundengenaues Timestamp-Naming. Tag entspricht dem Stand des gesamten Sets, atomar referenzierbar.
 - **Build-Engine:** Claude Code (lokal, Opus 4.7 oder Sonnet) öffnet das Repo, modifiziert Files via Edit/Write-Tools direkt auf Disk, committet, taggt, pusht.
-- **Resolution-Pfad:** Lokales Repo für Claude-Code-Sessions und Klärungs-Chats sofort verfügbar. Cowork-Resolution auf GitHub-Raw (`https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/<tag>/<file>`) wird in v1.20 nachgezogen (B63). Bis dahin läuft Cowork weiter mit dem Drive-Snapshot `Version_2026-05-18_141930` — der bleibt als Read-Only-Archiv erhalten.
+- **Resolution-Pfad:** Lokales Repo für Claude-Code-Sessions und Klärungs-Chats sofort verfügbar. Cowork-Resolution auf GitHub-Raw (`https://raw.githubusercontent.com/Verticalo-GmbH/polesportshop-wissen/<tag>/<file>`) wird in v1.20 nachgezogen (B63). Bis dahin läuft Cowork weiter mit dem Drive-Snapshot `Version_2026-05-18_141930` — der bleibt als Read-Only-Archiv erhalten.
 - **Playbook-Pivot:** `WISSENS-UPDATE-PLAYBOOK.md` v1.0 → v2.0 als Major-Bump. Drive-Pattern wandert in den Legacy-Anhang (Sektion 11). 7-Stage-Build-Pattern statt 12-Stage. WSC-1 bis WSC-17 Git-adaptiert (Drive-spezifische Checks ersetzt durch `git status`, Tag-Existenz, Push-Verifikation).
 
 *Konsequenzen:*
@@ -448,7 +448,7 @@ Tjorben hat parallel auf Claude Code als lokale CLI umgestellt. Damit ist ein lo
 
 *Entscheidung:* v1.20 als „Skalierungs-Base"-Refactor mit 11 konkreten Maßnahmen:
 
-1. **Cowork-Resolver auf GitHub-Raw umgestellt (B63 erledigt):** `cowork_custom_instructions.md` v1.16 → v2.0 (Major-Pivot), `Projekt-Anweisungen.md` v1.16 → v2.0, `cowork_anweisung_datenimports.md` Stage 0 + `run_brief_daten.md` „DARF"-Sektion entsprechend angepasst. URL-Pattern: `https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/<tag>/<file>`. Drive bleibt Read-Only-Archiv.
+1. **Cowork-Resolver auf GitHub-Raw umgestellt (B63 erledigt):** `cowork_custom_instructions.md` v1.16 → v2.0 (Major-Pivot), `Projekt-Anweisungen.md` v1.16 → v2.0, `cowork_anweisung_datenimports.md` Stage 0 + `run_brief_daten.md` „DARF"-Sektion entsprechend angepasst. URL-Pattern: `https://raw.githubusercontent.com/Verticalo-GmbH/polesportshop-wissen/<tag>/<file>`. Drive bleibt Read-Only-Archiv.
 2. **`cowork_anweisung_datenimports.md` verschlankt (v1.15.1 → v2.0):** von 73 KB auf ~25 KB. Konstanten-Sektionen 5.1, 5.1.1, 5.1.2 + Self-Check-Detail + AP1-AP12-Vollliste raus, alle Verweise auf SPEC_KONSTANTEN. UNIQUE-Inhalt (Stages, Crawl-Mechanik, Fehler-Handling, Konventionen, Credentials) bleibt.
 3. **`cowork_anweisung_bildpipeline.md` auf Stub (v1.6 → v2.0):** von 43 KB auf ~2 KB. Voll-Spec liegt im `v1.19`-Git-Tag (rekonstruierbar via `git show v1.19:cowork_anweisung_bildpipeline.md`). Stub verweist auf E63 + BACKLOG B36-B40 für Reaktivierungs-Pfad.
 4. **`WAWI-IMPORT-WISSEN.md` leicht straffen (v1.10 → v1.16, Minor):** Sektion 9 Onboarding-Hinweis auf `LIEFERANTEN-ONBOARDING.md` verweisen; keine Pilot-Wissens-Substanz angetastet.

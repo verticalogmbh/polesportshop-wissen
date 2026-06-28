@@ -9,7 +9,7 @@
 ## Repo-Identität
 
 - **Pfad:** `~/Documents/polesportshop-wissen/`
-- **Remote:** `https://github.com/verticalogmbh/polesportshop-wissen` (public)
+- **Remote:** `https://github.com/Verticalo-GmbH/polesportshop-wissen` (public)
 - **Branch:** `main` (kein Feature-Branch-Workflow)
 - **Snapshots:** Git-Tags `vMAJOR.MINOR` (z.B. `v1.20`). Aktueller Stand siehe `git describe --tags --abbrev=0`.
 - **Engine:** Claude Code lokal (Opus 4.7 / Sonnet je nach Aufgabe). Cowork (Browser-Engine) liest GitHub-Raw für Daten-Pipeline-Läufe — siehe `cowork_custom_instructions.md`.

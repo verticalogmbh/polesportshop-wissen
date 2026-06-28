@@ -93,7 +93,7 @@ Cowork stoppt sofort + fragt User bei:
 
 ### Stage 0: Snapshot-Resolution + Spec-Caching
 
-GitHub-Raw-Resolution (E87/E91): jüngsten `vX.Y`-Tag holen, dann via `https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/<tag>/<file>` die 3 Stage-0-Files laden:
+GitHub-Raw-Resolution (E87/E91): jüngsten `vX.Y`-Tag holen, dann via `https://raw.githubusercontent.com/Verticalo-GmbH/polesportshop-wissen/<tag>/<file>` die 3 Stage-0-Files laden:
 
 1. `run_brief_daten.md`
 2. `SPEC_KONSTANTEN.md`

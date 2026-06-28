@@ -22,7 +22,7 @@ STOPP + User-Frage, niemals raten (Charter-Prinzip 10, E59).
 - **Bildpipeline reaktiviert (E93, kehrt E63 um):** Stage 5.6 + 5.7 wieder aktiv. Cowork ruft Bildpipeline als Sub-Process auf, R2-URLs werden in die Stammdaten-CSV-Spalten Bild 1-10 eingebettet (E46-Mechanik unverändert). Crop-Profile (E45), Vision-Pose-Sortierung (E45), Magic-Byte-Detection — alles wie in v1.6 spezifiziert. Cowork-Anweisung-Bildpipeline ist auf v2.1 aktiv. Tjorben pflegt Bilder NICHT mehr manuell in WaWi.
 
 **Was v1.17 änderte (2026-05-18, im Rahmen v1.20-Skalierungs-Refactor E91):**
-- Wissens-Resolution: GitHub-Raw-URL statt Drive-Folder-Path (E87/E91/B63 erledigt v1.20). Tag-Pattern `vX.Y` auf `main`. Beispiel: `https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/v1.20/run_brief_daten.md`.
+- Wissens-Resolution: GitHub-Raw-URL statt Drive-Folder-Path (E87/E91/B63 erledigt v1.20). Tag-Pattern `vX.Y` auf `main`. Beispiel: `https://raw.githubusercontent.com/Verticalo-GmbH/polesportshop-wissen/v1.20/run_brief_daten.md`.
 - Stage-0-File-Count unverändert (3 Files: dieser Brief, SPEC_KONSTANTEN, lieferanten_mapping). Lade-Mechanik via `web_fetch` oder `curl/requests` auf Raw-URL.
 
 **Was v1.16 änderte (2026-05-18, F2-F6-Fixes aus HotCakes-Run-Report 2026-05-18):**
@@ -392,7 +392,7 @@ Pro Lieferant einmal mappen + Vorlage speichern, dann klonen.
 
 ### DARF
 - Files anlegen/lesen/kopieren im Workspace
-- Wissens-Files via GitHub-Raw lesen (`https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/<tag>/<file>`, E87/E91 v1.20). Drive-Connector nur noch für Lieferanten-Drive-Ordner (Drive-Upload-Input-Modus).
+- Wissens-Files via GitHub-Raw lesen (`https://raw.githubusercontent.com/Verticalo-GmbH/polesportshop-wissen/<tag>/<file>`, E87/E91 v1.20). Drive-Connector nur noch für Lieferanten-Drive-Ordner (Drive-Upload-Input-Modus).
 - Übersetzungen erstellen (außer Eigennamen und SEO-Templates, siehe NICHT DARF)
 - HTML-Snippets nach Sektion 9 generieren
 - CSVs validieren und schreiben

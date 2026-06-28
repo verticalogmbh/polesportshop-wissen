@@ -32,7 +32,7 @@
 - **Magic-Byte-Detection als Pflicht:** A2-Pattern unverändert.
 
 **Änderungen ggü. v1.3:**
-- **Snapshot-Resolution-Strategie (ab v2.1/E91, ersetzt E47-Drive-Pattern):** Cowork resolved den jüngsten Git-Tag `vX.Y` im Repo `verticalogmbh/polesportshop-wissen` und liest `lieferanten_mapping.yaml` via GitHub-Raw-URL. Details siehe Sektion „Lieferantenkontext" unten und `cowork_custom_instructions.md` v2.0.
+- **Snapshot-Resolution-Strategie (ab v2.1/E91, ersetzt E47-Drive-Pattern):** Cowork resolved den jüngsten Git-Tag `vX.Y` im Repo `Verticalo-GmbH/polesportshop-wissen` und liest `lieferanten_mapping.yaml` via GitHub-Raw-URL. Details siehe Sektion „Lieferantenkontext" unten und `cowork_custom_instructions.md` v2.0.
 
 **Änderungen ggü. v1.2 (Übernahme aus v1.3):**
 - **R2 als vollständiger Bild-Storage** (E44): Originale wandern von Drive (`_Originale/YYYY-MM/`) nach R2 unter Prefix `originals/<lieferant>/`. Drive-Archiv für Originale entfällt; pro Bild werden zwei PUT-Objects (verarbeitetes Shop-Bild + Original) im selben S3-Client-Lauf geschrieben.
@@ -226,12 +226,12 @@ Bildnummer: zweistellig (01, 02, 03...). Nach Pose-Sortierung ist Bild 01 immer 
 
 ## Lieferantenkontext
 
-Lieferanten-Metadaten kommen aus `lieferanten_mapping.yaml` im **jüngsten Git-Tag** im Repo `verticalogmbh/polesportshop-wissen`.
+Lieferanten-Metadaten kommen aus `lieferanten_mapping.yaml` im **jüngsten Git-Tag** im Repo `Verticalo-GmbH/polesportshop-wissen`.
 
 **Resolution-Strategie** (ab E91, v1.20, ersetzt das alte Drive-Pattern aus E47):
 
-1. Jüngsten `vX.Y`-Tag via GitHub-API holen: `https://api.github.com/repos/verticalogmbh/polesportshop-wissen/tags`. Falls Repo privat: Auth-Token-Mechanik via Drive-Credentials-File E33, oder Tjorben gibt im Trigger den Tag explizit an.
-2. Lade `lieferanten_mapping.yaml` via `https://raw.githubusercontent.com/verticalogmbh/polesportshop-wissen/<tag>/lieferanten_mapping.yaml` mit `web_fetch` oder `curl/requests`.
+1. Jüngsten `vX.Y`-Tag via GitHub-API holen: `https://api.github.com/repos/Verticalo-GmbH/polesportshop-wissen/tags`. Falls Repo privat: Auth-Token-Mechanik via Drive-Credentials-File E33, oder Tjorben gibt im Trigger den Tag explizit an.
+2. Lade `lieferanten_mapping.yaml` via `https://raw.githubusercontent.com/Verticalo-GmbH/polesportshop-wissen/<tag>/lieferanten_mapping.yaml` mit `web_fetch` oder `curl/requests`.
 3. Cache lokal in `/home/claude/wissens_cache/` zusammen mit den Daten-Pipeline-Files (E62 Spec-Caching-Pflicht).
 4. **Drive-Übergang als Fallback:** falls GitHub-Raw nicht erreichbar (z.B. Repo privat ohne Auth), nutzt Tjorben den temporären Drive-Folder als Brücke — siehe `cowork_custom_instructions.md` v2.0 für Resolution-Logik.
 
