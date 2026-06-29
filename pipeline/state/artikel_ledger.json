@@ -2141,5 +2141,71 @@
   "typ": "Shorts",
   "vk_brutto": 33.9,
   "waehrung": "EUR"
+ },
+ "A1009334": {
+  "artnr_lieferant": "FANNA-Grace-Top-SoftGreen",
+  "ean": {
+   "L": "GRACETOPLGRE",
+   "M": "GRACETOPMGRE",
+   "S": "GRACETOPSGRE",
+   "XL": "GRACETOXLGRE",
+   "XS": "GRACETOXSGRE"
+  },
+  "ek_eur": 23.12,
+  "ek_original": 23.12,
+  "farbe": "soft green",
+  "fx_to_eur": 1.0,
+  "gld": 24.12,
+  "herkunftsland": "PL",
+  "kinder": {
+   "A1009334-001": "XS",
+   "A1009334-002": "S",
+   "A1009334-003": "M",
+   "A1009334-004": "L",
+   "A1009334-005": "XL"
+  },
+  "lieferant": "Fanna",
+  "lieferant_nr": 1101,
+  "modell": "Grace",
+  "name_de": "FANNA Top Grace Soft Green",
+  "name_typ": null,
+  "quelle": "Rechnung FANNA-2026-1329 (Grace Top+Bottom Soft Green)",
+  "stand": "29.06.2026",
+  "typ": "Top",
+  "vk_brutto": 47.9,
+  "waehrung": "EUR"
+ },
+ "A1009335": {
+  "artnr_lieferant": "FANNA-Grace-Bottom-SoftGreen",
+  "ean": {
+   "L": "GRACEBOTLGRE",
+   "M": "GRACEBOTMGRE",
+   "S": "GRACEBOTSGRE",
+   "XL": "GRACEBOXLGRE",
+   "XS": "GRACEBOXSGRE"
+  },
+  "ek_eur": 21.58,
+  "ek_original": 21.58,
+  "farbe": "soft green",
+  "fx_to_eur": 1.0,
+  "gld": 22.58,
+  "herkunftsland": "PL",
+  "kinder": {
+   "A1009335-001": "XS",
+   "A1009335-002": "S",
+   "A1009335-003": "M",
+   "A1009335-004": "L",
+   "A1009335-005": "XL"
+  },
+  "lieferant": "Fanna",
+  "lieferant_nr": 1101,
+  "modell": "Grace",
+  "name_de": "FANNA Shorts Grace Soft Green",
+  "name_typ": null,
+  "quelle": "Rechnung FANNA-2026-1329 (Grace Top+Bottom Soft Green)",
+  "stand": "29.06.2026",
+  "typ": "Bottom",
+  "vk_brutto": 44.9,
+  "waehrung": "EUR"
  }
 }

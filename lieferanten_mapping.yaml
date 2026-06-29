@@ -656,6 +656,87 @@ lieferanten:
     max_groesse: null
     bemerkung: "Onboarding 2026-06-25 (Code-Pipeline). WooCommerce (paradisechick.com, Store API). NUR 9 Artikel aus Sofias Link-Liste aus Rechnung ΤΙΜ-EU-0000000512 (280 Stk gesamt, Rest andere Modelle). EK = Netto = Rechnungs-Stückpreis × 0,55 (45 % Wholesale-Rabatt), in EUR. Standardschema-Namen (Typ-Modell-Farbe); Modellnamen Florida/Florida Strappy/Florida Stripes/Gigi/Gigi Active/Iconic. Garter Belt als Shorts geführt (statische Merkmalsverwaltung), name_typ='Garter Belt', Kombigrößen XS/S, M/L, XL/XXL (kein Größen-Filter-Merkmal). Iconic V-Short 'Stripes' = Variante (Merkmal-Farbe Schwarz). Keine Barcodes (Rechnung/Shop) — EAN/HAN leer, später nachpflegen. Varianten = voller Shop-Stand XS–XL (pures XXL raus); BE = bestellte Mengen je Größe."
 
+  FANNA:
+    anzeigename: "Fanna"                 # = WaWi-Lieferant (Nr. 1101)
+    kuerzel: FANNA
+    hersteller: "Fanna"                  # WaWi-Herstellername; markentext-H2
+    marke_kurz: "FANNA"                  # Präfix im Artikelnamen (Tjorben 2026-06-26), z.B. „FANNA Top Grace Soft Green"
+    artnr_prefix: FANNA
+    herkunftsland: PL                    # Hersteller Polen (Tjorben); Rechnung aus Ungarn (FANNA polewear Kft. Budapest) — beides EU
+    waehrung: EUR
+    eu: true                             # EU-Tag (E103): GLD +1,00 € / VK-Marge-Modell
+    fx_to_eur: 1.0
+    lieferzeit_tage: 30                  # Tjorben 2026-06-26
+    barcode_feld: HAN                    # Fanna-SKU-Codes (z.B. GRACETOXSGRE) sind keine GTIN -> HAN-Feld; Shop-Barcode leer
+    steuerklasse: "OSS2-undefiniert - Standard alle Länder"
+    shop_url: https://fannapolewear.com
+    fallback_retailer_url: null
+    drive_ordner_id: null
+    drive_eingang_id: null
+    r2_prefix: fanna
+    lieferantennummer_wawi: 1101
+    article_weight_kg: 0.05
+    taric_code: '62114390'
+    groessen_konvention: standard        # Varianten = voller Shop-Stand XS–XL (pures XXL raus); BE = bestellte Mengen
+    category: fashion
+    crop_profile: fashion
+    pose_sort: manufacturer_order
+    crawl_mechanik: shopify_json          # fannapolewear.com ist Shopify (products.json offen); Variante nach Farbe filtern
+    # Brand-Story = offizieller Markentext (Tjorben 2026-06-26 DE geliefert; en/fr/it/es übersetzt). E72/E79.
+    brand_story_de: |
+      FANNA ist fest davon überzeugt, dass wahre Weiblichkeit bedeutet, Glück in
+      deiner eigenen Haut zu finden, das zu tun, was dir Freude bereitet, und
+      deinem wahren Selbst zu folgen. Unabhängig vom Aussehen zählt vor allem, wie
+      du dich fühlst. Nachhaltiges Denken ist ein integraler Bestandteil der Marke
+      FANNA. Unser Ziel ist es, dich auf deinem Weg zu einem bewussteren Lebensstil
+      zu unterstützen. Jedes Stück von FANNA ist für selbstbewusste Frauen wie dich
+      gemacht, die sich selbst lieben und schätzen. Entdecke unsere Kollektion und
+      finde deine perfekten Stücke, die deine Selbstliebe und Individualität
+      unterstreichen.
+    brand_story_en: |
+      FANNA firmly believes that true femininity means finding happiness in your
+      own skin, doing what brings you joy and following your true self. No matter
+      how you look, what counts most is how you feel. Sustainable thinking is an
+      integral part of the FANNA brand. Our goal is to support you on your way to a
+      more conscious lifestyle. Every FANNA piece is made for confident women like
+      you who love and value themselves. Discover our collection and find your
+      perfect pieces that underline your self-love and individuality.
+    brand_story_fr: |
+      FANNA est convaincue que la vraie féminité, c'est trouver le bonheur dans sa
+      propre peau, faire ce qui te procure de la joie et suivre ton vrai moi. Peu
+      importe l'apparence, ce qui compte avant tout, c'est comment tu te sens. La
+      pensée durable fait partie intégrante de la marque FANNA. Notre objectif est
+      de t'accompagner vers un mode de vie plus conscient. Chaque pièce FANNA est
+      faite pour des femmes sûres d'elles comme toi, qui s'aiment et se respectent.
+      Découvre notre collection et trouve tes pièces parfaites qui soulignent ton
+      amour de toi-même et ton individualité.
+    brand_story_it: |
+      FANNA è fermamente convinta che la vera femminilità significhi trovare la
+      felicità nella propria pelle, fare ciò che ti dà gioia e seguire il tuo vero
+      io. Indipendentemente dall'aspetto, ciò che conta di più è come ti senti. Il
+      pensiero sostenibile è parte integrante del marchio FANNA. Il nostro
+      obiettivo è accompagnarti verso uno stile di vita più consapevole. Ogni capo
+      FANNA è pensato per donne sicure di sé come te, che si amano e si
+      apprezzano. Scopri la nostra collezione e trova i tuoi capi perfetti che
+      sottolineano il tuo amore per te stessa e la tua individualità.
+    brand_story_es: |
+      FANNA está firmemente convencida de que la verdadera feminidad significa
+      encontrar la felicidad en tu propia piel, hacer lo que te da alegría y seguir
+      a tu verdadero yo. Sin importar el aspecto, lo que más cuenta es cómo te
+      sientes. El pensamiento sostenible es parte integral de la marca FANNA.
+      Nuestro objetivo es acompañarte en tu camino hacia un estilo de vida más
+      consciente. Cada prenda de FANNA está hecha para mujeres seguras como tú, que
+      se aman y se valoran. Descubre nuestra colección y encuentra tus piezas
+      perfectas que resaltan tu amor propio y tu individualidad.
+    ameise_vorlagen:
+      stammdaten:       null
+      variationen:      null
+      merkmale:         null
+      attribute:        null
+      cross_selling:    null
+    max_groesse: null
+    bemerkung: "Onboarding 2026-06-26 (Code-Pipeline). Shopify (fannapolewear.com), EUR, EU (Hersteller Polen lt. Tjorben; Rechnung aus Budapest/Ungarn). NUR 2 neue Styles aus Mercis Link-Liste: Grace Top + Grace Bottom in Soft Green (Rechnung FANNA-2026-1329, Order #10908). EK = Netto nach 40 %-Wholesale-Rabatt (Top 23,12 € / Bottom 21,58 €). Varianten = voller Shop-Stand XS–XL (XXL raus). Barcodes: Shop-GTIN leer, nur SKU-Codes (GRACETO…/GRACEBO…) -> HAN-Feld. Bottom als garment_type 'Bottom' (Auto-Cross-Sell Top↔Bottom). Soft Green -> Merkmal Grün. Bestehende FANNA-Bestandsartikel (X Hot Pink etc.) sind älter, nicht aus der Pipeline."
+
 # ============================================================================
 # Schema-Dokumentation
 # ============================================================================

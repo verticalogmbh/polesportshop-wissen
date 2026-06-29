@@ -122,6 +122,8 @@ COLOR_LOOKUP = {
     "shimmery-haze": {"de": "Shimmery Haze", "en": "Shimmery Haze", "fr": "Shimmery Haze", "it": "Shimmery Haze", "es": "Shimmery Haze", "merkmal": "Grün"},
     "thunderstorm":  {"de": "Thunderstorm", "en": "Thunderstorm", "fr": "Thunderstorm", "it": "Thunderstorm", "es": "Thunderstorm", "merkmal": "Lila"},
     "stripes":       {"de": "Stripes", "en": "Stripes", "fr": "Stripes", "it": "Stripes", "es": "Stripes", "merkmal": "Schwarz"},
+    # Fanna-Markenfarbe (2026-06-26) — Markenname identisch in allen Sprachen; Merkmal = Filterfarbe.
+    "soft green":    {"de": "Soft Green", "en": "Soft Green", "fr": "Soft Green", "it": "Soft Green", "es": "Soft Green", "merkmal": "Grün"},
 }
 
 # --- §5 SEO-Templates (deterministisch) ----------------------------------

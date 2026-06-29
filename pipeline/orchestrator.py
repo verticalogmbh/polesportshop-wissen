@@ -47,6 +47,10 @@ SUPPLIERS = {
                  "content": "paradisechick_content.json", "builder": "paradisechick",
                  "menge": "menge_paradisechick.csv",
                  "scope": "Rechnung ΤΙΜ-EU-0000000512 (9 Artikel)"},
+    "fanna":    {"key": "FANNA", "ek": "ek_fanna.csv",
+                 "content": "fanna_content.json", "builder": "fanna",
+                 "menge": "menge_fanna.csv",
+                 "scope": "Rechnung FANNA-2026-1329 (Grace Top+Bottom Soft Green)"},
 }
 
 
