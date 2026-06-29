@@ -737,6 +737,79 @@ lieferanten:
     max_groesse: null
     bemerkung: "Onboarding 2026-06-26 (Code-Pipeline). Shopify (fannapolewear.com), EUR, EU (Hersteller Polen lt. Tjorben; Rechnung aus Budapest/Ungarn). NUR 2 neue Styles aus Mercis Link-Liste: Grace Top + Grace Bottom in Soft Green (Rechnung FANNA-2026-1329, Order #10908). EK = Netto nach 40 %-Wholesale-Rabatt (Top 23,12 € / Bottom 21,58 €). Varianten = voller Shop-Stand XS–XL (XXL raus). Barcodes: Shop-GTIN leer, nur SKU-Codes (GRACETO…/GRACEBO…) -> HAN-Feld. Bottom als garment_type 'Bottom' (Auto-Cross-Sell Top↔Bottom). Soft Green -> Merkmal Grün. Bestehende FANNA-Bestandsartikel (X Hot Pink etc.) sind älter, nicht aus der Pipeline."
 
+  OKSA_WEAR:
+    anzeigename: "OKSA WEAR FZC"          # = WaWi-Lieferant (Nr. 1098)
+    kuerzel: OKSA
+    hersteller: "OKSA WEAR FZC"           # WaWi-Herstellername (Rechtsform); markentext-H2
+    marke_kurz: "Oksa Wear"               # Präfix im Artikelnamen (Tjorben 2026-06-29), z.B. „Oksa Wear Top Agatha Red"
+    artnr_prefix: OKSA
+    herkunftsland: AE                     # Sharjah, VAE (Tjorben); produziert in China
+    waehrung: USD                         # Rechnung in USD; VK in EUR via fx_to_eur
+    eu: false                             # Nicht-EU (E103): GLD +2,75 € (Zoll/Versand/Bank)
+    fx_to_eur: 0.88                       # ~Tageskurs USD->EUR (wie Shark 2026-06-25; live-API gab 403)
+    barcode_feld: HAN                     # 8-stellige Oksa-Barcodes nicht durchgängig valide GTIN -> HAN-Feld
+    lieferzeit_tage: 70                   # Tjorben 2026-06-29
+    steuerklasse: "OSS2-undefiniert - Standard alle Länder"
+    shop_url: https://oksawear.com
+    fallback_retailer_url: null
+    drive_ordner_id: null
+    drive_eingang_id: null
+    r2_prefix: oksa
+    lieferantennummer_wawi: 1098
+    article_weight_kg: 0.05
+    taric_code: '62114390'
+    groessen_konvention: standard         # Varianten = voller Shop-Stand XS–XL (Socken XS–L); BE = bestellte Mengen
+    category: fashion
+    crop_profile: fashion
+    pose_sort: manufacturer_order
+    crawl_mechanik: shopify_json           # oksawear.com ist Shopify (products.json offen); je Handle eine Farbe
+    # Brand-Story = offizieller Markentext (Tjorben 2026-06-29 DE geliefert; en/fr/it/es übersetzt). E72/E79.
+    brand_story_de: |
+      Bei Oksa wird eine neue Art von Pole Kleidung geschaffen. Die etablierte Marke
+      fabriziert Outfits für Pole Dancing, Aerial Fitness und andere Sportarten.
+      Bewegungsfreiheit wird hier groß geschrieben. Außerdem bietet Oksa Pole Wear
+      eine Vielzahl an besonderen Schnitten und außergewöhnlichen Designs. Egal ob du
+      auf der Suche nach einem sportlich geschnittenen Pole Dance Outfit oder einem
+      eleganten, sinnlichen Set für deinen nächsten Auftritt bist, Oksa Pole Wear hat
+      mit Sicherheit das passende Design für dich.
+    brand_story_en: |
+      At Oksa a new kind of pole wear is created. The established brand makes outfits
+      for pole dancing, aerial fitness and other sports. Freedom of movement is a top
+      priority here. Oksa Pole Wear also offers a wide range of special cuts and
+      extraordinary designs. Whether you are looking for a sporty pole dance outfit or
+      an elegant, sensual set for your next performance, Oksa Pole Wear is sure to have
+      the right design for you.
+    brand_story_fr: |
+      Chez Oksa, une nouvelle sorte de vêtements de pole voit le jour. La marque
+      établie fabrique des tenues pour la pole dance, l'aerial fitness et d'autres
+      sports. La liberté de mouvement est ici une priorité absolue. Oksa Pole Wear
+      propose en plus une grande variété de coupes particulières et de designs hors du
+      commun. Que tu cherches une tenue de pole dance sportive ou un ensemble élégant
+      et sensuel pour ta prochaine performance, Oksa Pole Wear a sûrement le design
+      qu'il te faut.
+    brand_story_it: |
+      Da Oksa nasce un nuovo tipo di abbigliamento da pole. Il marchio affermato crea
+      outfit per pole dancing, aerial fitness e altri sport. Qui la libertà di
+      movimento è una priorità assoluta. Oksa Pole Wear offre inoltre una grande
+      varietà di tagli particolari e design straordinari. Che tu stia cercando un
+      outfit da pole dance sportivo o un set elegante e sensuale per la tua prossima
+      esibizione, Oksa Pole Wear ha sicuramente il design giusto per te.
+    brand_story_es: |
+      En Oksa nace un nuevo tipo de ropa de pole. La marca consolidada fabrica
+      outfits para pole dancing, aerial fitness y otros deportes. Aquí la libertad de
+      movimiento es una prioridad absoluta. Además, Oksa Pole Wear ofrece una gran
+      variedad de cortes especiales y diseños extraordinarios. Tanto si buscas un
+      outfit de pole dance deportivo como un conjunto elegante y sensual para tu
+      próxima actuación, Oksa Pole Wear seguro que tiene el diseño perfecto para ti.
+    ameise_vorlagen:
+      stammdaten:       null
+      variationen:      null
+      merkmale:         null
+      attribute:        null
+      cross_selling:    null
+    max_groesse: null
+    bemerkung: "Onboarding 2026-06-29 (Code-Pipeline). Shopify (oksawear.com), USD, Nicht-EU (Sharjah/VAE, produziert China). 17 neue Artikel aus Dens Link-Liste (Order #81, Packliste INV81.83; Rechnung BE20261013716/INV83 enthält ANDERE Bestandsartikel). Modelle: Jersey/Jadore (Top+Shorts), Siena (Crop Top + Skirt), Agatha (Bralette-Top + High-Waist-Shorts, Black/Red/Lilac), Strict (Top + Shorts, Light Pink), Knee Socks. EK = USD-Stückpreis (kein Rabatt). marke_kurz='Oksa Wear', Hersteller='OKSA WEAR FZC'. Sonder-Typen: Skirt Siena -> name_typ 'Rock' (Bottom-Filter), Knee Socks -> garment_type 'Accessoire' (Kategorie Accessoires); Bralette/Crop Top -> Top; High-Waist-Shorts + Shorts -> Bottom (Auto-Cross-Sell Top↔Bottom je Modell+Farbe). black-white = Print -> Merkmal Schwarz+Weiß. Barcodes (8-stellig) -> HAN. Terra (0 bestellt) raus. Varianten = voller Shop-Stand XS–XL (Socken XS–L)."
+
 # ============================================================================
 # Schema-Dokumentation
 # ============================================================================

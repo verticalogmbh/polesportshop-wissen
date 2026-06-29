@@ -78,6 +78,8 @@ PRODUKTTYP = {
     # Garter Belt (Strapsgürtel-Accessoire): Markenwording, in allen Sprachen identisch
     # (Tjorben 2026-06-25: „Name behält Garter Belt"); gefiltert als Shorts.
     "Garter Belt":  {"de": "Garter Belt",  "en": "Garter Belt",  "fr": "Garter Belt",      "it": "Garter Belt",  "es": "Garter Belt"},
+    # Knee Socks (Accessoire): Anzeigename-Typ für Kniestrümpfe; gefiltert als Accessoire.
+    "Knee Socks":   {"de": "Kniestrümpfe", "en": "Knee Socks",   "fr": "Chaussettes Hautes","it": "Calze al Ginocchio","es": "Calcetines Altos"},
 }
 
 # --- §6 Farb-Lookup: token(lower) -> {lang: Name, 'merkmal': WaWi-Wert} --
@@ -124,6 +126,10 @@ COLOR_LOOKUP = {
     "stripes":       {"de": "Stripes", "en": "Stripes", "fr": "Stripes", "it": "Stripes", "es": "Stripes", "merkmal": "Schwarz"},
     # Fanna-Markenfarbe (2026-06-26) — Markenname identisch in allen Sprachen; Merkmal = Filterfarbe.
     "soft green":    {"de": "Soft Green", "en": "Soft Green", "fr": "Soft Green", "it": "Soft Green", "es": "Soft Green", "merkmal": "Grün"},
+    # Oksa-Wear-Markenfarben (2026-06-29) — identisch in allen Sprachen; black-white = zwei-
+    # farbiger Print, Merkmal-Farbe (Schwarz+Weiß) wird in content.merkmal_farbe als Liste gesetzt.
+    "black-white":   {"de": "Black-White", "en": "Black-White", "fr": "Black-White", "it": "Black-White", "es": "Black-White", "merkmal": "Schwarz"},
+    "light pink":    {"de": "Light Pink", "en": "Light Pink", "fr": "Light Pink", "it": "Light Pink", "es": "Light Pink", "merkmal": "Pink"},
 }
 
 # --- §5 SEO-Templates (deterministisch) ----------------------------------

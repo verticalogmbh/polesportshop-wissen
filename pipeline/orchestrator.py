@@ -51,6 +51,10 @@ SUPPLIERS = {
                  "content": "fanna_content.json", "builder": "fanna",
                  "menge": "menge_fanna.csv",
                  "scope": "Rechnung FANNA-2026-1329 (Grace Top+Bottom Soft Green)"},
+    "oksa":     {"key": "OKSA_WEAR", "ek": "ek_oksa.csv",
+                 "content": "oksa_content.json", "builder": "oksawear",
+                 "menge": "menge_oksa.csv",
+                 "scope": "Packliste INV81.83 ORDER #81 (17 Artikel)"},
 }
 
 
