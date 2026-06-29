@@ -37,8 +37,10 @@ def load_content(path: Path) -> dict:
 
 
 def markentext_from_mapping(supplier: dict) -> dict[str, str]:
-    """Evergreen Brand-Story (Mapping) -> markentext HTML pro Sprache."""
-    marke = supplier["hersteller"]
+    """Evergreen Brand-Story (Mapping) -> markentext HTML pro Sprache.
+    Überschrift = MARKE (marke_kurz), nicht die Rechtsform aus `hersteller` — der
+    Markentext ist kundengerichtetes Marketing (z.B. „Oksa Wear" statt „OKSA WEAR FZC")."""
+    marke = supplier.get("marke_kurz") or supplier["hersteller"]
     out = {}
     for lang in C.LANGUAGES:
         story = (supplier.get(f"brand_story_{lang}") or "").strip()
