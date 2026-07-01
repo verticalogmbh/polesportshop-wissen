@@ -39,6 +39,7 @@ FX_KONSERVATIV = {
     "EUR": 1.0,
     "USD": 0.95,   # ~+8 % vs. Tageskurs 0,88 (deckt EUR/USD bis ~1,05)
     "AUD": 0.65,   # ~+6 % vs. Tageskurs 0,61
+    "GBP": 1.20,   # konservativ (GBP->EUR; deckt EUR/GBP bis ~0,83)
 }
 # LEGACY (altes „EK×2"+Puffer-Modell, vom Marge-Modell E104 abgelöst — nicht mehr im VK):
 VK_AUFSCHLAG_AUSLAND_EUR = 5.00

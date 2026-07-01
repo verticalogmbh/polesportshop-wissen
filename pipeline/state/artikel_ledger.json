@@ -2766,5 +2766,27 @@
   "typ": "Accessoire",
   "vk_brutto": 61.9,
   "waehrung": "USD"
+ },
+ "A1009353": {
+  "artnr_lieferant": "PG-PoleGrip-TAC",
+  "ean": null,
+  "ek_eur": 3.9,
+  "ek_original": 3.25,
+  "farbe": "",
+  "fx_to_eur": 1.2,
+  "gld": 5.9,
+  "herkunftsland": "GB",
+  "kategorie_ids": "2;11",
+  "kinder": {},
+  "lieferant": "PoleGrip",
+  "lieferant_nr": 1081,
+  "modell": "",
+  "name_de": "PoleGrip TAC 50ml",
+  "name_typ": null,
+  "quelle": "Rechnung PoleAmorUK #4937 (Technik)",
+  "stand": "2026-07-01",
+  "typ": "technik",
+  "vk_brutto": 11.9,
+  "waehrung": "GBP"
  }
 }

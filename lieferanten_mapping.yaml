@@ -810,6 +810,87 @@ lieferanten:
     max_groesse: null
     bemerkung: "Onboarding 2026-06-29 (Code-Pipeline). Shopify (oksawear.com), USD, Nicht-EU (Sharjah/VAE, produziert China). 17 neue Artikel aus Dens Link-Liste (Order #81, Packliste INV81.83; Rechnung BE20261013716/INV83 enthält ANDERE Bestandsartikel). Modelle: Jersey/Jadore (Top+Shorts), Siena (Crop Top + Skirt), Agatha (Bralette-Top + High-Waist-Shorts, Black/Red/Lilac), Strict (Top + Shorts, Light Pink), Knee Socks. EK = USD-Stückpreis (kein Rabatt). marke_kurz='Oksa Wear', Hersteller='OKSA WEAR FZC'. Sonder-Typen: Skirt Siena -> name_typ 'Rock' (Bottom-Filter), Knee Socks -> garment_type 'Accessoire' (Kategorie Accessoires); Bralette/Crop Top -> Top; High-Waist-Shorts + Shorts -> Bottom (Auto-Cross-Sell Top↔Bottom je Modell+Farbe). black-white = Print -> Merkmal Schwarz+Weiß. Barcodes (8-stellig) -> HAN. Terra (0 bestellt) raus. Varianten = voller Shop-Stand XS–XL (Socken XS–L)."
 
+  POLEGRIP:
+    anzeigename: "PoleGrip"               # = WaWi-Lieferant (Nr. 1081)
+    kuerzel: POLEGRIP
+    hersteller: "PoleGrip"                # markentext-H2 = Marke (marke_kurz)
+    marke_kurz: "PoleGrip"
+    artnr_prefix: PG
+    herkunftsland: GB                     # UK (Ilkeston, England) — Nicht-EU (Post-Brexit)
+    waehrung: GBP                         # Rechnung in GBP; konservativer Kurs 1,20 (constants.FX_KONSERVATIV)
+    eu: false                             # Nicht-EU
+    gld_aufschlag: 2.00                   # per-Lieferant-Override (E106): günstiger Technik-Artikel; echte
+                                          # Fracht (£0,65/Fl.) + Zoll (~£0,39) ~€1,40 + Puffer, statt der 5-€-Kleidungs-Pauschale
+    lieferzeit_tage: 15                   # Tjorben 2026-07-01
+    steuerklasse: "OSS2-undefiniert - Standard alle Länder"
+    shop_url: null                        # kein Crawl; Content + 1 Bild von Tjorben geliefert
+    r2_prefix: polegrip
+    lieferantennummer_wawi: 1081
+    article_weight_kg: 0.07
+    taric_code: '33049900'                # Kosmetik/Grip (nicht Kleidung 6112); ggf. prüfen
+    kategorie_ids: "2;11"                 # Technik per KATEGORIE-ID (E106): Zubehör (2) + Grip Produkte (11)
+    category: tech
+    crop_profile: tech                    # quadratisch 1:1 (Technik, nicht 2:3 wie Kleidung)
+    pose_sort: manufacturer_order
+    crawl_mechanik: manuell               # 1 Artikel, kein Shop-Crawl
+    typ: technik                          # Single-SKU ohne Größen/Farben/Klamotten-Merkmale
+    # Markentext (2026-07-01 von Claude generiert + von Tjorben freigegeben — Ausnahme: PoleGrip hatte keinen).
+    brand_story_de: |
+      PoleGrip wurde in Großbritannien von PoleAmorUK entwickelt und von Athletinnen
+      und Performern getestet, um dir sicheren Halt zu geben, wenn es wirklich darauf
+      ankommt. Die Marke steht für verlässliche Grip-Produkte für Pole Fitness, Aerial,
+      Gymnastik und jede Disziplin, bei der dein Griff über deine Performance
+      entscheidet. Nachhaltigkeit gehört bei PoleGrip fest dazu, die Flaschen bestehen
+      aus 100 % recyceltem Kunststoff und sind vollständig recycelbar, die gesamte
+      Verpackung ist wiederverwertbar. Alle Produkte sind vegan und tierversuchsfrei.
+      Mit PoleGrip konzentrierst du dich auf deine Bewegung statt auf deinen Halt, für
+      mehr Sicherheit und Selbstvertrauen in jedem Training und bei jedem Auftritt.
+    brand_story_en: |
+      PoleGrip was developed in the UK by PoleAmorUK and tested by athletes and
+      performers to give you a secure hold when it really matters. The brand stands for
+      reliable grip products for pole fitness, aerial, gymnastics and every discipline
+      where your grip decides your performance. Sustainability is part of PoleGrip's DNA,
+      the bottles are made from 100% recycled plastic and are fully recyclable, and all
+      packaging is recyclable too. Every product is vegan and cruelty-free. With PoleGrip
+      you focus on your movement instead of your grip, for more security and confidence
+      in every training session and every performance.
+    brand_story_fr: |
+      PoleGrip a été développé au Royaume-Uni par PoleAmorUK et testé par des athlètes et
+      des performeuses pour t'offrir une prise sûre quand ça compte vraiment. La marque
+      est synonyme de produits de grip fiables pour la pole fitness, l'aérien, la
+      gymnastique et toute discipline où ta prise décide de ta performance. La durabilité
+      fait partie de l'ADN de PoleGrip, les flacons sont fabriqués en plastique 100 %
+      recyclé et entièrement recyclables, et tout l'emballage est aussi recyclable. Chaque
+      produit est vegan et non testé sur les animaux. Avec PoleGrip, tu te concentres sur
+      ton mouvement plutôt que sur ta prise, pour plus de sécurité et de confiance à
+      chaque entraînement et chaque représentation.
+    brand_story_it: |
+      PoleGrip è stato sviluppato nel Regno Unito da PoleAmorUK e testato da atlete e
+      performer per darti una presa sicura quando conta davvero. Il marchio è sinonimo di
+      prodotti grip affidabili per pole fitness, aerial, ginnastica e ogni disciplina in
+      cui la presa decide la tua performance. La sostenibilità fa parte del DNA di
+      PoleGrip, i flaconi sono realizzati in plastica riciclata al 100% e completamente
+      riciclabili, e anche tutto l'imballaggio è riciclabile. Ogni prodotto è vegano e
+      cruelty-free. Con PoleGrip ti concentri sul movimento invece che sulla presa, per
+      più sicurezza e fiducia in ogni allenamento e ogni esibizione.
+    brand_story_es: |
+      PoleGrip fue desarrollado en el Reino Unido por PoleAmorUK y probado por atletas y
+      performers para darte un agarre seguro cuando de verdad importa. La marca es
+      sinónimo de productos de grip fiables para pole fitness, aéreos, gimnasia y
+      cualquier disciplina en la que tu agarre decida tu rendimiento. La sostenibilidad
+      forma parte del ADN de PoleGrip, los frascos están hechos de plástico 100% reciclado
+      y son totalmente reciclables, y todo el embalaje también es reciclable. Cada producto
+      es vegano y libre de crueldad. Con PoleGrip te concentras en tu movimiento en lugar
+      de en tu agarre, para más seguridad y confianza en cada entrenamiento y cada actuación.
+    ameise_vorlagen:
+      stammdaten:       null
+      variationen:      null
+      merkmale:         null
+      attribute:        null
+      cross_selling:    null
+    max_groesse: null
+    bemerkung: "Onboarding 2026-07-01 (Code-Pipeline). ERSTER TECHNIK-Artikel (kein Kleidungsstück). PoleGrip TAC 50ml Grip-Gel (Rechnung PoleAmorUK Order #4937). 1 Single-SKU (PGT50ML), KEINE Größen/Farben -> keine Variationen/Klamotten-Merkmale. Kategorie per ID (Zubehör 2 + Grip Produkte 11, E106) statt Name -> keine Duplikate. Bild quadratisch (crop_profile tech 1:1). EK £3,25 GBP/Flasche (100 Stk £325; 75/100-Zoll-Logik schon eingepreist), konservativer GBP-Kurs 1,20; gld_aufschlag 2,00 € (echte Fracht/Zoll ~€1,40 + Puffer, NICHT die 5-€-Kleidungs-Pauschale) -> VK 11,90 @40 %. Markentext generiert+freigegeben. TARIC 33049900 prüfen. Content aus Tjorbens Produkttext (Benefits/Ingredients/Directions)."
+
 # ============================================================================
 # Schema-Dokumentation
 # ============================================================================
