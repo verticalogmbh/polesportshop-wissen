@@ -52,11 +52,11 @@ ATTR_COLS = ["Lieferant", "Artikelnummer (Lieferant)", "Attributname", "Attribut
 LANGPFX = {"en": "Englisch", "fr": "Französisch", "it": "Italienisch", "es": "Spanisch"}
 
 
-def _next_artnr(persist: bool) -> str:
+def _next_artnr(persist: bool, start: int | None = None) -> str:
     st = numbering.load_state()
-    n = st["artikel_next"]
+    n = start if start is not None else st["artikel_next"]
     artnr = f'{st.get("praefix", "A")}{n}'
-    if persist:
+    if persist and start is None:
         st["artikel_next"] = n + 1
         numbering.STATE.write_text(json.dumps(st, ensure_ascii=False, indent=1), encoding="utf-8")
     return artnr
@@ -74,7 +74,7 @@ def _bild_urls(with_image: bool, sup: dict) -> list[str]:
     return urls
 
 
-def main(with_image: bool = True, persist: bool = True) -> dict:
+def main(with_image: bool = True, persist: bool = True, start_artnr: int | None = None) -> dict:
     stamp = datetime.now().strftime("%Y-%m-%d_%H%M")
     run_date = datetime.now().strftime("%d.%m.%Y")
     sup = config.get_supplier(SUPPLIER_KEY)
@@ -83,7 +83,7 @@ def main(with_image: bool = True, persist: bool = True) -> dict:
     ek_eur = round(EK_GBP * fx, 2)
     gld = round(ek_eur + float(sup["gld_aufschlag"]), 2)
     vk = vk_aus_marge(gld)
-    artnr = _next_artnr(persist)
+    artnr = _next_artnr(persist, start_artnr)
     bild = _bild_urls(with_image, sup)
 
     d = dict(spec.DEFAULTS)
